@@ -1,0 +1,30 @@
+[tool.uv.workspace]
+members = [
+    "packages/seedream-sdk",
+    "packages/seedream-mcp",
+    "packages/seedream-cli",
+]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+select = ["E", "F", "I", "UP", "B", "SIM"]
+# E501: line length handled by formatter. B008: typer.Option()-in-defaults is the
+# documented Typer idiom. B904: CLI commands surface a friendly message then
+# `raise typer.Exit(1)`; chaining the original exception adds noise, not signal.
+ignore = ["E501", "B008", "B904"]
+
+[tool.ruff.isort]
+known-first-party = ["seedream", "seedream_mcp", "seedream_cli"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = [
+    "packages/seedream-sdk/tests",
+    "packages/seedream-mcp/tests",
+    "packages/seedream-cli/tests",
+]

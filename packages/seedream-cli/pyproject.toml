@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "seedream-cli"
+version = "1.0.0"
+description = "CLI for BytePlus Seedream 4.5 / 5.0 Lite image generation"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ["byteplus", "seedream", "cli", "image-generation", "ai"]
+dependencies = [
+    "seedream-sdk>=1.0.0",
+    "typer>=0.12.0",
+    "rich>=13.0.0",
+]
+
+[project.optional-dependencies]
+mcp = ["seedream-mcp>=1.0.0"]   # install CLI + MCP server together
+dev = [
+    "pytest>=8.0.0",
+    "mypy>=1.8.0",
+    "ruff>=0.3.0",
+]
+
+[project.scripts]
+seedream = "seedream_cli.main:app"
+
+[project.urls]
+Repository = "https://github.com/byteplus/byteplus-seedream"
+
+[tool.hatch.build.targets.wheel]
+packages = ["seedream_cli"]

@@ -43,3 +43,7 @@ htmlcov/
 
 # Docker
 .dockerignore
+
+# Generated image sets — outputs, never source
+generated/
+artifacts/

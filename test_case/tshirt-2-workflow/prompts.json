@@ -1,0 +1,78 @@
+{
+  "model": "dola-seedream-5-0-pro-260628",
+  "note": "Flat-lay/mannequin -> on-model hero -> fan-out set. Seedream 5.0 Pro, 2K. Step 2 uses the CHOSEN step-1 hero as identity+garment lock.",
+  "garment": {
+    "name": "Summer Daze oversized graphic tee",
+    "front_print": "orange spiky sun above a two-line retro serif wordmark \"Summer Daze\" in light blue",
+    "back_print": "orange \"Condé Nast\" over light-blue \"Traveler Club\" with an orange half-sun disc",
+    "colour": "cream / off-white cotton jersey",
+    "fit": "oversized boxy, dropped shoulders, short wide sleeves, ribbed crew neck"
+  },
+  "shared": {
+    "model": "young adult woman, mid-20s, warm light skin, long loose wavy dark-brown hair parted in the middle, minimal natural makeup, relaxed closed-lip smile",
+    "styling": "the tee worn untucked over light-blue straight-leg denim jeans and clean white leather low-top sneakers; no jewellery, no bag, no other accessories",
+    "set": "seamless warm beige-cream studio backdrop, soft even large-softbox frontal light, subtle contact shadow under the shoes, no harsh shadows on the backdrop",
+    "look": "photorealistic fashion e-commerce photography, natural skin texture, true-to-life cotton jersey, sharp focus, no motion blur"
+  },
+
+  "step1_hero": {
+    "id": "hero",
+    "size": "1760x2352",
+    "input_images": ["step-0-input-references/t2-front.png", "step-0-input-references/t2-closeup.jpg"],
+    "runs": 3,
+    "prompt": "Image 1 is the front of a garment photographed flat on a headless mannequin. Image 2 is a macro of the same garment's neckline, fabric and print.\n\nTask: produce a studio e-commerce hero photograph of a real human model wearing this exact t-shirt. Remove the mannequin entirely.\n\nMODEL: young adult woman, mid-20s, warm light skin, long loose wavy dark-brown hair parted in the middle, minimal natural makeup, relaxed closed-lip smile, looking straight into the lens. Standing upright and square-on to camera, arms hanging relaxed at her sides, weight even on both feet.\n\nSTYLING: the tee from Image 1 worn untucked over light-blue straight-leg denim jeans and clean white leather low-top sneakers. No jewellery, no bag, no other accessories.\n\nSET: seamless warm beige-cream studio backdrop, soft even large-softbox frontal light, subtle contact shadow under the shoes, no harsh shadows on the backdrop.\n\nCAMERA: full-body head-to-toe framing, model centred, eye-level, 85mm lens look, small even margin above the head and below the shoes.\n\nMUST PRESERVE EXACTLY from the references, unchanged: the cream / off-white fabric colour; the oversized boxy fit with dropped shoulder seams, short wide sleeves and a straight hem falling to upper thigh; the ribbed crew neckline; and the chest print — an orange spiky sun above the two-line retro serif wordmark \"Summer Daze\" in light blue — including its exact shape, letterforms, proportion, colours, centred position on the chest and the soft screen-print texture sitting on cotton jersey. Do not redraw, restyle, recolour, resize or reposition the print. Do not add any extra text, logo or graphic anywhere on the garment.\n\nPhotorealistic fashion e-commerce photography, natural skin texture, true-to-life cotton jersey, sharp focus throughout, no motion blur."
+  },
+
+  "step2_fanouts": [
+    {
+      "id": "fanout-1-threequarter",
+      "size": "1760x2352",
+      "extra_refs": [],
+      "prompt": "Image 1 is the approved hero shot. Keep the SAME woman (identical face, hair, skin tone and build), the SAME cream \"Summer Daze\" oversized tee with its chest print unchanged in shape, colour, size and position, the SAME light-blue straight-leg jeans and white low-top sneakers, and the SAME seamless beige-cream studio backdrop and soft even lighting.\n\nChange only the pose and camera: full-body three-quarter view, her body turned about 35 degrees to her right while her head turns back to the lens with a soft closed-lip smile, weight on the back foot, front foot slightly forward, one arm relaxed at her side and the other hand grazing her thigh. Eye-level, 85mm, head-to-toe framing, model centred.\n\nPhotorealistic fashion e-commerce photography, sharp focus, no motion blur, no extra text or logos."
+    },
+    {
+      "id": "fanout-2-walking",
+      "size": "1760x2352",
+      "extra_refs": [],
+      "prompt": "Image 1 is the approved hero shot. Keep the SAME woman (identical face, hair, skin tone and build), the SAME cream \"Summer Daze\" oversized tee with its chest print unchanged in shape, colour, size and position, the SAME light-blue straight-leg jeans and white low-top sneakers, and the SAME seamless beige-cream studio backdrop and soft even lighting.\n\nChange only the pose and camera: full-body walking shot, mid-stride striding toward the lens, one foot lifted just off the floor, arms swinging naturally, hair and the hem of the oversized tee lifting slightly with the movement, looking into the lens with an easy expression. Eye-level, 85mm, head-to-toe framing.\n\nPhotorealistic fashion e-commerce photography, crisp frozen motion, everything in sharp focus, no motion blur, no extra text or logos."
+    },
+    {
+      "id": "fanout-3-handsinpocket",
+      "size": "1760x2352",
+      "extra_refs": [],
+      "prompt": "Image 1 is the approved hero shot. Keep the SAME woman (identical face, hair, skin tone and build), the SAME cream \"Summer Daze\" oversized tee with its chest print unchanged in shape, colour, size and position, the SAME light-blue straight-leg jeans and white low-top sneakers, and the SAME seamless beige-cream studio backdrop and soft even lighting.\n\nChange only the pose and camera: full-body front view, both thumbs hooked into the front pockets of her jeans with hands relaxed, weight shifted onto one hip, shoulders loose, chin slightly lifted, calm confident expression. The chest print stays fully visible and unobstructed. Eye-level, 85mm, head-to-toe framing.\n\nPhotorealistic fashion e-commerce photography, sharp focus, no motion blur, no extra text or logos."
+    },
+    {
+      "id": "fanout-4-lowangle",
+      "size": "1760x2352",
+      "extra_refs": [],
+      "prompt": "Image 1 is the approved hero shot. Keep the SAME woman (identical face, hair, skin tone and build), the SAME cream \"Summer Daze\" oversized tee with its chest print unchanged in shape, colour, size and position, the SAME light-blue straight-leg jeans and white low-top sneakers, and the SAME seamless beige-cream studio backdrop and soft even lighting.\n\nChange only the camera and pose — THE CAMERA POSITION IS THE POINT OF THIS SHOT: place the camera on the floor at knee height, close to her feet, and tilt it upward so we look UP at her. Worm's-eye perspective: her sneakers and shins are large and nearest to the lens in the lower third, her legs converge upward, the tee and her face are seen from below with the underside of her chin and jawline visible, and the backdrop's floor-to-wall curve sits high in the upper part of the frame. Verticals converge toward the top. She stands with feet apart in a relaxed power stance, arms at her sides, looking down into the lens with a calm confident expression. 35mm wide-angle look, full body head-to-toe, model centred. The chest print stays fully readable despite the foreshortening.\n\nPhotorealistic fashion e-commerce photography, sharp focus, no motion blur, no extra text or logos."
+    },
+    {
+      "id": "fanout-5-waistupcrop",
+      "size": "1760x2352",
+      "extra_refs": [],
+      "prompt": "Image 1 is the approved hero shot. Keep the SAME woman (identical face, hair, skin tone and build), the SAME cream \"Summer Daze\" oversized tee with its chest print unchanged in shape, colour, size and position, and the SAME seamless beige-cream studio backdrop and soft even lighting.\n\nChange only the framing and pose: waist-up portrait crop, front view, head and shoulders in the upper third and the full chest print clearly readable in the lower two thirds. Arms relaxed and dropping out of the bottom of frame, gentle closed-lip smile, looking into the lens. Eye-level, 85mm, shallow background falloff.\n\nPhotorealistic fashion e-commerce photography, natural skin texture, visible cotton jersey weave and soft screen-print texture, sharp focus, no extra text or logos."
+    },
+    {
+      "id": "fanout-6-backview",
+      "size": "1760x2352",
+      "extra_refs": ["step-0-input-references/t2-back.png"],
+      "prompt": "Image 1 is the approved hero shot of the model. Image 2 is the BACK of the same garment photographed on a mannequin.\n\nProduce the back view of the same shot: the SAME woman (identical hair, skin tone and build) seen from directly behind, standing upright, arms relaxed at her sides, hair falling over her shoulders. SAME light-blue straight-leg jeans and white low-top sneakers, SAME seamless beige-cream studio backdrop and soft even lighting, SAME full-body head-to-toe framing at eye level.\n\nMUST PRESERVE EXACTLY from Image 2: the back print — small orange \"Condé Nast\" set above the large light-blue two-line retro serif wordmark \"Traveler Club\", with an orange half-sun disc tucked at the lower left of the wordmark — reproduced with identical letterforms, colours, proportion and placement across the upper back, following the natural drape of the fabric. Keep the cream fabric colour, the oversized boxy fit, dropped shoulder seams and short wide sleeves. Do not add any extra text, logo or graphic.\n\nPhotorealistic fashion e-commerce photography, sharp focus, no motion blur."
+    },
+    {
+      "id": "fanout-7-fabric-closeup",
+      "size": "2048x2048",
+      "use_hero": false,
+      "extra_refs": ["step-0-input-references/t2-closeup.jpg", "step-0-input-references/t2-front.png"],
+      "prompt": "Image 1 is a macro of the garment's neckline, fabric and print. Image 2 is the full front of the same garment on a mannequin.\n\nProduce a square macro detail photograph of the GARMENT ALONE — flat-lay product photography, no person and no mannequin anywhere in the frame. The tee is laid flat and face-up on a smooth cream surface and photographed from directly above, the cotton relaxed with soft natural creases.\n\nFraming: tight crop on the ribbed crew neckline. The collar arcs across the upper third of the frame, the neck opening lies open below it revealing the inside back neck with its small white woven care labels, and the uppermost tips of the orange sun print enter at the bottom edge.\n\nABSOLUTELY NO human presence: no skin, no neck, no throat, no chin, no jaw, no hair, no shoulders, no body underneath the fabric. Nothing but cloth.\n\nMUST PRESERVE EXACTLY from Image 1: the cream / off-white cotton jersey colour and its fine knit texture, the ribbed collar with its topstitching and seam, the woven care labels, and the crisp matte orange screen-print sitting on the fabric weave. Do not redraw, recolour or reposition the print. Do not add any extra text, logo or graphic.\n\nSoft even large-softbox light, gentle shadow in the fabric folds.\n\nExtreme detail macro product photography, 100mm macro look, razor-sharp fabric texture, even depth of field."
+    },
+    {
+      "id": "fanout-8-print-closeup",
+      "size": "2048x2048",
+      "use_hero": false,
+      "extra_refs": ["step-0-input-references/t2-front.png", "step-0-input-references/t2-closeup.jpg"],
+      "prompt": "Image 1 is the full front of a garment on a mannequin. Image 2 is a macro of the same garment's fabric and print texture.\n\nProduce a square macro detail photograph of the CHEST PRINT ALONE — flat-lay product photography, no person and no mannequin anywhere in the frame. The tee is laid flat and face-up on a smooth cream surface and photographed from directly above, square-on and parallel to the fabric, the cotton relaxed with only faint natural creases.\n\nFraming: the frame is filled edge to edge by cream cotton jersey with the complete artwork centred — the orange spiky sun above, the light-blue two-line retro serif wordmark \"Summer Daze\" below it — the whole artwork visible with a comfortable margin of blank fabric all around it. The artwork must sit UPRIGHT AND PERFECTLY LEVEL: the lines of the wordmark run exactly horizontal and parallel to the bottom edge of the frame, the sun sits directly above the wordmark on a vertical centre line, and the artwork is centred both left-to-right and top-to-bottom. Do not rotate, tilt, skew or offset the artwork. No collar, no neckline, no hem, no sleeve, no seam in frame — nothing but the printed chest panel.\n\nABSOLUTELY NO human presence: no skin, no hands, no arms, no neck, no hair, no body curvature under the fabric. Nothing but flat cloth.\n\nMUST PRESERVE EXACTLY from the references: the artwork's shape, letterforms, spelling, colours and proportion, plus the soft matte screen-print texture visibly sitting on the cotton jersey weave, with faint fabric fibres breaking the ink edges. Do not redraw, recolour, resize or reposition the print. Do not add any extra text, logo or graphic.\n\nSoft even large-softbox light, near-shadowless.\n\nExtreme detail macro product photography, 100mm macro look, razor-sharp texture, flat even depth of field."
+    }
+  ]
+}

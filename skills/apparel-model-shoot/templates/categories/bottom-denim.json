@@ -1,0 +1,207 @@
+{
+  "id": "bottom-denim",
+  "label": "Bottoms — jeans, denim, trousers",
+  "status": "draft",
+  "note": "Authored, never generated. The back is the money shot for denim: seat fit, yoke, pocket placement and arcuate stitching are the primary purchase drivers, so the back view leads the fan-out and carries the longest MUST PRESERVE. Category styling rule: the top is tucked or cropped so the waistband and rise stay visible, and hands stay OUT of the pockets on every shot but the pocket crop — a hand in a front pocket hides the exact geometry the shot exists to sell.",
+
+  "hero_kind": "on-model-full-body",
+  "product_slot": "bottom",
+  "styling_slots": ["top", "footwear"],
+  "garment_noun": "pair of jeans",
+  "garment_noun_short": "jeans",
+
+  "preserve_fields": [
+    "the exact wash and its whiskering, fading and distressing pattern",
+    "the rise and the waistband height",
+    "the leg shape from hip to hem and the hem opening width",
+    "the hardware — shank button, rivets, and the zip or button fly",
+    "the back-pocket shape, placement and any arcuate stitching",
+    "the stitching colour and density, belt loops and the hem finish"
+  ],
+
+  "required_ref_roles": ["front"],
+  "optional_ref_roles": ["back", "detail"],
+  "ref_descriptions": {
+    "front": "the front of a pair of jeans photographed flat on a plain surface",
+    "back": "the BACK of the same jeans photographed flat",
+    "detail": "a macro of the same jeans' hardware, stitching and wash"
+  },
+
+  "blocks": {
+    "keep_onmodel": "Keep the SAME {{campaign.pronoun.noun}} (identical face, hair, skin tone and build), the SAME {{product.short_name}} with its wash, whiskering, hardware and stitching unchanged, the SAME {{wardrobe_short}}, and the SAME {{campaign.set_short}} and {{campaign.light_short}}.",
+    "keep_lower": "Keep the SAME {{product.short_name}} with its wash, whiskering, hardware and stitching unchanged, the SAME {{wardrobe_short}}, and the SAME {{campaign.set_short}} and {{campaign.light_short}}.",
+    "hands_rule": "Hands stay out of the pockets so the pocket openings and the rise read clearly.",
+    "must_preserve": "MUST PRESERVE EXACTLY from the references, unchanged: {{product.garment}}; and {{preserve_fields}}. Do not redraw, recolour, resize or reposition any hardware, stitching, pocket or wash detail. Do not add any extra text, logo, patch or graphic anywhere on the garment.",
+    "tail": "{{campaign.grade}}, sharp focus, no motion blur, no extra text or logos.",
+    "no_person": "ABSOLUTELY NO human presence: no skin, no legs, no hips, no hands, no body underneath the fabric. Nothing but cloth.",
+    "flatlay_setup": "flat-lay product photography, no person and no mannequin anywhere in the frame. The {{category.garment_noun_short}} are laid flat on {{campaign.flatlay_surface}} and photographed from directly above, square-on and parallel to the fabric"
+  },
+
+  "hero": {
+    "id": "hero",
+    "size_class": "full_body",
+    "ref_roles": ["front", "detail"],
+    "runs": 3,
+    "prompt": [
+      "{{ref_roles_sentence}}",
+      "",
+      "Task: produce a studio e-commerce hero photograph of a real human model wearing this exact {{category.garment_noun}}. Remove any mannequin entirely.",
+      "",
+      "MODEL: {{campaign.model_casting}}, looking straight into the lens. Standing upright and square-on to camera, feet a little apart, weight even on both feet, arms hanging relaxed at {{campaign.pronoun.possessive}} sides. {{blocks.hands_rule}}",
+      "",
+      "STYLING: the {{category.garment_noun_short}} from Image 1 worn with {{wardrobe}}. The top is tucked in at the front so the waistband, the rise and the front hardware are fully visible. {{campaign.accessories_rule}}",
+      "",
+      "SET: {{campaign.set}}, {{campaign.light}}.",
+      "",
+      "CAMERA: {{campaign.camera_full_body}}. The whole leg line from waistband to hem is unobstructed.",
+      "",
+      "{{blocks.must_preserve}}",
+      "",
+      "{{campaign.grade}}, natural skin texture, true-to-life {{product.fabric}} with visible twill weave, sharp focus throughout, no motion blur."
+    ]
+  },
+
+  "fanouts": [
+    {
+      "id": "fanout-1-back-full",
+      "size_class": "full_body",
+      "ref_roles": ["back"],
+      "hero_label": "the approved hero shot of the model",
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce the back view of the same shot: the SAME {{campaign.pronoun.noun}} (identical hair, skin tone and build) seen from directly behind, standing upright, feet a little apart, arms relaxed at {{campaign.pronoun.possessive}} sides. SAME {{wardrobe_short}}, SAME {{campaign.set_short}} and {{campaign.light_short}}, SAME full-body head-to-toe framing at eye level.",
+        "",
+        "This is the most important image in the set — the seat and pocket geometry is what a denim customer buys on.",
+        "",
+        "MUST PRESERVE EXACTLY from Image 2, reproduced on the worn garment following the natural drape of the fabric: the back-pocket shape, size, spacing and vertical placement on the seat; any arcuate or decorative stitching, in its exact path, stitch colour and thread weight; the yoke seam angle; the waistband and belt loops; and the wash, whiskering and honeycomb fading behind the knee. Do not add any extra text, logo, patch or graphic.",
+        "",
+        "{{campaign.grade}}, sharp focus, no motion blur."
+      ]
+    },
+    {
+      "id": "fanout-2-back-crop",
+      "size_class": "crop",
+      "ref_roles": ["back"],
+      "hero_label": "the approved hero shot of the model",
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a crop of the SAME {{campaign.pronoun.noun}} from directly behind, framed from the waistband to mid-thigh so the seat and both back pockets fill the frame. Head and lower legs are out of frame. {{blocks.keep_lower}}",
+        "",
+        "Stitching at full length reads soft; this shot exists so it reads crisp. Every stitch line must be individually resolved.",
+        "",
+        "MUST PRESERVE EXACTLY from Image 2: the arcuate or decorative pocket stitching in its exact path and thread colour, the pocket bartacks and rivets, the yoke seam, the waistband, the belt loops, and the local wash and fading across the seat. Do not redraw, recolour, resize or reposition any of it.",
+        "",
+        "{{campaign.grade}}, {{campaign.camera_crop}}, razor-sharp stitch detail, no motion blur, no extra text or logos."
+      ]
+    },
+    {
+      "id": "fanout-3-threequarter",
+      "size_class": "full_body",
+      "ref_roles": [],
+      "prompt": [
+        "{{ref_roles_sentence}} {{blocks.keep_onmodel}}",
+        "",
+        "Change only the pose and camera: full-body three-quarter view, {{campaign.pronoun.possessive}} body turned about 45 degrees so the side seam, the inseam line and the profile of the leg from hip to hem are all visible, head turned back to the lens. Weight on the back foot, front foot slightly forward. {{blocks.hands_rule}} Eye-level, 85mm, head-to-toe framing, model centred.",
+        "",
+        "{{blocks.tail}}"
+      ]
+    },
+    {
+      "id": "fanout-4-front-waist-crop",
+      "size_class": "crop",
+      "ref_roles": ["detail"],
+      "hero_label": "the approved hero shot of the model",
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a front crop of the SAME {{campaign.pronoun.noun}}, framed from just above the waistband to mid-thigh. Head, shoulders and lower legs are out of frame. One thumb hooks lightly into a front pocket so the pocket opening reads, while the shank button, the fly and the belt loops stay fully visible and unobstructed. {{blocks.keep_lower}}",
+        "",
+        "MUST PRESERVE EXACTLY from Image 2: the shank button and its finish, the rivets, the fly construction, the belt loops, the front pocket opening shape, the topstitching colour and density, and the whiskering pattern radiating from the hip and crotch.",
+        "",
+        "{{campaign.grade}}, {{campaign.camera_crop}}, razor-sharp hardware and stitch detail, no extra text or logos."
+      ]
+    },
+    {
+      "id": "fanout-5-walking",
+      "size_class": "full_body",
+      "ref_roles": [],
+      "prompt": [
+        "{{ref_roles_sentence}} {{blocks.keep_onmodel}}",
+        "",
+        "Change only the pose and camera: full-body walking shot, mid-stride striding toward the lens, one foot lifted just off the floor and the front knee driving the denim forward so the leg shape and the fabric's weight and drape read in motion. Arms swinging naturally, looking into the lens. Eye-level, 85mm, head-to-toe framing.",
+        "",
+        "{{campaign.grade}}, crisp frozen motion, everything in sharp focus, no motion blur, no extra text or logos."
+      ]
+    },
+    {
+      "id": "fanout-6-hem-break",
+      "size_class": "crop",
+      "ref_roles": [],
+      "prompt": [
+        "{{ref_roles_sentence}} {{blocks.keep_lower}}",
+        "",
+        "Change the framing and camera: a low crop of the SAME {{campaign.pronoun.possessive}} lower legs only, from mid-calf down, with the camera near floor level looking slightly up. The hem of the {{category.garment_noun_short}} breaks over the {{campaign.footwear_noun}} — show exactly how much stack and cuff roll the length produces, and how the hem sits across the instep. Both feet in frame, one slightly ahead of the other.",
+        "",
+        "This is deliberately shot on the body: how the hem breaks over a shoe is a wear property that a flat-lay cannot show.",
+        "",
+        "MUST PRESERVE the hem finish, the chainstitch or coverstitch at the hem, any selvedge, the leg opening width, and the wash and fading at the ankle.",
+        "",
+        "{{campaign.grade}}, sharp focus throughout, no motion blur, no extra text or logos."
+      ]
+    },
+    {
+      "id": "fanout-7-flatlay-front-back",
+      "size_class": "macro",
+      "use_hero": false,
+      "optional": true,
+      "requires_ref_roles": ["back"],
+      "ref_roles": ["front", "back"],
+      "ref_descriptions": {
+        "front": "the front of a pair of jeans photographed flat",
+        "back": "the BACK of the same jeans photographed flat"
+      },
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a square product photograph of the GARMENT ALONE — {{blocks.flatlay_setup}}. The jeans are folded once at the waist and laid side by side in the frame: the front-facing leg on the left, the back-facing leg on the right, both straight, aligned and evenly lit, so the whole wash and fading pattern can be read at a glance.",
+        "",
+        "{{blocks.no_person}}",
+        "",
+        "MUST PRESERVE EXACTLY from the references: the true wash colour and depth, the complete whiskering, honeycomb and fading pattern, all hardware and stitching, and the pocket geometry on both faces. Do not redraw, recolour or reposition any detail. Do not add any extra text, logo, patch or graphic.",
+        "",
+        "{{campaign.flatlay_light}}",
+        "",
+        "Extreme detail product photography, 100mm macro look, razor-sharp twill texture, flat even depth of field."
+      ]
+    },
+    {
+      "id": "fanout-8-hardware-macro",
+      "size_class": "macro",
+      "use_hero": false,
+      "optional": true,
+      "requires_ref_roles": ["detail"],
+      "ref_roles": ["detail", "front"],
+      "ref_descriptions": {
+        "detail": "a macro of a pair of jeans' hardware, stitching and wash",
+        "front": "the full front of the same jeans photographed flat"
+      },
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a square macro detail photograph of the HARDWARE ALONE — {{blocks.flatlay_setup}}, the denim relaxed with only faint natural creases.",
+        "",
+        "Framing: the frame is filled by the waistband and fly area — the shank button centred and level, the topstitching running true, a rivet visible at the pocket corner, and a belt loop entering the frame. The button face is square to the lens and any maker's mark stamped on it is fully legible rather than suggested.",
+        "",
+        "{{blocks.no_person}}",
+        "",
+        "MUST PRESERVE EXACTLY from Image 1: the metal finish and wear of the button and rivets, the exact topstitch colour, gauge and stitch spacing, the bartack placement, and the local wash and fading of the denim around the hardware. Do not redraw, recolour, resize or reposition any of it. Do not add any extra text, logo or graphic.",
+        "",
+        "{{campaign.flatlay_light}}",
+        "",
+        "Extreme detail macro product photography, 100mm macro look, razor-sharp metal and thread detail, flat even depth of field."
+      ]
+    }
+  ]
+}

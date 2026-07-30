@@ -1,20 +1,27 @@
-# Shot library
+# Shot library — archetypes
 
-Drop-in `Change only…` bodies for the step-2 fan-out template in `SKILL.md`. Each one is
-production-validated on Seedream 5.0 Pro. Wrap every one in the standard envelope:
+**This is the archetype catalogue, not the shipped shot lists.** Each category's actual set
+lives in `templates/categories/<id>.json`, with the reasoning in
+[`categories.md`](categories.md). Come here to *extend* a set: these are the poses, crops and
+macro setups that work, with the reason each works, written so you can paste one into a
+category file and adapt it.
+
+The examples below are written for a **top**; the mechanics transfer to any category. In a
+category file the concrete wording is replaced by placeholders — `{{wardrobe}}`,
+`{{campaign.set}}`, `{{product.short_name}}` — see [`authoring.md`](authoring.md).
+
+Every on-model shot follows the same envelope:
 
 ```text
-Image 1 is the approved hero shot. [Image 2 is …]
+{{ref_roles_sentence}} {{blocks.keep_onmodel}}
 
-Keep the SAME woman (identical face, hair, skin tone and build), the SAME <garment>
-with its print unchanged in shape, colour, size and position, the SAME <bottoms> and
-<shoes>, and the SAME seamless <colour> studio backdrop and soft even lighting.
+<<< THE ONE THING THIS SHOT IS FOR >>>
 
-<<< BODY FROM BELOW >>>
-
-Photorealistic fashion e-commerce photography, sharp focus, no motion blur,
-no extra text or logos.
+{{blocks.tail}}
 ```
+
+The KEEP block is deliberately repeated in full on every shot. That repetition is what holds a
+set together — de-duplicate the *source*, never the *rendered prompt*.
 
 ---
 

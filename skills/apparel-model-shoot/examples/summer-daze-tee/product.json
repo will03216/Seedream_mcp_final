@@ -1,0 +1,21 @@
+{
+  "campaign": "beige-studio-ss26",
+  "category": "top",
+  "model": "dola-seedream-5-0-pro-260628",
+
+  "product": {
+    "name": "Summer Daze oversized graphic tee",
+    "short_name": "cream \"Summer Daze\" oversized tee",
+    "fabric": "cotton jersey",
+    "garment": "the cream / off-white fabric colour; the oversized boxy fit with dropped shoulder seams, short wide sleeves and a straight hem falling to upper thigh; the ribbed crew neckline",
+    "garment_short": "the cream fabric colour, the oversized boxy fit, dropped shoulder seams and short wide sleeves",
+    "artwork_front": "an orange spiky sun above the two-line retro serif wordmark \"Summer Daze\" in light blue",
+    "artwork_back": "small orange \"Condé Nast\" set above the large light-blue two-line retro serif wordmark \"Traveler Club\", with an orange half-sun disc tucked at the lower left of the wordmark"
+  },
+
+  "refs": {
+    "front": "../../../../test_case/tshirt-2-workflow/step-0-input-references/t2-front.png",
+    "back": "../../../../test_case/tshirt-2-workflow/step-0-input-references/t2-back.png",
+    "detail": "../../../../test_case/tshirt-2-workflow/step-0-input-references/t2-closeup.jpg"
+  }
+}

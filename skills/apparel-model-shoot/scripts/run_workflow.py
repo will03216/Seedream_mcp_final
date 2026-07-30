@@ -14,20 +14,27 @@ Usage:
 """
 import argparse, base64, concurrent.futures, configparser, json, mimetypes, os, urllib.request, urllib.error
 
+import compose as _compose
+
 ROOT = os.getcwd()   # overridden by --spec: paths resolve relative to the spec file
 URL = "https://ark.ap-southeast.bytepluses.com/api/v3/images/generations"
 
 
+_API_KEY = None
+
+
 def api_key():
-    key = os.environ.get("ARK_API_KEY")
-    if key:
-        return key
-    cfg = configparser.ConfigParser()
-    cfg.read(os.path.expanduser("~/.seedream/credentials"))
-    return cfg["default"]["ark_api_key"]
-
-
-API_KEY = api_key()
+    """Resolved lazily and memoised. Resolving at import time would make every
+    offline path — compose, render, the test suite — require credentials."""
+    global _API_KEY
+    if _API_KEY is None:
+        key = os.environ.get("ARK_API_KEY")
+        if not key:
+            cfg = configparser.ConfigParser()
+            cfg.read(os.path.expanduser("~/.seedream/credentials"))
+            key = cfg["default"]["ark_api_key"]
+        _API_KEY = key
+    return _API_KEY
 
 
 def to_data_uri(path):
@@ -37,6 +44,9 @@ def to_data_uri(path):
 
 
 def generate(prompt, images, size):
+    if len(images) > 10:
+        raise ValueError("Seedream 5.0 Pro accepts at most 10 reference images; got %d"
+                         % len(images))
     body = {
         "model": SPEC["model"],
         "prompt": prompt,
@@ -50,7 +60,7 @@ def generate(prompt, images, size):
         body["image"] = [to_data_uri(p) for p in images]
     req = urllib.request.Request(
         URL, data=json.dumps(body).encode(),
-        headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
+        headers={"Authorization": f"Bearer {api_key()}", "Content-Type": "application/json"},
         method="POST")
     with urllib.request.urlopen(req, timeout=600) as r:
         return json.loads(r.read())
@@ -80,13 +90,20 @@ def run_one(name, prompt, images, size, outdir):
 SPEC = None
 
 
-def load_spec(spec_path):
-    """Load prompts.json. All image paths in it resolve relative to its directory."""
+def load_spec(spec_path, campaign=None, category=None):
+    """Load a spec. Image paths resolve relative to its directory.
+
+    A spec carrying "step2_fanouts" is already flat and is used as-is — that check
+    is the whole backward-compatibility contract, so specs written before the
+    template layer existed keep working untouched. Anything else is a product spec
+    and gets composed from its campaign + category.
+    """
     global SPEC, ROOT
     spec_path = os.path.abspath(spec_path)
     ROOT = os.path.dirname(spec_path)
-    with open(spec_path) as f:
-        SPEC = json.load(f)
+    raw = _compose.load_json(spec_path)
+    SPEC = raw if "step2_fanouts" in raw else _compose.compose(raw, ROOT, campaign, category)
+    return SPEC
 
 
 def outroot(label):
@@ -127,21 +144,54 @@ def step2(hero, only=None, label=""):
         list(ex.map(lambda j: run_one(*j), jobs))
 
 
+def render(spec_path, campaign=None, category=None, out=None, qc=False):
+    """Compose a product spec into a flat prompts.json and write it beside the spec.
+
+    Composition is a build step: the rendered file is the artifact you read, diff,
+    hand-edit and commit. Nobody should have to mentally join three files to work
+    out what the model was actually told.
+    """
+    spec_path = os.path.abspath(spec_path)
+    base = os.path.dirname(spec_path)
+    spec = load_spec(spec_path, campaign, category)
+    out = out or os.path.join(base, "prompts.rendered.json")
+    with open(out, "w", encoding="utf-8") as f:
+        f.write(json.dumps(spec, indent=2, ensure_ascii=False) + "\n")
+    print("[ OK ] rendered -> %s (%d shots, status: %s)"
+          % (out, 1 + len(spec["step2_fanouts"]), spec.get("status", "unknown")))
+    if qc:
+        qc_path = os.path.splitext(out)[0] + ".qc.md"
+        with open(qc_path, "w", encoding="utf-8") as f:
+            f.write(_compose.qc_checklist(_compose.load_json(spec_path), base,
+                                          campaign, category))
+        print("[ OK ] checklist -> %s" % qc_path)
+    return spec
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("step", choices=["step1", "step2"])
+    ap.add_argument("step", choices=["step1", "step2", "render"])
     ap.add_argument("--hero")
     ap.add_argument("--runs", type=int)
     ap.add_argument("--only", nargs="*")
     ap.add_argument("--spec", default="prompts.json",
-                    help="prompt spec file; image paths resolve relative to it")
+                    help="product spec or flat prompts.json; paths resolve relative to it")
     ap.add_argument("--out", default="",
-                    help="version label -> generated/<label>/ instead of generated/")
+                    help="version label -> generated/<label>/ (render: output file path)")
+    ap.add_argument("--campaign", help="override the product's campaign — re-shoot the "
+                                       "whole set under a different look")
+    ap.add_argument("--category", help="override the product's category")
+    ap.add_argument("--qc", action="store_true",
+                    help="render: also emit the per-shot QC checklist")
     a = ap.parse_args()
-    load_spec(a.spec)
-    if a.step == "step1":
-        step1(a.runs, a.out)
+
+    if a.step == "render":
+        render(a.spec, a.campaign, a.category, a.out or None, a.qc)
     else:
-        if not a.hero:
-            ap.error("step2 needs --hero <path to chosen hero>")
-        step2(a.hero, a.only, a.out)
+        load_spec(a.spec, a.campaign, a.category)
+        if a.step == "step1":
+            step1(a.runs, a.out)
+        else:
+            if not a.hero:
+                ap.error("step2 needs --hero <path to chosen hero>")
+            step2(a.hero, a.only, a.out)

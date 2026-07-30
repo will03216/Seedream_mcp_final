@@ -1,0 +1,209 @@
+{
+  "id": "bag",
+  "label": "Bags — handbags, totes, crossbody",
+  "status": "draft",
+  "note": "Authored, never generated. hero_kind is on-body-crop: the hero is a torso-and-hand crop, because a bag needs a body for SCALE — the single thing a standalone product shot cannot convey — but does not need a face. The set deliberately alternates on-body (scale, how it hangs) and product-only (true colour, construction).",
+
+  "hero_kind": "on-body-crop",
+  "product_slot": "accessory",
+  "styling_slots": ["top", "bottom"],
+  "garment_noun": "bag",
+  "garment_noun_short": "bag",
+
+  "preserve_fields": [
+    "the material, grain, colour and finish",
+    "the silhouette and proportions, and the size relative to a hand",
+    "the hardware — clasps, feet, rings and zips — and its metal finish",
+    "the strap or handle type, length and how it attaches",
+    "the stitching colour, density and edge painting",
+    "any logo, plaque or embossing exactly as it appears"
+  ],
+
+  "required_ref_roles": ["front"],
+  "optional_ref_roles": ["back", "detail", "inside"],
+  "ref_descriptions": {
+    "front": "the front of a bag photographed on a plain surface",
+    "back": "the BACK of the same bag",
+    "detail": "a macro of the same bag's hardware, material and stitching",
+    "inside": "the INSIDE of the same bag showing its lining and pockets"
+  },
+
+  "blocks": {
+    "keep_onbody": "Keep the SAME {{product.short_name}} with its material, colour, silhouette, hardware and strap unchanged, the SAME {{wardrobe_short}}, and the SAME {{campaign.set_short}} and {{campaign.light_short}}.",
+    "must_preserve": "MUST PRESERVE EXACTLY from the references, unchanged: {{product.garment}}; and {{preserve_fields}}. Do not redraw, restyle, recolour, resize or reposition any panel, hardware element, stitch line or logo. Do not add any extra text, logo or graphic.",
+    "tail": "{{campaign.grade}}, sharp focus, no motion blur, no extra text or logos.",
+    "no_person": "ABSOLUTELY NO human presence: no skin, no hands, no arms, no shoulder, no body. Nothing but the bag.",
+    "product_setup": "product photography, no person and no mannequin anywhere in the frame, the bag standing upright and holding its own shape on {{campaign.flatlay_surface}}"
+  },
+
+  "hero": {
+    "id": "hero",
+    "size_class": "full_body",
+    "ref_roles": ["front", "detail"],
+    "runs": 3,
+    "prompt": [
+      "{{ref_roles_sentence}}",
+      "",
+      "Task: produce a studio e-commerce hero photograph of this exact {{category.garment_noun}} CARRIED by a real person, cropped so the bag is the subject.",
+      "",
+      "FRAMING: a three-quarter crop from mid-thigh to mid-chest. NO face and NO head anywhere in the frame. The {{category.garment_noun_short}} is held in one hand at the model's side, hanging naturally at its true length, occupying the centre of the frame with the hand and forearm giving it scale.",
+      "",
+      "Scale is the whole reason this shot is on a body: a bag photographed alone gives a customer no idea how large it is.",
+      "",
+      "STYLING: the model wears {{wardrobe}}, deliberately plain and low-contrast so nothing competes with the bag. {{campaign.accessories_rule}}",
+      "",
+      "SET: {{campaign.set}}, {{campaign.light}}.",
+      "",
+      "{{blocks.must_preserve}}",
+      "",
+      "{{campaign.grade}}, true-to-life material grain, sharp focus throughout, no motion blur."
+    ]
+  },
+
+  "fanouts": [
+    {
+      "id": "fanout-1-worn-crossbody",
+      "size_class": "crop",
+      "ref_roles": [],
+      "prompt": [
+        "{{ref_roles_sentence}} {{blocks.keep_onbody}}",
+        "",
+        "Change the pose and framing: the same torso crop, now with the {{category.garment_noun_short}} worn across the body — the strap over one shoulder and across the chest, the bag resting at the hip at its natural drop length. NO face and NO head in frame. Arms relaxed at the sides.",
+        "",
+        "This is the shot that answers where the bag actually sits when worn, which no product shot can.",
+        "",
+        "{{blocks.tail}}"
+      ]
+    },
+    {
+      "id": "fanout-2-product-front",
+      "size_class": "macro",
+      "use_hero": false,
+      "ref_roles": ["front", "detail"],
+      "ref_descriptions": {
+        "front": "the front of a bag photographed on a plain surface",
+        "detail": "a macro of the same bag's hardware and material"
+      },
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a square studio photograph of the {{category.garment_noun_short}} ALONE, front on — {{blocks.product_setup}}, shot square-on at the height of the bag so the front face is true and undistorted.",
+        "",
+        "Framing: the bag fills the frame with even margin all round, standing level, the handle settled naturally rather than held up, and a soft contact shadow beneath so it sits on the surface rather than floating.",
+        "",
+        "{{blocks.no_person}}",
+        "",
+        "{{blocks.must_preserve}}",
+        "",
+        "{{campaign.flatlay_light}}",
+        "",
+        "Extreme detail product photography, 100mm look, razor-sharp material grain, flat even depth of field."
+      ]
+    },
+    {
+      "id": "fanout-3-product-back",
+      "size_class": "macro",
+      "use_hero": false,
+      "optional": true,
+      "requires_ref_roles": ["back"],
+      "ref_roles": ["back"],
+      "ref_descriptions": {
+        "back": "the BACK of a bag photographed on a plain surface"
+      },
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a square studio photograph of the {{category.garment_noun_short}} ALONE from directly behind — {{blocks.product_setup}}, square-on at the height of the bag.",
+        "",
+        "Framing: the back face fills the frame, showing any back slip pocket, the strap attachment points and the rear panel seaming.",
+        "",
+        "{{blocks.no_person}}",
+        "",
+        "{{blocks.must_preserve}}",
+        "",
+        "{{campaign.flatlay_light}}",
+        "",
+        "Extreme detail product photography, 100mm look, razor-sharp material grain, flat even depth of field."
+      ]
+    },
+    {
+      "id": "fanout-4-interior",
+      "size_class": "macro",
+      "use_hero": false,
+      "optional": true,
+      "requires_ref_roles": ["inside"],
+      "ref_roles": ["inside"],
+      "ref_descriptions": {
+        "inside": "the INSIDE of a bag showing its lining and pockets"
+      },
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a square studio photograph of the INTERIOR — product photography, no person anywhere in the frame. The bag is open on {{campaign.flatlay_surface}} and photographed from slightly above, angled so the lens sees down into the main compartment.",
+        "",
+        "Framing: the opening fills the frame, showing the lining fabric, the interior pockets and any interior label, with the top edge and closure visible at the frame edge for context.",
+        "",
+        "{{blocks.no_person}}",
+        "",
+        "MUST PRESERVE EXACTLY from the reference: the lining colour, pattern and weave, the number and placement of interior pockets, any interior label with its exact wording, and the closure construction. Invent nothing — reproduce only what the reference shows.",
+        "",
+        "{{campaign.flatlay_light}}",
+        "",
+        "Extreme detail product photography, 100mm look, razor-sharp texture, flat even depth of field."
+      ]
+    },
+    {
+      "id": "fanout-5-hardware-macro",
+      "size_class": "macro",
+      "use_hero": false,
+      "optional": true,
+      "requires_ref_roles": ["detail"],
+      "ref_roles": ["detail", "front"],
+      "ref_descriptions": {
+        "detail": "a macro of a bag's hardware, material and stitching",
+        "front": "the full front of the same bag"
+      },
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a square macro detail photograph of the HARDWARE ALONE — product photography, no person anywhere in the frame, the bag resting on {{campaign.flatlay_surface}}.",
+        "",
+        "Framing: the frame is filled by the main clasp or closure and the material immediately around it, the hardware square to the lens and any engraved or embossed maker's mark fully legible rather than suggested.",
+        "",
+        "LIGHT: soft light raking slightly across the surface so the metal finish reads as metal and the material grain stands up.",
+        "",
+        "{{blocks.no_person}}",
+        "",
+        "MUST PRESERVE EXACTLY from Image 1: the metal finish and its exact tone, the hardware shape and proportions, the stitch colour, gauge and spacing around it, the edge paint, and the material grain. Do not add any extra text, logo or graphic.",
+        "",
+        "Extreme detail macro product photography, 100mm macro look, razor-sharp metal and grain detail, flat even depth of field."
+      ]
+    },
+    {
+      "id": "fanout-6-strap-detail",
+      "size_class": "macro",
+      "use_hero": false,
+      "optional": true,
+      "requires_ref_roles": ["detail"],
+      "ref_roles": ["detail"],
+      "ref_descriptions": {
+        "detail": "a macro of a bag's strap, hardware and stitching"
+      },
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a square macro detail photograph of the STRAP ATTACHMENT ALONE — product photography, no person anywhere in the frame, the bag resting on {{campaign.flatlay_surface}}.",
+        "",
+        "Framing: the frame is filled by the point where the strap or handle meets the body — the ring, tab or rivet that joins them, the reinforcement stitching, and a length of the strap running out of frame.",
+        "",
+        "{{blocks.no_person}}",
+        "",
+        "MUST PRESERVE EXACTLY from the reference: the attachment hardware and finish, the strap material and width, the reinforcement stitch pattern, and the edge paint. Do not add any extra text, logo or graphic.",
+        "",
+        "{{campaign.flatlay_light}}",
+        "",
+        "Extreme detail macro product photography, 100mm macro look, razor-sharp detail, flat even depth of field."
+      ]
+    }
+  ]
+}

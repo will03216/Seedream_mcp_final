@@ -1,0 +1,186 @@
+{
+  "id": "dress",
+  "label": "Dresses — one-piece",
+  "status": "draft",
+  "note": "Authored, never generated. A dress occupies its own slot and suppresses both top and bottom, so the campaign styles footwear only. Movement and seated shots matter more here than in any other category: drape, volume and how the skirt falls when seated are the properties that drive both purchase and return.",
+
+  "hero_kind": "on-model-full-body",
+  "product_slot": "dress",
+  "styling_slots": ["top", "bottom", "footwear"],
+  "suppress_slots": ["top", "bottom"],
+  "garment_noun": "dress",
+  "garment_noun_short": "dress",
+
+  "preserve_fields": [
+    "the fabric colour, pattern scale and placement",
+    "the neckline shape and any strap or sleeve",
+    "the bodice construction, seaming and waist position",
+    "the skirt length, volume and how it falls",
+    "the closure — zip, buttons or tie — and its placement",
+    "the hem finish and any trim, slit or lining edge"
+  ],
+
+  "required_ref_roles": ["front"],
+  "optional_ref_roles": ["back", "detail"],
+  "ref_descriptions": {
+    "front": "the front of a dress photographed flat on a headless mannequin",
+    "back": "the BACK of the same dress photographed on a mannequin",
+    "detail": "a macro of the same dress's fabric, neckline and trim"
+  },
+
+  "blocks": {
+    "keep_onmodel": "Keep the SAME {{campaign.pronoun.noun}} (identical face, hair, skin tone and build), the SAME {{product.short_name}} with its fabric, pattern, neckline, waist and length unchanged, the SAME {{wardrobe_short}}, and the SAME {{campaign.set_short}} and {{campaign.light_short}}.",
+    "must_preserve": "MUST PRESERVE EXACTLY from the references, unchanged: {{product.garment}}; and {{preserve_fields}}. Do not redraw, restyle, recolour, resize or reposition the neckline, seaming, pattern or trim. Do not lengthen or shorten the hem. Do not add any extra text, logo or graphic anywhere on the garment.",
+    "tail": "{{campaign.grade}}, sharp focus, no motion blur, no extra text or logos.",
+    "no_person": "ABSOLUTELY NO human presence: no skin, no neck, no shoulders, no legs, no body underneath the fabric. Nothing but cloth.",
+    "flatlay_setup": "flat-lay product photography, no person and no mannequin anywhere in the frame. The {{category.garment_noun_short}} is laid flat and face-up on {{campaign.flatlay_surface}} and photographed from directly above"
+  },
+
+  "hero": {
+    "id": "hero",
+    "size_class": "full_body",
+    "ref_roles": ["front", "detail"],
+    "runs": 3,
+    "prompt": [
+      "{{ref_roles_sentence}}",
+      "",
+      "Task: produce a studio e-commerce hero photograph of a real human model wearing this exact {{category.garment_noun}}. Remove the mannequin entirely.",
+      "",
+      "MODEL: {{campaign.model_casting}}, looking straight into the lens. Standing upright and square-on to camera, arms hanging relaxed at {{campaign.pronoun.possessive}} sides and clear of the skirt, weight even on both feet so the hem hangs level.",
+      "",
+      "STYLING: the {{category.garment_noun_short}} from Image 1 worn with {{wardrobe}}. Nothing is worn over or under it that shows. {{campaign.accessories_rule}}",
+      "",
+      "SET: {{campaign.set}}, {{campaign.light}}.",
+      "",
+      "CAMERA: {{campaign.camera_full_body}}. The full hem and its exact length on the leg are unobstructed.",
+      "",
+      "{{blocks.must_preserve}}",
+      "",
+      "{{campaign.grade}}, natural skin texture, true-to-life {{product.fabric}}, sharp focus throughout, no motion blur."
+    ]
+  },
+
+  "fanouts": [
+    {
+      "id": "fanout-1-back-full",
+      "size_class": "full_body",
+      "ref_roles": ["back"],
+      "hero_label": "the approved hero shot of the model",
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce the back view of the same shot: the SAME {{campaign.pronoun.noun}} (identical hair, skin tone and build) seen from directly behind, standing upright, arms relaxed at {{campaign.pronoun.possessive}} sides, hair swept clear of the back neckline so the closure is visible. SAME {{wardrobe_short}}, SAME {{campaign.set_short}} and {{campaign.light_short}}, SAME full-body head-to-toe framing at eye level.",
+        "",
+        "MUST PRESERVE EXACTLY from Image 2, following the natural drape on the body: the back neckline shape and depth, the closure — zip, buttons or tie — in its exact placement and length, the back seaming and waist position, any keyhole or cut-out, and the hem length. Do not add any extra text, logo or graphic.",
+        "",
+        "{{campaign.grade}}, sharp focus, no motion blur."
+      ]
+    },
+    {
+      "id": "fanout-2-threequarter",
+      "size_class": "full_body",
+      "ref_roles": [],
+      "prompt": [
+        "{{ref_roles_sentence}} {{blocks.keep_onmodel}}",
+        "",
+        "Change only the pose and camera: full-body three-quarter view, {{campaign.pronoun.possessive}} body turned about 35 degrees with the head back to the lens, weight on the back foot so the skirt falls slightly to one side and the silhouette from bust to hem reads in profile. One arm relaxed, the other hand light at {{campaign.pronoun.possessive}} side. Eye-level, 85mm, head-to-toe framing.",
+        "",
+        "{{blocks.tail}}"
+      ]
+    },
+    {
+      "id": "fanout-3-movement",
+      "size_class": "full_body",
+      "ref_roles": [],
+      "prompt": [
+        "{{ref_roles_sentence}} {{blocks.keep_onmodel}}",
+        "",
+        "Change only the pose and camera: full-body movement shot, caught mid half-turn so the skirt swings out and away from the legs and the fabric's weight, volume and flow are visible. Hair lifts slightly with the turn, expression easy, eyes toward the lens. Eye-level, 85mm, head-to-toe framing with enough margin that the swinging hem stays fully in frame.",
+        "",
+        "Drape and volume are the selling properties of a dress, and they only read in motion.",
+        "",
+        "{{campaign.grade}}, crisp frozen motion, everything in sharp focus, no motion blur, no extra text or logos."
+      ]
+    },
+    {
+      "id": "fanout-4-waistup-crop",
+      "size_class": "crop",
+      "ref_roles": [],
+      "prompt": [
+        "{{ref_roles_sentence}} {{blocks.keep_onmodel}}",
+        "",
+        "Change only the framing and pose: waist-up portrait crop, front view, so the neckline, any straps or sleeves, the bodice seaming and the waist detail fill the frame. Arms relaxed and dropping out of the bottom of frame, gentle closed-lip smile, looking into the lens. {{campaign.camera_crop}}.",
+        "",
+        "{{campaign.grade}}, natural skin texture, visible {{product.fabric}} texture, sharp focus, no extra text or logos."
+      ]
+    },
+    {
+      "id": "fanout-5-seated",
+      "size_class": "full_body",
+      "ref_roles": [],
+      "prompt": [
+        "{{ref_roles_sentence}} {{blocks.keep_onmodel}}",
+        "",
+        "Change only the pose and camera: the SAME {{campaign.pronoun.noun}} seated on a plain low cube matching the set, knees together and angled slightly to one side, back straight, hands resting easily in {{campaign.pronoun.possessive}} lap. Show exactly how the skirt falls and gathers when seated and where the hem sits on the leg in that position. Full body in frame, eye-level, 85mm.",
+        "",
+        "How a dress behaves seated is a common reason for returns and is invisible in every standing shot.",
+        "",
+        "{{blocks.tail}}"
+      ]
+    },
+    {
+      "id": "fanout-6-fabric-macro",
+      "size_class": "macro",
+      "use_hero": false,
+      "optional": true,
+      "requires_ref_roles": ["detail"],
+      "ref_roles": ["detail", "front"],
+      "ref_descriptions": {
+        "detail": "a macro of a dress's fabric, neckline and trim",
+        "front": "the full front of the same dress on a mannequin"
+      },
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a square macro detail photograph of the FABRIC ALONE — {{blocks.flatlay_setup}}, the fabric relaxed with soft natural folds that show its weight and how it drapes.",
+        "",
+        "Framing: the frame is filled edge to edge by the dress fabric, with the pattern at its true scale and one soft fold running through the frame so the hand and drape of the cloth read as well as its surface.",
+        "",
+        "{{blocks.no_person}}",
+        "",
+        "MUST PRESERVE EXACTLY from Image 1: the fabric colour, the pattern at its exact scale, repeat and orientation, the weave or knit structure, and the surface sheen. Do not redraw, recolour, rescale or reposition the pattern. Do not add any extra text, logo or graphic.",
+        "",
+        "{{campaign.flatlay_light}}",
+        "",
+        "Extreme detail macro product photography, 100mm macro look, razor-sharp fabric texture, flat even depth of field."
+      ]
+    },
+    {
+      "id": "fanout-7-closure-macro",
+      "size_class": "macro",
+      "use_hero": false,
+      "optional": true,
+      "requires_ref_roles": ["back"],
+      "ref_roles": ["back", "detail"],
+      "ref_descriptions": {
+        "back": "the BACK of a dress photographed flat",
+        "detail": "a macro of the same dress's fabric and trim"
+      },
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a square macro detail photograph of the CLOSURE ALONE — {{blocks.flatlay_setup}}, face-DOWN so the back closure faces the lens, the fabric relaxed and the closure running vertically and true through the centre of the frame.",
+        "",
+        "Framing: the frame is filled by the closure and the fabric immediately around it — the zip tape and pull, or the buttons and their loops, or the tie and its ends — with the back neckline edge entering at the top.",
+        "",
+        "{{blocks.no_person}}",
+        "",
+        "MUST PRESERVE EXACTLY from the references: the closure type, its hardware finish, the tape or placket colour, the stitching that secures it, and the fabric weave around it. Do not add any extra text, logo or graphic.",
+        "",
+        "{{campaign.flatlay_light}}",
+        "",
+        "Extreme detail macro product photography, 100mm macro look, razor-sharp texture, flat even depth of field."
+      ]
+    }
+  ]
+}

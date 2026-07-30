@@ -9,10 +9,14 @@ three minutes.
 
 <table>
 <tr><th>You give it</th><th>You get back</th></tr>
-<tr><td>front · back · neckline macro<br>(mannequin or flat lay)</td>
-<td>1 on-model hero + 8 PDP shots:<br>three-quarter · walking · hands in pockets · low angle ·
-waist-up · back view · fabric macro · print macro</td></tr>
+<tr><td>front · back · detail macro<br>(mannequin or flat lay)<br>+ a campaign and a category</td>
+<td>1 on-model hero + 6–9 PDP shots<br>tailored to the garment type:<br>poses · crops · back view · detail macros</td></tr>
 </table>
+
+**Eight categories** — `top` · `knitwear` · `bottom-denim` · `skirt` · `dress` · `outerwear` ·
+`footwear` · `bag`. Only `top` is validated against real generations; the rest are authored
+and proven to compose but never generated. See
+[`references/categories.md`](references/categories.md).
 
 Worked example with real inputs and outputs: [`../../test_case/tshirt-2-workflow/`](../../test_case/tshirt-2-workflow/).
 
@@ -61,55 +65,93 @@ One folder per garment:
 
 ```
 my-product/
-├── prompts.json                 ← copy scripts/prompts.example.json here and edit
+├── product.json                 ← copy examples/summer-daze-tee/product.json here
 └── refs/
     ├── front.png                ← required: straight-on front
-    ├── back.png                 ← for the back view
-    └── closeup.jpg              ← for the two macros
+    ├── back.png                 ← for back views and back-detail macros
+    └── detail.jpg               ← for the detail macros
 ```
+
+Some categories accept more roles — `inside` (outerwear lining, bag interior) and `sole`
+(footwear). Shots that need a role you don't have are dropped if optional, or raise a clear
+error if not.
 
 Use straight-on, evenly lit references. Angled or lifestyle shots fight the hero's geometry —
 leave them out.
 
 ```bash
 mkdir -p my-product/refs
-cp skills/apparel-model-shoot/scripts/prompts.example.json my-product/prompts.json
+cp skills/apparel-model-shoot/examples/summer-daze-tee/product.json my-product/product.json
 ```
 
-## 4. Edit `prompts.json`
+## 4. Write the product spec
 
-Everything the model sees lives in this one file. Three things to change:
+Pick a **campaign** (the look) and a **category** (the shot list), then describe the garment.
+That is the whole edit — you no longer copy wording between prompts by hand.
 
-**a. Point the paths at your references** — `step1_hero.input_images` and each fan-out's
-`extra_refs`, relative to `prompts.json`.
+```json
+{
+  "campaign": "beige-studio-ss26",
+  "category": "top",
+  "product": {
+    "short_name": "cream \"Summer Daze\" oversized tee",
+    "fabric": "cotton jersey",
+    "garment": "the cream / off-white fabric colour; the oversized boxy fit with dropped
+                shoulder seams, short wide sleeves and a straight hem; the ribbed crew neckline",
+    "artwork_front": "an orange spiky sun above the two-line retro serif wordmark
+                      \"Summer Daze\" in light blue"
+  },
+  "refs": { "front": "refs/front.png", "back": "refs/back.png", "detail": "refs/detail.jpg" }
+}
+```
 
-**b. Write the garment paragraph.** This is the single most important edit. Describe colour,
-fit, neckline, sleeve, hem, and — word for word, in double quotes — every piece of text and
-artwork on the garment. This paragraph goes into the `MUST PRESERVE` block of **every** prompt.
-Vague here means drift everywhere.
+**The `garment` and `artwork` fields are the highest-leverage edit in the whole skill.**
+Describe colour, fit, construction, and — word for word, in double quotes — every piece of
+text and artwork on it. That text lands in the `MUST PRESERVE` block of every prompt. Vague
+here means drift everywhere.
 
-> …the cream / off-white fabric colour; the oversized boxy fit with dropped shoulder seams,
-> short wide sleeves and a straight hem; the ribbed crew neckline; and the chest print — an
-> orange spiky sun above the two-line retro serif wordmark **"Summer Daze"** in light blue —
-> including its exact shape, letterforms, proportion, colours and centred position…
+Available campaigns and categories:
 
-**c. Cast the model and set.** In `step1_hero.prompt`, edit the `MODEL:`, `STYLING:` and `SET:`
-lines, then mirror the same wording into the `Keep the SAME…` line of every fan-out. They must
-match verbatim — that repetition is what holds the set together.
+```bash
+ls skills/apparel-model-shoot/templates/campaigns
+ls skills/apparel-model-shoot/templates/categories
+```
 
-Full prompt anatomy and per-shot templates: [`SKILL.md`](SKILL.md) ·
-[`references/shot-library.md`](references/shot-library.md).
+Need one shot different? Add an override rather than forking a category:
+
+```json
+"overrides": {
+  "fanout-4-lowangle": { "skip": true },
+  "fanout-2-walking":  { "prompt": ["...fully replaced prompt..."] }
+}
+```
+
+Schemas, the slot mechanic and substitution rules:
+[`references/authoring.md`](references/authoring.md).
+
+## 4b. Render and read the prompts before spending anything
+
+```bash
+cd my-product
+python3 ../skills/apparel-model-shoot/scripts/run_workflow.py render --spec product.json --qc
+```
+
+This writes `prompts.rendered.json` — the flat, fully-composed spec, exactly what will be
+sent. Read it. Hand-edit it if you like; it can be passed straight to `--spec`. `--qc` also
+writes a per-shot checklist derived from the category's `preserve_fields`.
+
+Composition fails loudly: an unresolved placeholder, a missing required reference or a shot
+whose reference role you haven't supplied all raise before a single call is made.
 
 ## 5. Generate the hero
 
 ```bash
-cd my-product
-python3 ../skills/apparel-model-shoot/scripts/run_workflow.py step1 --out v1
+python3 ../skills/apparel-model-shoot/scripts/run_workflow.py step1 --spec product.json --out v1
 ```
 
 Three variants land in `generated/v1/step-1-hero/`. Review and pick one, judging in this order:
 
-1. **Print fidelity** — is the artwork the same shape, scale and position as the reference?
+1. **Detail fidelity** — is the artwork, hardware or stitching the same shape, scale and position as the reference?
 2. **Fit and drape** — does it hang like the real garment?
 3. **Framing** — even margin above the head and below the shoes.
 4. **Face** — last, because it is the easiest to re-roll.
@@ -124,23 +166,31 @@ Re-run step 1 — `seed` has no effect on Seedream Pro, so every run is a fresh 
 ## 6. Generate the set
 
 ```bash
-python3 ../skills/apparel-model-shoot/scripts/run_workflow.py step2 --out v1 \
+python3 ../skills/apparel-model-shoot/scripts/run_workflow.py step2 --spec product.json --out v1 \
   --hero generated/v1/step-1-hero/hero-selected.png
 ```
 
-Eight images into `generated/v1/step-2-fan-outs/`, four calls at a time, roughly two minutes.
+Six to nine images into `generated/v1/step-2-fan-outs/`, four calls at a time, roughly two
+minutes.
 
-Shots 1-6 are generated **from the hero**, which is what keeps one woman in one studio across
-the set. Shots 7-8 are flat-lay product macros with no person in them, so they bypass the hero
-and read the brand's references directly (`"use_hero": false` in the spec).
+On-model shots are generated **from the hero**, which is what keeps one model in one studio
+across the set. Detail macros are flat-lay product shots with no person in them, so they bypass
+the hero and read the brand's references directly (`"use_hero": false`).
+
+Re-shoot the same product under a different look with one flag:
+
+```bash
+python3 ../skills/apparel-model-shoot/scripts/run_workflow.py step1 --spec product.json \
+  --campaign golden-hour-rooftop --out v2
+```
 
 ## 7. Review and re-roll
 
 Check each fan-out **against the hero**, not against the brief:
 
-- [ ] Print identical in shape, colour and position; spelling correct
+- [ ] Product detail identical in shape, colour and position; any text spelled correctly
 - [ ] Same face, hair and build
-- [ ] Same denim wash, same shoes; nothing added (jewellery and watches creep in)
+- [ ] Same co-styling and shoes; nothing added (jewellery and watches creep in)
 - [ ] Same backdrop colour and floor-line height
 - [ ] The shot did the thing it is named for — the most common miss
 - [ ] Hands, especially in the pocket and walking shots
@@ -149,7 +199,7 @@ Check each fan-out **against the hero**, not against the brief:
 Any single shot can be re-rolled independently:
 
 ```bash
-python3 ../skills/apparel-model-shoot/scripts/run_workflow.py step2 --out v1 \
+python3 ../skills/apparel-model-shoot/scripts/run_workflow.py step2 --spec product.json --out v1 \
   --hero generated/v1/step-1-hero/hero-selected.png --only fanout-4-lowangle
 ```
 
@@ -162,23 +212,39 @@ Changed prompts and want to keep the old round for comparison? Use a new label �
 
 | | |
 |---|---|
-| `step1` / `step2` | which stage to run |
-| `--spec <path>` | prompt spec (default `prompts.json`); all image paths resolve relative to it |
-| `--out <label>` | write to `generated/<label>/` instead of `generated/` |
+| `render` / `step1` / `step2` | compose only · heroes · the set |
+| `--spec <path>` | product spec **or** a flat `prompts.json`; image paths resolve relative to it |
+| `--campaign <id>` | override the campaign — re-shoot the set under a different look |
+| `--category <id>` | override the category |
+| `--out <label>` | write to `generated/<label>/` (on `render`, the output file path) |
 | `--hero <path>` | required for `step2` — the approved hero |
 | `--runs N` | override the number of hero variants (default 3) |
-| `--only <id> …` | regenerate just these fan-outs |
+| `--only <id> …` | regenerate just these shots |
+| `--qc` | `render` only — also emit the QC checklist |
+
+Verify offline any time, no credentials needed:
+
+```bash
+python3 skills/apparel-model-shoot/scripts/test_compose.py
+```
 
 ## Adding your own shots
 
-Append an entry to `step2_fanouts` — `id`, `size`, `prompt`, optional `extra_refs` and
-`use_hero`. It is picked up automatically. Ready-made bodies for side profile, seated, arms
-crossed, hem detail, colourway swap and lifestyle background are in
-[`references/shot-library.md`](references/shot-library.md).
+Append an entry to the category's `fanouts` — `id`, `size_class`, `prompt`, optional
+`ref_roles`, `use_hero`, `optional` and `requires_ref_roles`. It is picked up automatically,
+including by the test suite. Ready-made bodies for side profile, seated, arms crossed, hem
+detail, colourway swap and lifestyle background are in
+[`references/shot-library.md`](references/shot-library.md); how to add a whole category is in
+[`references/categories.md`](references/categories.md).
+
+## Legacy flat specs
+
+A spec containing `step2_fanouts` is treated as already composed and used verbatim, so
+`prompts.json` files written before the template layer keep working unchanged.
 
 ## Costs and limits
 
-One call per image; a full set is 11 calls (3 heroes + 8 shots). Seedream 5.0 Pro billing is
+One call per image; a full set is 9–12 calls (3 heroes + 6–9 shots). Seedream 5.0 Pro billing is
 per output pixel — `output_tokens = width × height / 256`. Hard limits: **no 4K**, one image
 per call, up to 10 reference images, and `sequential`, `stream` and `guidance_scale` all error.
 Returned URLs expire after 24 hours; the runner downloads immediately.

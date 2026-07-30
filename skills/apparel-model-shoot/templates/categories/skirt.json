@@ -1,0 +1,158 @@
+{
+  "id": "skirt",
+  "label": "Skirts",
+  "status": "draft",
+  "note": "Authored, never generated. A skirt occupies the bottom slot but, unlike trousers, its selling properties are length, volume and how it moves — so it gets a movement shot and a seated shot rather than a walking shot. The top is tucked so the waistband and exact rise stay visible.",
+
+  "hero_kind": "on-model-full-body",
+  "product_slot": "bottom",
+  "styling_slots": ["top", "footwear"],
+  "garment_noun": "skirt",
+  "garment_noun_short": "skirt",
+
+  "preserve_fields": [
+    "the fabric colour, pattern scale and placement",
+    "the waistband height, width and how it sits",
+    "the length and exactly where the hem falls on the leg",
+    "the volume and silhouette — pleats, gathers, flare or straight fall",
+    "the closure — zip, buttons or tie — and its placement",
+    "the hem finish and any slit, vent or trim"
+  ],
+
+  "required_ref_roles": ["front"],
+  "optional_ref_roles": ["back", "detail"],
+  "ref_descriptions": {
+    "front": "the front of a skirt photographed flat on a plain surface",
+    "back": "the BACK of the same skirt photographed flat",
+    "detail": "a macro of the same skirt's fabric, waistband and closure"
+  },
+
+  "blocks": {
+    "keep_onmodel": "Keep the SAME {{campaign.pronoun.noun}} (identical face, hair, skin tone and build), the SAME {{product.short_name}} with its fabric, pattern, waistband, volume and length unchanged, the SAME {{wardrobe_short}}, and the SAME {{campaign.set_short}} and {{campaign.light_short}}.",
+    "keep_lower": "Keep the SAME {{product.short_name}} with its fabric, waistband and length unchanged, the SAME {{wardrobe_short}}, and the SAME {{campaign.set_short}} and {{campaign.light_short}}.",
+    "must_preserve": "MUST PRESERVE EXACTLY from the references, unchanged: {{product.garment}}; and {{preserve_fields}}. Do not lengthen or shorten the hem, and do not add or remove volume. Do not add any extra text, logo or graphic anywhere on the garment.",
+    "tail": "{{campaign.grade}}, sharp focus, no motion blur, no extra text or logos.",
+    "no_person": "ABSOLUTELY NO human presence: no skin, no legs, no waist, no hands, no body underneath the fabric. Nothing but cloth.",
+    "flatlay_setup": "flat-lay product photography, no person and no mannequin anywhere in the frame. The {{category.garment_noun_short}} is laid flat on {{campaign.flatlay_surface}} and photographed from directly above"
+  },
+
+  "hero": {
+    "id": "hero",
+    "size_class": "full_body",
+    "ref_roles": ["front", "detail"],
+    "runs": 3,
+    "prompt": [
+      "{{ref_roles_sentence}}",
+      "",
+      "Task: produce a studio e-commerce hero photograph of a real human model wearing this exact {{category.garment_noun}}. Remove any mannequin entirely.",
+      "",
+      "MODEL: {{campaign.model_casting}}, looking straight into the lens. Standing upright and square-on to camera, feet together, weight even on both feet so the hem hangs level, arms relaxed at {{campaign.pronoun.possessive}} sides and clear of the skirt.",
+      "",
+      "STYLING: the {{category.garment_noun_short}} from Image 1 worn with {{wardrobe}}. The top is tucked in fully so the waistband and exactly where it sits on the waist are visible. {{campaign.accessories_rule}}",
+      "",
+      "SET: {{campaign.set}}, {{campaign.light}}.",
+      "",
+      "CAMERA: {{campaign.camera_full_body}}. The full hem and its exact length on the leg are unobstructed.",
+      "",
+      "{{blocks.must_preserve}}",
+      "",
+      "{{campaign.grade}}, natural skin texture, true-to-life {{product.fabric}}, sharp focus throughout, no motion blur."
+    ]
+  },
+
+  "fanouts": [
+    {
+      "id": "fanout-1-back-full",
+      "size_class": "full_body",
+      "ref_roles": ["back"],
+      "hero_label": "the approved hero shot of the model",
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce the back view of the same shot: the SAME {{campaign.pronoun.noun}} (identical hair, skin tone and build) seen from directly behind, standing upright, feet together, arms relaxed at {{campaign.pronoun.possessive}} sides. SAME {{wardrobe_short}}, SAME {{campaign.set_short}} and {{campaign.light_short}}, SAME full-body head-to-toe framing at eye level.",
+        "",
+        "MUST PRESERVE EXACTLY from Image 2, following the natural drape on the body: the closure — zip, buttons or tie — in its exact placement and length, any back vent or slit and how far it opens, the back waistband, the seaming and pleat placement, and the hem length. Do not add any extra text, logo or graphic.",
+        "",
+        "{{campaign.grade}}, sharp focus, no motion blur."
+      ]
+    },
+    {
+      "id": "fanout-2-threequarter",
+      "size_class": "full_body",
+      "ref_roles": [],
+      "prompt": [
+        "{{ref_roles_sentence}} {{blocks.keep_onmodel}}",
+        "",
+        "Change only the pose and camera: full-body three-quarter view, {{campaign.pronoun.possessive}} body turned about 45 degrees with the head back to the lens, weight on the back foot so the skirt's profile — how far it stands away from the body at the hip and hem — reads clearly. Eye-level, 85mm, head-to-toe framing.",
+        "",
+        "{{blocks.tail}}"
+      ]
+    },
+    {
+      "id": "fanout-3-movement",
+      "size_class": "full_body",
+      "ref_roles": [],
+      "prompt": [
+        "{{ref_roles_sentence}} {{blocks.keep_onmodel}}",
+        "",
+        "Change only the pose and camera: full-body movement shot, caught mid half-turn so the skirt swings out from the legs and its volume, weight and flow are visible — pleats opening or the flare lifting, exactly as the fabric would behave. Expression easy, eyes toward the lens. Eye-level, 85mm, head-to-toe framing with enough margin that the swinging hem stays fully in frame.",
+        "",
+        "{{campaign.grade}}, crisp frozen motion, everything in sharp focus, no motion blur, no extra text or logos."
+      ]
+    },
+    {
+      "id": "fanout-4-waist-crop",
+      "size_class": "crop",
+      "ref_roles": ["detail"],
+      "hero_label": "the approved hero shot of the model",
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a front crop of the SAME {{campaign.pronoun.noun}}, framed from just above the waist to mid-thigh so the waistband, the closure and the first fall of the fabric fill the frame. Head, shoulders and lower legs are out of frame. Hands relaxed and clear of the waistband. {{blocks.keep_lower}}",
+        "",
+        "MUST PRESERVE EXACTLY from Image 2: the waistband height and construction, the closure hardware and its placement, the belt loops or tie if present, the topstitching colour and density, and where the pleats or gathers originate.",
+        "",
+        "{{campaign.grade}}, {{campaign.camera_crop}}, razor-sharp construction detail, no extra text or logos."
+      ]
+    },
+    {
+      "id": "fanout-5-seated",
+      "size_class": "full_body",
+      "ref_roles": [],
+      "prompt": [
+        "{{ref_roles_sentence}} {{blocks.keep_onmodel}}",
+        "",
+        "Change only the pose and camera: the SAME {{campaign.pronoun.noun}} seated on a plain low cube matching the set, knees together and angled slightly to one side, back straight, hands resting easily in {{campaign.pronoun.possessive}} lap. Show exactly how the skirt gathers and where the hem rides to when seated. Full body in frame, eye-level, 85mm.",
+        "",
+        "{{blocks.tail}}"
+      ]
+    },
+    {
+      "id": "fanout-6-fabric-macro",
+      "size_class": "macro",
+      "use_hero": false,
+      "optional": true,
+      "requires_ref_roles": ["detail"],
+      "ref_roles": ["detail", "front"],
+      "ref_descriptions": {
+        "detail": "a macro of a skirt's fabric, waistband and closure",
+        "front": "the full front of the same skirt photographed flat"
+      },
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a square macro detail photograph of the FABRIC AND HEM ALONE — {{blocks.flatlay_setup}}, arranged so the hem runs across the lower third of the frame and one pleat or fold rises through the middle.",
+        "",
+        "Framing: the frame is filled by the skirt fabric at its true pattern scale, with the hem finish and any trim clearly resolved along the bottom.",
+        "",
+        "{{blocks.no_person}}",
+        "",
+        "MUST PRESERVE EXACTLY from the references: the fabric colour, the pattern at its exact scale and orientation, the weave, the hem finish and stitch, and any trim. Do not redraw, recolour or rescale the pattern. Do not add any extra text, logo or graphic.",
+        "",
+        "{{campaign.flatlay_light}}",
+        "",
+        "Extreme detail macro product photography, 100mm macro look, razor-sharp fabric texture, flat even depth of field."
+      ]
+    }
+  ]
+}

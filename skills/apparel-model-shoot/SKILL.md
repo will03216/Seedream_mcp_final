@@ -1,14 +1,17 @@
 ---
 name: apparel-model-shoot
-description: Turn flat-lay / mannequin / ghost-mannequin garment photos into a full on-model e-commerce shoot with BytePlus Seedream 5.0 Pro. Two steps — build one hero on-model image, then fan out a consistent PDP set (poses, angles, back view, fabric and print macros) from that hero. Use for apparel catalogue production, PDP image sets, model swaps, and lookbook expansion.
-version: 1.0.0
+description: Turn flat-lay / mannequin / ghost-mannequin product photos into a full on-model e-commerce shoot with BytePlus Seedream 5.0 Pro. Build one hero on-model image, then fan out a consistent PDP set (poses, angles, back view, fabric and detail macros) from it. Per-category shot lists for tops, knitwear, jeans and denim, skirts, dresses, outerwear, footwear and bags, plus reusable campaign looks. Use for apparel catalogue production, PDP image sets, model swaps, seasonal campaign re-shoots, and lookbook expansion.
+version: 2.0.0
 ---
 
 # Apparel Model Shoot — mannequin ➜ hero ➜ fan-out set
 
-Replaces a physical model shoot for graphic tees, knitwear, outerwear, denim and similar
-soft goods. Input is whatever the brand already has (flat lay, mannequin, ghost mannequin,
-detail macros). Output is a full PDP image set on a consistent model, in a consistent studio.
+Replaces a physical model shoot for apparel and soft accessories. Input is whatever the
+brand already has (flat lay, mannequin, ghost mannequin, detail macros). Output is a full PDP
+image set on a consistent model, in a consistent studio.
+
+A shoot is three choices: a **campaign** (the look), a **category** (the shot list), and a
+**product** (the garment). Eight categories ship, from tees to jeans to footwear.
 
 **Model:** `dola-seedream-5-0-pro-260628` · **Size:** 2K · synchronous, one call per image.
 
@@ -77,94 +80,97 @@ Seedream 5.0 Pro rewards **concrete and physical** over adjectives. "Camera on t
 knee height tilted upward, verticals converging" works; "dynamic low angle" does not — see
 Failure modes.
 
-### Step 1 — hero template
+Every shot's full prompt lives in its category file — see
+[`references/categories.md`](references/categories.md) for the shot lists and
+[`references/shot-library.md`](references/shot-library.md) for archetypes to paste when
+extending a set.
 
-```text
-Image 1 is the front of a garment photographed flat on a headless mannequin.
-Image 2 is a macro of the same garment's neckline, fabric and print.
-
-Task: produce a studio e-commerce hero photograph of a real human model wearing this
-exact garment. Remove the mannequin entirely.
-
-MODEL:   <age, build, skin tone, hair, expression>. <Stance: upright, square-on to
-         camera, arms relaxed at sides, weight even on both feet.>
-STYLING: the garment worn <untucked> over <bottoms> and <shoes>. No jewellery, no bag,
-         no other accessories.
-SET:     seamless <colour> studio backdrop, soft even large-softbox frontal light,
-         subtle contact shadow under the shoes, no harsh shadows on the backdrop.
-CAMERA:  full-body head-to-toe framing, model centred, eye-level, 85mm lens look,
-         small even margin above the head and below the shoes.
-
-MUST PRESERVE EXACTLY from the references, unchanged: <colour>; <fit, seams, sleeves,
-hem>; <neckline>; and <the artwork — shape, letterforms, exact quoted wording, colours,
-position, print texture>. Do not redraw, restyle, recolour, resize or reposition the
-print. Do not add any extra text, logo or graphic anywhere on the garment.
-
-Photorealistic fashion e-commerce photography, natural skin texture, true-to-life
-<fabric>, sharp focus throughout, no motion blur.
-```
-
-Run **3 variants** and pick. `seed` is ignored on Pro, so variants come free from
-re-running the same prompt. Judge them on, in order: (1) print fidelity, (2) fit and drape,
-(3) framing margins, (4) face. Copy the winner to `hero-selected.png` — that filename is
-the contract for step 2.
-
-### Step 2 — fan-out template
-
-```text
-Image 1 is the approved hero shot. [Image 2 is <the back / a fabric macro>.]
-
-Keep the SAME woman (identical face, hair, skin tone and build), the SAME <garment>
-with its print unchanged in shape, colour, size and position, the SAME <bottoms> and
-<shoes>, and the SAME seamless <colour> studio backdrop and soft even lighting.
-
-Change only <the pose and camera>: <one concrete physical description>.
-
-Photorealistic fashion e-commerce photography, sharp focus, no motion blur,
-no extra text or logos.
-```
+Run **3 hero variants** and pick one. `seed` is ignored on Pro, so variants come free from
+re-running the same prompt. Judge them in this order: (1) print/detail fidelity, (2) fit and
+drape, (3) framing margins, (4) face. Copy the winner to `hero-selected.png` — that filename
+is the contract for step 2.
 
 ---
 
-## Shot catalogue
+## Composition model
 
-A standard 8-image PDP set. Ready-to-paste `Change only…` bodies are in
-[`references/shot-library.md`](references/shot-library.md).
+A prompt is composed from three files, then written out flat:
 
-| # | Shot | References | Size |
+```
+templates/campaigns/<id>.json   the look    (model, set, light, camera, wardrobe slots)
+templates/categories/<id>.json  the shots   (shot list, blocks, preserve_fields)
+<product>/product.json          the garment (refs by role, garment paragraph)
+                    │
+                    ▼  scripts/compose.py
+            prompts.json  ← flat, committed, diffable, hand-editable
+```
+
+**Composition is a build step.** Run `render` and read the composed `prompts.json` — that is
+the artifact, and it is the same format the runner has always consumed, so specs written
+before the template layer keep working untouched.
+
+**Wardrobe slots.** A campaign declares named slots (`top`, `bottom`, `outer`, `footwear`) and
+knows nothing about categories. A category says which slot the *product* occupies and which
+others to render — so a tee is shot over the campaign's jeans, while jeans are shot under the
+campaign's top. Adding a category costs zero campaign edits.
+
+Schemas, substitution rules and hazards: [`references/authoring.md`](references/authoring.md).
+
+## Categories
+
+| Category | Shots | Hero | Status |
 |---|---|---|---|
-| 1 | Three-quarter turn | hero | 1760x2352 |
-| 2 | Walking, mid-stride | hero | 1760x2352 |
-| 3 | Hands in pockets | hero | 1760x2352 |
-| 4 | Low angle (worm's-eye) | hero | 1760x2352 |
-| 5 | Waist-up crop | hero | 1760x2352 |
-| 6 | Back view | hero + back.png | 1760x2352 |
-| 7 | Neckline / fabric macro | **closeup + front** (`use_hero: false`) | 2048x2048 |
-| 8 | Print macro | **front + closeup** (`use_hero: false`) | 2048x2048 |
+| `top` — tees, shirts, blouses | 10 | full body | **validated** |
+| `knitwear` — jumpers, cardigans | 7 | full body | draft |
+| `bottom-denim` — jeans, trousers | 9 | full body | draft |
+| `skirt` | 7 | full body | draft |
+| `dress` — one-piece | 8 | full body | draft |
+| `outerwear` — jackets, coats | 8 | full body | draft |
+| `footwear` — shoes, boots | 7 | on-body crop | draft |
+| `bag` — handbags, totes | 7 | on-body crop | draft |
 
-Shots 7-8 are **flat-lay product shots of the garment alone** — no person in frame. They
-restate their own lighting (no hero to inherit it from) and must negate human presence
-explicitly; see the macro section of the shot library.
+**`validated` means real references, full set generated and reviewed. `draft` means authored
+and proven to compose, but never generated.** Only `top` is validated — say so in a customer
+call.
 
-Extend with: seated, arms crossed, side profile, hem/sleeve detail, folded flat-lay,
-colourway swap, or a lifestyle background swap. Same template either way.
+Per-category shot lists and the reasoning behind them:
+[`references/categories.md`](references/categories.md). Shot archetypes to paste when
+extending a set: [`references/shot-library.md`](references/shot-library.md).
+
+Activewear, swimwear and suiting are **product specs**, not categories — a legging is
+`bottom-denim` with different `preserve_fields`.
 
 ---
 
 ## Running it
 
 ```bash
-python scripts/run_workflow.py step1 --out v1
-# review generated/v1/step-1-hero/hero_v*.png, then:
-cp generated/v1/step-1-hero/hero_v3.png generated/v1/step-1-hero/hero-selected.png
-python scripts/run_workflow.py step2 --out v1 --hero generated/v1/step-1-hero/hero-selected.png
+# 1. compose and read the prompts before spending anything
+python3 scripts/run_workflow.py render --spec my-product/product.json --qc
 
-# re-roll individual shots after a prompt tweak
-python scripts/run_workflow.py step2 --out v1 --hero ... --only fanout-4-lowangle
+# 2. three hero variants, pick one
+python3 scripts/run_workflow.py step1 --spec my-product/product.json --out v1
+cp generated/v1/step-1-hero/hero_v3.png generated/v1/step-1-hero/hero-selected.png
+
+# 3. the rest of the set
+python3 scripts/run_workflow.py step2 --spec my-product/product.json --out v1 \
+        --hero generated/v1/step-1-hero/hero-selected.png
+
+# re-roll one shot after a prompt tweak
+python3 scripts/run_workflow.py step2 --spec ... --out v1 --hero ... --only fanout-4-lowangle
+
+# re-shoot the entire set under a different look
+python3 scripts/run_workflow.py step1 --spec ... --campaign golden-hour-rooftop --out v2
 ```
 
-`--out <label>` writes to `generated/<label>/` — keep each round of prompt changes in its
-own folder so the customer can compare versions. Omit it to write to `generated/`.
+`--out <label>` writes to `generated/<label>/` — keep each round in its own folder so
+versions stay comparable. `--spec` also accepts a flat `prompts.json`, which is used verbatim.
+
+Verify offline at any time, no credentials needed:
+
+```bash
+python3 scripts/test_compose.py
+```
 
 Copy `scripts/prompts.example.json` to `prompts.json` and edit. Auth comes from
 `ARK_API_KEY` or `~/.seedream/credentials`. Calls run 4-wide; a full set is ~8 calls.

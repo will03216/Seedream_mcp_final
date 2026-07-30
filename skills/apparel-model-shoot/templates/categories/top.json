@@ -1,0 +1,232 @@
+{
+  "id": "top",
+  "label": "Tops — tees, shirts, blouses",
+  "status": "validated",
+  "note": "Validated across three full generation rounds. These prompts are production ground truth; scripts/test_compose.py asserts they render byte-identical to scripts/prompts.example.json.",
+  "hero_kind": "on-model-full-body",
+  "product_slot": "top",
+  "styling_slots": [
+    "bottom",
+    "footwear"
+  ],
+  "garment_noun": "t-shirt",
+  "garment_noun_short": "tee",
+  "preserve_fields": [
+    "the fabric colour",
+    "the fit, shoulder seams, sleeves and hem",
+    "the neckline",
+    "the chest artwork — its shape, letterforms, proportion, colours and position"
+  ],
+  "required_ref_roles": [
+    "front"
+  ],
+  "optional_ref_roles": [
+    "back",
+    "detail"
+  ],
+  "ref_descriptions": {
+    "front": "the front of a garment photographed flat on a headless mannequin",
+    "back": "the BACK of the same garment photographed on a mannequin",
+    "detail": "a macro of the same garment's neckline, fabric and print"
+  },
+  "blocks": {
+    "keep_onmodel": "Keep the SAME {{campaign.pronoun.noun}} (identical face, hair, skin tone and build), the SAME {{product.short_name}} with its chest print unchanged in shape, colour, size and position, the SAME {{wardrobe_short}}, and the SAME {{campaign.set_short}} and {{campaign.light_short}}.",
+    "keep_onmodel_nolower": "Keep the SAME {{campaign.pronoun.noun}} (identical face, hair, skin tone and build), the SAME {{product.short_name}} with its chest print unchanged in shape, colour, size and position, and the SAME {{campaign.set_short}} and {{campaign.light_short}}.",
+    "tail": "{{campaign.grade}}, sharp focus, no motion blur, no extra text or logos.",
+    "no_person": "ABSOLUTELY NO human presence: no skin, no neck, no throat, no chin, no jaw, no hair, no shoulders, no body underneath the fabric. Nothing but cloth.",
+    "flatlay_setup": "flat-lay product photography, no person and no mannequin anywhere in the frame. The {{category.garment_noun_short}} is laid flat and face-up on {{campaign.flatlay_surface}} and photographed from directly above"
+  },
+  "hero": {
+    "id": "hero",
+    "size_class": "full_body",
+    "ref_roles": [
+      "front",
+      "detail"
+    ],
+    "runs": 3,
+    "prompt": [
+      "{{ref_roles_sentence}}",
+      "",
+      "Task: produce a studio e-commerce hero photograph of a real human model wearing this exact {{category.garment_noun}}. Remove the mannequin entirely.",
+      "",
+      "MODEL: {{campaign.model_casting}}, looking straight into the lens. Standing upright and square-on to camera, arms hanging relaxed at {{campaign.pronoun.possessive}} sides, weight even on both feet.",
+      "",
+      "STYLING: the {{category.garment_noun_short}} from Image 1 worn untucked over {{wardrobe}}. {{campaign.accessories_rule}}",
+      "",
+      "SET: {{campaign.set}}, {{campaign.light}}.",
+      "",
+      "CAMERA: {{campaign.camera_full_body}}.",
+      "",
+      "MUST PRESERVE EXACTLY from the references, unchanged: {{product.garment}}; and the chest print — {{product.artwork_front}} — including its exact shape, letterforms, proportion, colours, centred position on the chest and the soft screen-print texture sitting on {{product.fabric}}. Do not redraw, restyle, recolour, resize or reposition the print. Do not add any extra text, logo or graphic anywhere on the garment.",
+      "",
+      "{{campaign.grade}}, natural skin texture, true-to-life {{product.fabric}}, sharp focus throughout, no motion blur."
+    ]
+  },
+  "fanouts": [
+    {
+      "id": "fanout-1-threequarter",
+      "size_class": "full_body",
+      "ref_roles": [],
+      "prompt": [
+        "{{ref_roles_sentence}} {{blocks.keep_onmodel}}",
+        "",
+        "Change only the pose and camera: full-body three-quarter view, {{campaign.pronoun.possessive}} body turned about 35 degrees to {{campaign.pronoun.possessive}} right while {{campaign.pronoun.possessive}} head turns back to the lens with a soft closed-lip smile, weight on the back foot, front foot slightly forward, one arm relaxed at {{campaign.pronoun.possessive}} side and the other hand grazing {{campaign.pronoun.possessive}} thigh. Eye-level, 85mm, head-to-toe framing, model centred.",
+        "",
+        "{{blocks.tail}}"
+      ]
+    },
+    {
+      "id": "fanout-2-walking",
+      "size_class": "full_body",
+      "ref_roles": [],
+      "prompt": [
+        "{{ref_roles_sentence}} {{blocks.keep_onmodel}}",
+        "",
+        "Change only the pose and camera: full-body walking shot, mid-stride striding toward the lens, one foot lifted just off the floor, arms swinging naturally, hair and the hem of the oversized tee lifting slightly with the movement, looking into the lens with an easy expression. Eye-level, 85mm, head-to-toe framing.",
+        "",
+        "{{campaign.grade}}, crisp frozen motion, everything in sharp focus, no motion blur, no extra text or logos."
+      ]
+    },
+    {
+      "id": "fanout-3-handsinpocket",
+      "size_class": "full_body",
+      "ref_roles": [],
+      "prompt": [
+        "{{ref_roles_sentence}} {{blocks.keep_onmodel}}",
+        "",
+        "Change only the pose and camera: full-body front view, both thumbs hooked into the front pockets of {{campaign.pronoun.possessive}} jeans with hands relaxed, weight shifted onto one hip, shoulders loose, chin slightly lifted, calm confident expression. The chest print stays fully visible and unobstructed. Eye-level, 85mm, head-to-toe framing.",
+        "",
+        "{{blocks.tail}}"
+      ]
+    },
+    {
+      "id": "fanout-4-lowangle",
+      "size_class": "full_body",
+      "ref_roles": [],
+      "prompt": [
+        "{{ref_roles_sentence}} {{blocks.keep_onmodel}}",
+        "",
+        "Change only the camera and pose — THE CAMERA POSITION IS THE POINT OF THIS SHOT: place the camera on the floor at knee height, close to {{campaign.pronoun.possessive}} feet, and tilt it upward so we look UP at {{campaign.pronoun.object}}. Worm's-eye perspective: {{campaign.pronoun.possessive}} {{campaign.footwear_noun}} and shins are large and nearest to the lens in the lower third, {{campaign.pronoun.possessive}} legs converge upward, the tee and {{campaign.pronoun.possessive}} face are seen from below with the underside of {{campaign.pronoun.possessive}} chin and jawline visible, and the backdrop's floor-to-wall curve sits high in the upper part of the frame. Verticals converge toward the top. She stands with feet apart in a relaxed power stance, arms at {{campaign.pronoun.possessive}} sides, looking down into the lens with a calm confident expression. 35mm wide-angle look, full body head-to-toe, model centred. The chest print stays fully readable despite the foreshortening.",
+        "",
+        "{{blocks.tail}}"
+      ]
+    },
+    {
+      "id": "fanout-5-waistupcrop",
+      "size_class": "crop",
+      "ref_roles": [],
+      "prompt": [
+        "{{ref_roles_sentence}} {{blocks.keep_onmodel_nolower}}",
+        "",
+        "Change only the framing and pose: waist-up portrait crop, front view, head and shoulders in the upper third and the full chest print clearly readable in the lower two thirds. Arms relaxed and dropping out of the bottom of frame, gentle closed-lip smile, looking into the lens. {{campaign.camera_crop}}.",
+        "",
+        "{{campaign.grade}}, natural skin texture, visible {{product.fabric}} weave and soft screen-print texture, sharp focus, no extra text or logos."
+      ]
+    },
+    {
+      "id": "fanout-6-backview",
+      "size_class": "full_body",
+      "ref_roles": [
+        "back"
+      ],
+      "hero_label": "the approved hero shot of the model",
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce the back view of the same shot: the SAME {{campaign.pronoun.noun}} (identical hair, skin tone and build) seen from directly behind, standing upright, arms relaxed at {{campaign.pronoun.possessive}} sides, hair falling over {{campaign.pronoun.possessive}} shoulders. SAME {{wardrobe_short}}, SAME {{campaign.set_short}} and {{campaign.light_short}}, SAME full-body head-to-toe framing at eye level.",
+        "",
+        "MUST PRESERVE EXACTLY from Image 2: the back print — {{product.artwork_back}} — reproduced with identical letterforms, colours, proportion and placement across the upper back, following the natural drape of the fabric. Keep {{product.garment_short}}. Do not add any extra text, logo or graphic.",
+        "",
+        "{{campaign.grade}}, sharp focus, no motion blur."
+      ]
+    },
+    {
+      "id": "fanout-7-fabric-closeup",
+      "size_class": "macro",
+      "use_hero": false,
+      "ref_roles": [
+        "detail",
+        "front"
+      ],
+      "ref_descriptions": {
+        "detail": "a macro of the garment's neckline, fabric and print",
+        "front": "the full front of the same garment on a mannequin"
+      },
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a square macro detail photograph of the GARMENT ALONE — {{blocks.flatlay_setup}}, the cotton relaxed with soft natural creases.",
+        "",
+        "Framing: tight crop on the ribbed crew neckline. The collar arcs across the upper third of the frame, the neck opening lies open below it revealing the inside back neck with its small white woven care labels, and the uppermost tips of the orange sun print enter at the bottom edge.",
+        "",
+        "{{blocks.no_person}}",
+        "",
+        "MUST PRESERVE EXACTLY from Image 1: the cream / off-white {{product.fabric}} colour and its fine knit texture, the ribbed collar with its topstitching and seam, the woven care labels, and the crisp matte orange screen-print sitting on the fabric weave. Do not redraw, recolour or reposition the print. Do not add any extra text, logo or graphic.",
+        "",
+        "{{campaign.flatlay_light}}",
+        "",
+        "Extreme detail macro product photography, 100mm macro look, razor-sharp fabric texture, even depth of field."
+      ]
+    },
+    {
+      "id": "fanout-8-print-closeup",
+      "size_class": "macro",
+      "use_hero": false,
+      "ref_roles": [
+        "front",
+        "detail"
+      ],
+      "ref_descriptions": {
+        "front": "the full front of a garment on a mannequin",
+        "detail": "a macro of the same garment's fabric and print texture"
+      },
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a square macro detail photograph of the CHEST PRINT ALONE — {{blocks.flatlay_setup}}, square-on and parallel to the fabric, the cotton relaxed with only faint natural creases.",
+        "",
+        "Framing: the frame is filled edge to edge by cream {{product.fabric}} with the complete artwork centred — the orange spiky sun above, the light-blue two-line retro serif wordmark \"Summer Daze\" below it — the whole artwork visible with a comfortable margin of blank fabric all around it. The artwork must sit UPRIGHT AND PERFECTLY LEVEL: the lines of the wordmark run exactly horizontal and parallel to the bottom edge of the frame, the sun sits directly above the wordmark on a vertical centre line, and the artwork is centred both left-to-right and top-to-bottom. Do not rotate, tilt, skew or offset the artwork. No collar, no neckline, no hem, no sleeve, no seam in frame — nothing but the printed chest panel.",
+        "",
+        "ABSOLUTELY NO human presence: no skin, no hands, no arms, no neck, no hair, no body curvature under the fabric. Nothing but flat cloth.",
+        "",
+        "MUST PRESERVE EXACTLY from the references: the artwork's shape, letterforms, spelling, colours and proportion, plus the soft matte screen-print texture visibly sitting on the {{product.fabric}} weave, with faint fabric fibres breaking the ink edges. Do not redraw, recolour, resize or reposition the print. Do not add any extra text, logo or graphic.",
+        "",
+        "Soft even large-softbox light, near-shadowless.",
+        "",
+        "Extreme detail macro product photography, 100mm macro look, razor-sharp texture, flat even depth of field."
+      ]
+    },
+    {
+      "id": "fanout-9-backprint-closeup",
+      "size_class": "macro",
+      "use_hero": false,
+      "optional": true,
+      "requires_ref_roles": [
+        "back"
+      ],
+      "ref_roles": [
+        "back",
+        "detail"
+      ],
+      "ref_descriptions": {
+        "back": "the BACK of a garment on a mannequin",
+        "detail": "a macro of the same garment's fabric and print texture"
+      },
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a square macro detail photograph of the BACK PRINT ALONE — {{blocks.flatlay_setup}}, square-on and parallel to the fabric, the cotton relaxed with only faint natural creases. The garment is face-DOWN so the back panel and its print face the lens.",
+        "",
+        "Framing: the frame is filled edge to edge by cream {{product.fabric}} with the complete back artwork centred — {{product.artwork_back}} — the whole artwork visible with a comfortable margin of blank fabric all around it. The artwork must sit UPRIGHT AND PERFECTLY LEVEL: every line of type runs exactly horizontal and parallel to the bottom edge of the frame, and the artwork is centred both left-to-right and top-to-bottom. Do not rotate, tilt, skew or offset the artwork. No collar, no neckline, no hem, no sleeve, no seam in frame — nothing but the printed back panel.",
+        "",
+        "ABSOLUTELY NO human presence: no skin, no hands, no arms, no neck, no hair, no body curvature under the fabric. Nothing but flat cloth.",
+        "",
+        "MUST PRESERVE EXACTLY from the references: every word and character of the artwork spelled correctly and fully legible at this magnification — including any small or fine type, which must be crisp and readable rather than suggested — plus its shape, letterforms, colours and proportion, and the soft matte screen-print texture sitting on the {{product.fabric}} weave. Do not redraw, recolour, resize or reposition the artwork. Do not add any extra text, logo or graphic.",
+        "",
+        "Soft even large-softbox light, near-shadowless.",
+        "",
+        "Extreme detail macro product photography, 100mm macro look, razor-sharp texture, flat even depth of field."
+      ]
+    }
+  ]
+}

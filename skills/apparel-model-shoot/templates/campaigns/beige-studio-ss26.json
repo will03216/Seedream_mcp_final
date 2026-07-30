@@ -1,0 +1,47 @@
+{
+  "id": "beige-studio-ss26",
+  "label": "Beige seamless studio — clean PDP e-commerce",
+  "status": "validated",
+  "note": "The look validated across three full generation rounds on the Summer Daze tee. Short forms exist because the hero states the set in full while fan-out KEEP blocks restate it condensed — both are load-bearing.",
+
+  "model_casting": "young adult woman, mid-20s, warm light skin, long loose wavy dark-brown hair parted in the middle, minimal natural makeup, relaxed closed-lip smile",
+  "pronoun": {
+    "noun": "woman",
+    "subject": "she",
+    "object": "her",
+    "possessive": "her"
+  },
+  "model_reference": null,
+
+  "set": "seamless warm beige-cream studio backdrop",
+  "set_short": "seamless beige-cream studio backdrop",
+  "light": "soft even large-softbox frontal light, subtle contact shadow under the shoes, no harsh shadows on the backdrop",
+  "light_short": "soft even lighting",
+  "camera_full_body": "full-body head-to-toe framing, model centred, eye-level, 85mm lens look, small even margin above the head and below the shoes",
+  "camera_crop": "Eye-level, 85mm, shallow background falloff",
+  "grade": "Photorealistic fashion e-commerce photography",
+
+  "flatlay_surface": "a smooth cream surface",
+  "flatlay_light": "Soft even large-softbox light, gentle shadow in the fabric folds.",
+  "footwear_noun": "sneakers",
+  "accessories_rule": "No jewellery, no bag, no other accessories.",
+
+  "wardrobe": {
+    "top": "a plain fitted cream ribbed cotton tank top",
+    "bottom": "light-blue straight-leg denim jeans",
+    "outer": null,
+    "footwear": "clean white leather low-top sneakers"
+  },
+  "wardrobe_short": {
+    "top": "cream ribbed tank",
+    "bottom": "light-blue straight-leg jeans",
+    "outer": null,
+    "footwear": "white low-top sneakers"
+  },
+
+  "sizes": {
+    "full_body": "1760x2352",
+    "crop": "1760x2352",
+    "macro": "2048x2048"
+  }
+}

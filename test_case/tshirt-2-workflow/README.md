@@ -11,12 +11,12 @@ skill. Model `dola-seedream-5-0-pro-260628`, 2K, watermark off, PNG.
 | `generated/v1/` | Second pass — macros moved off the hero, still had a person in them. Superseded. |
 | `generated/v2/` | **Current set** — 3 hero variants (`hero-selected.png` = v3) + 8 fan-outs, all QC-passed. |
 | `prompts.json` | Every prompt used, verbatim. |
-| `run_workflow.py` | Local copy of the skill's runner. |
+| — | The runner lives in the skill: `../../skills/apparel-model-shoot/scripts/run_workflow.py` |
 
 ```bash
-python3 run_workflow.py step1 --out v2
+python3 ../../skills/apparel-model-shoot/scripts/run_workflow.py step1 --out v2
 cp generated/v2/step-1-hero/hero_v3.png generated/v2/step-1-hero/hero-selected.png
-python3 run_workflow.py step2 --out v2 --hero generated/v2/step-1-hero/hero-selected.png
+python3 ../../skills/apparel-model-shoot/scripts/run_workflow.py step2 --out v2 --hero generated/v2/step-1-hero/hero-selected.png
 ```
 
 Auth from `ARK_API_KEY` or `~/.seedream/credentials`. 11 calls for the full set.

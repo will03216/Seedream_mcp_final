@@ -153,10 +153,13 @@ authoring outerwear; the answer is a second shot.
 
 ## Hazards
 
-**Backdrop must contrast with the garment.** The validated campaign is a cream tee on a
-cream backdrop on a cream flat-lay surface. It works only because it was tuned that way. The
-first off-white product or backdrop swap will surface this — check contrast before you shoot,
-not after.
+**Backdrop must contrast with the garment — but separation can come from light, not just
+tone.** The validated campaign is a cream tee on a cream backdrop on a cream flat-lay surface,
+and it works only because it was tuned that way. Tested on the second campaign: a cream tee on
+warm concrete *also* held, because the low sun backlights the model and rim-lights the
+shoulders. The lesson is that tonal contrast and lighting separation are interchangeable — a
+front-lit warm-concrete campaign would have failed. Check that a garment has one or the other
+before you shoot, not after.
 
 **`model_reference` competes with the garment references.** A bare portrait passed as a third
 reference fights the garment refs for fidelity, and print fidelity is the number-one QC

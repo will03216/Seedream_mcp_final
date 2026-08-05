@@ -24,8 +24,8 @@ to poll.
 | Model | ID | Sizes | Notes |
 |---|---|---|---|
 | **Seedream 4.5** | `seedream-4-5-251128` | 2K, 4K | Default. **No 1K.** |
-| **Seedream 5.0 Lite** | `seedream-5-0-260128` | 1K, 2K, 4K, adaptive | Newer, cheaper, stronger reference consistency & layout reasoning. |
-| **Seedream 5.0 Pro** | `dola-seedream-5-0-pro-260628` | 1K, 2K | Highest fidelity. Adds **layer decomposition**. Max 10 refs; **no 4K, no sequential sets, no guidance_scale**. |
+| **Seedream 5.0 Lite** | `seedream-5-0-260128` | 2K, 3K, 4K | Newer, cheaper, stronger reference consistency & layout reasoning. **No 1K; no guidance_scale.** |
+| **Seedream 5.0 Pro** | `dola-seedream-5-0-pro-260628` | 1K, 1.5K, 2K | Highest fidelity. Adds **layer decomposition**. Max 10 refs; **no 3K/4K, no sequential sets, no guidance_scale**. |
 
 Aliases `4.5`, `5.0-lite` and `5.0-pro` are accepted anywhere a model is specified.
 
@@ -219,14 +219,15 @@ seedream generate -m 5.0-pro --layer-decomposition --output-format png \
 seedream generate \
   --prompt        "..."       # description / edit instruction (required)
   --model         5.0-lite    # 4.5 (default) | 5.0-lite | 5.0-pro | full model ID
-  --size          2K          # 1K* | 2K | 4K† | adaptive* | WxH  (*not on 4.5, †not on 5.0 Pro)
+  --size          2K          # 2K everywhere | 1K/1.5K Pro only | 3K/4K not on Pro | WxH
   --ref           <url|path>  # reference image; repeatable; local paths auto-upload
   --bucket        <name>      # TOS bucket for local --ref uploads
   --seed          42          # reproducible results
-  --guidance-scale 7.5        # prompt adherence 1.0–20.0
+  --guidance-scale 7.5        # prompt adherence 1.0–10.0 (Seedream 4.5 only)
   --sequential                # generate a consistent multi-panel set
   --num-images    4           # images in a sequential set (refs + n ≤ 15)
   --optimize-prompt           # let the API optimize the prompt
+  --optimize-prompt-mode standard  # standard | fast   (fast is 5.0 Pro only)
   --watermark                 # add a watermark
   --output-format png         # png | jpeg (5.0 Pro / 5.0 Lite only)
   --layer-decomposition       # split the --ref image into layers (5.0 Pro only)

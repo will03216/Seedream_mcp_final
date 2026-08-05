@@ -88,6 +88,7 @@ def seedream_generate(
     response_format: str = "url",
     watermark: bool = False,
     optimize_prompt: bool = False,
+    optimize_prompt_mode: str = "standard",
     output_format: str = "",
     layer_decomposition: bool = False,
 ) -> dict:
@@ -121,6 +122,7 @@ def seedream_generate(
         response_format: "url" (default) or "b64_json".
         watermark: Add a watermark to the output.
         optimize_prompt: Ask the API to expand/optimize the prompt.
+        optimize_prompt_mode: "standard" (default) or "fast" (5.0 Pro only).
         output_format: "png" or "jpeg" (5.0 Pro / 5.0 Lite only; API default jpeg).
         layer_decomposition: Split the image in image_urls into separate layers,
                 returning one image per layer. Seedream 5.0 Pro only, and requires
@@ -152,6 +154,7 @@ def seedream_generate(
             response_format=response_format,
             watermark=watermark,
             optimize_prompt=optimize_prompt,
+            optimize_prompt_mode=optimize_prompt_mode,
             output_format=output_format,
             layer_decomposition=layer_decomposition,
         )

@@ -67,8 +67,8 @@ image URL(s) in a single call. There is no task to poll (unlike Seedance video).
 | Model | ID | Sizes | Notes |
 |---|---|---|---|
 | **Seedream 4.5** | `seedream-4-5-251128` | 2K, 4K | Default. **No 1K.** |
-| **Seedream 5.0 Lite** | `seedream-5-0-260128` | 1K, 2K, 4K, adaptive | Newer, cheaper, stronger reference consistency & layout reasoning. |
-| **Seedream 5.0 Pro** | `dola-seedream-5-0-pro-260628` | 1K, 2K | Highest fidelity, and the only model that can split an image into layers. Max 10 refs; no sequential sets, no `guidance_scale`. |
+| **Seedream 5.0 Lite** | `seedream-5-0-260128` | 2K, 3K, 4K | Newer, cheaper, stronger reference consistency & layout reasoning. No 1K/adaptive, no `guidance_scale`. |
+| **Seedream 5.0 Pro** | `dola-seedream-5-0-pro-260628` | 1K, 1.5K, 2K | Highest fidelity, and the only model that can split an image into layers. Max 10 refs; no sequential sets, no `guidance_scale`. |
 
 You may pass the aliases `4.5`, `5.0-lite` or `5.0-pro` as `model`. Default to **4.5** unless
 the user asks for 5.0 Lite, cheaper cost, adaptive sizing, or complex layout/reference work
@@ -122,12 +122,13 @@ reference images to TOS.
 |---|---|
 | `prompt` | Description / edit instruction. Quote literal text-in-image. |
 | `model` | `4.5` (default), `5.0-lite` or `5.0-pro`, or a full model ID. |
-| `size` | `1K`\*/`2K`/`4K`†/`adaptive`\* or `WxH`. (\*not on 4.5, †not on 5.0 Pro.) |
+| `size` | `2K` everywhere; `1K`/`1.5K` Pro only; `3K`/`4K` not on Pro; or `WxH`. |
 | `image_urls` | Reference image URLs (public HTTPS). |
 | `seed` | Reproducibility. |
-| `guidance_scale` | Prompt adherence 1.0–20.0 (higher = stricter, may reduce quality). |
+| `guidance_scale` | Prompt adherence 1.0–10.0. **Seedream 4.5 only** — 5.0 Lite and Pro reject it. |
 | `sequential` + `num_images` | Consistent multi-panel set (refs + outputs ≤ 15). |
 | `optimize_prompt` | Ask the API to expand the prompt (use sparingly). |
+| `optimize_prompt_mode` | `standard` (default) or `fast`. **`fast` is 5.0 Pro only.** |
 | `watermark` | Add a watermark. |
 | `response_format` | `url` (default) or `b64_json`. |
 | `output_format` | `png` or `jpeg`. **5.0 Pro / 5.0 Lite only** (API default `jpeg`). |

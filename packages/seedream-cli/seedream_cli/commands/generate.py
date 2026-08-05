@@ -30,6 +30,7 @@ def generate(
     sequential: bool = typer.Option(False, "--sequential", help="Generate a consistent multi-panel image set."),
     num_images: int = typer.Option(1, "--num-images", "-n", help="Images in sequential mode."),
     optimize_prompt: bool = typer.Option(False, "--optimize-prompt", help="Let the API optimize the prompt."),
+    optimize_prompt_mode: str = typer.Option("standard", "--optimize-prompt-mode", help="standard | fast (fast is 5.0 Pro only)."),
     watermark: bool = typer.Option(False, "--watermark", help="Add a watermark to outputs."),
     output_format: str = typer.Option("", "--output-format", help="png | jpeg (5.0 Pro / 5.0 Lite only)."),
     layer_decomposition: bool = typer.Option(
@@ -82,6 +83,7 @@ def generate(
                     seed=seed, guidance_scale=guidance_scale,
                     sequential=sequential, num_images=num_images,
                     optimize_prompt=optimize_prompt, watermark=watermark,
+                    optimize_prompt_mode=optimize_prompt_mode,
                     output_format=output_format,
                     layer_decomposition=layer_decomposition,
                 )
@@ -92,6 +94,7 @@ def generate(
                     seed=seed, guidance_scale=guidance_scale,
                     sequential=sequential, num_images=num_images,
                     optimize_prompt=optimize_prompt, watermark=watermark,
+                    optimize_prompt_mode=optimize_prompt_mode,
                     output_format=output_format,
                     layer_decomposition=layer_decomposition,
                 )

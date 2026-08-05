@@ -55,11 +55,26 @@ def test_45_rejects_1k(client):
         client.generate("x", model="4.5", size="1K")
 
 
-def test_50lite_accepts_1k(client, monkeypatch):
+def test_50lite_rejects_1k_and_adaptive(client):
+    """Verified live: this model names '2k', '3k', '4k' as its only presets."""
+    with pytest.raises(ValidationError):
+        client.generate("x", model="5.0-lite", size="1K")
+    with pytest.raises(ValidationError):
+        client.generate("x", model="5.0-lite", size="adaptive")
+
+
+def test_50lite_accepts_3k(client, monkeypatch):
     capture: dict = {}
     _fake_response(monkeypatch, capture)
-    client.generate("x", model="5.0-lite", size="1K")
-    assert capture["payload"]["size"] == "1K"
+    client.generate("x", model="5.0-lite", size="3K")
+    assert capture["payload"]["size"] == "3K"
+
+
+def test_pro_accepts_1_5k(client, monkeypatch):
+    capture: dict = {}
+    _fake_response(monkeypatch, capture)
+    client.generate("x", model="5.0-pro", size="1.5K")
+    assert capture["payload"]["size"] == "1.5K"
 
 
 def test_explicit_wxh_size_accepted(client, monkeypatch):
@@ -84,12 +99,61 @@ def test_reference_images_in_payload(client, monkeypatch):
 
 
 def test_sequential_options(client, monkeypatch):
+    """The cap field is max_images, and the enable value is "auto".
+
+    Verified live: {"n": 2} is dropped silently — a six-image prompt returned and
+    billed six images — while {"max_images": 2} returned two.
+    """
     capture: dict = {}
     _fake_response(monkeypatch, capture)
     client.generate("panels", sequential=True, num_images=4)
     p = capture["payload"]
-    assert p["sequential_image_generation"] == "enabled"
-    assert p["sequential_image_generation_options"] == {"n": 4}
+    assert p["sequential_image_generation"] == "auto"
+    assert p["sequential_image_generation_options"] == {"max_images": 4}
+
+
+def test_sequential_caps_even_at_one_image(client, monkeypatch):
+    """num_images=1 must still cap; previously no cap was sent below 2."""
+    capture: dict = {}
+    _fake_response(monkeypatch, capture)
+    client.generate("panels", sequential=True, num_images=1)
+    assert capture["payload"]["sequential_image_generation_options"] == {"max_images": 1}
+
+
+def test_optimize_prompt_sends_mode(client, monkeypatch):
+    capture: dict = {}
+    _fake_response(monkeypatch, capture)
+    client.generate("x", model="4.5", optimize_prompt=True)
+    assert capture["payload"]["optimize_prompt_options"] == {"mode": "standard"}
+
+
+def test_optimize_prompt_fast_is_pro_only(client, monkeypatch):
+    capture: dict = {}
+    _fake_response(monkeypatch, capture)
+    client.generate("x", model="5.0-pro", image_urls=["u"],
+                    optimize_prompt=True, optimize_prompt_mode="fast")
+    assert capture["payload"]["optimize_prompt_options"] == {"mode": "fast"}
+    with pytest.raises(ValidationError):
+        client.generate("x", model="4.5", optimize_prompt=True, optimize_prompt_mode="fast")
+
+
+def test_api_error_object_is_raised(client, monkeypatch):
+    """A 200 body can still carry a top-level error object."""
+    def fake_request(url, *, method, headers, payload, timeout, correlation_id=""):
+        return {"data": [], "error": {"code": "OutputImageSensitiveContentDetected",
+                                      "message": "blocked by content filter"}}
+    monkeypatch.setattr(client_mod, "request_with_retry", fake_request)
+    with pytest.raises(client_mod.APIError, match="blocked by content filter"):
+        client.generate("x")
+
+
+def test_per_image_errors_surface(client, monkeypatch):
+    """In a batch an individual image can fail while siblings succeed."""
+    def fake_request(url, *, method, headers, payload, timeout, correlation_id=""):
+        return {"data": [{"error": {"code": "Filtered", "message": "image 1 rejected"}}]}
+    monkeypatch.setattr(client_mod, "request_with_retry", fake_request)
+    with pytest.raises(ValidationError, match="image 1 rejected"):
+        client.generate("x")
 
 
 def test_reference_plus_sequential_budget(client):
@@ -235,21 +299,6 @@ def test_layer_downloads_named_by_z_index(client, monkeypatch, tmp_path):
     # Layers stay .png despite output_format=jpeg — they carry alpha.
     assert names == ["seedream-base.jpg", "seedream-layer1.png"]
     assert r.images[1].local_path.endswith("seedream-layer1.png")
-
-
-def test_optimize_prompt_shape_is_per_model(client, monkeypatch):
-    """Pro takes {"mode": ...}; the older models take {"enabled": true}."""
-    capture: dict = {}
-    _fake_response(monkeypatch, capture)
-
-    client.generate("x", model="4.5", optimize_prompt=True)
-    assert capture["payload"]["optimize_prompt_options"] == {"enabled": True}
-
-    client.generate("x", model="5.0-lite", optimize_prompt=True)
-    assert capture["payload"]["optimize_prompt_options"] == {"enabled": True}
-
-    client.generate("x", model="5.0-pro", optimize_prompt=True)
-    assert capture["payload"]["optimize_prompt_options"] == {"mode": "standard"}
 
 
 def test_output_format_validated(client):

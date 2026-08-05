@@ -5,8 +5,8 @@
 | Model | ID | Alias | Sizes | When to pick |
 |---|---|---|---|---|
 | **Seedream 4.5** | `seedream-4-5-251128` | `4.5` | 2K, 4K | Default. Strong general text-to-image and single-reference editing. **No 1K.** |
-| **Seedream 5.0 Lite** | `seedream-5-0-260128` | `5.0-lite` | 1K, 2K, 4K, adaptive | Newer and cheaper. Stronger reference consistency, layout/structure reasoning, and complex design intent. Supports 1K and adaptive sizing. |
-| **Seedream 5.0 Pro** | `dola-seedream-5-0-pro-260628` | `5.0-pro` | 1K, 2K | Highest fidelity, and the only model that can **decompose an image into layers**. Max 10 reference images. **No 4K/adaptive, no sequential sets, no `guidance_scale`; `seed` is ignored.** |
+| **Seedream 5.0 Lite** | `seedream-5-0-260128` | `5.0-lite` | 2K, 3K, 4K | Newer and cheaper. Stronger reference consistency, layout/structure reasoning, and complex design intent. **No 1K, no `adaptive`, no `guidance_scale`** — all verified live. |
+| **Seedream 5.0 Pro** | `dola-seedream-5-0-pro-260628` | `5.0-pro` | 1K, 1.5K, 2K | Highest fidelity, and the only model that can **decompose an image into layers**. Max 10 reference images. **No 4K/adaptive, no sequential sets, no `guidance_scale`; `seed` is ignored.** |
 
 > Model IDs can change as BytePlus ships new versions. If a call fails with an unknown-model
 > error, re-check the [ModelArk Seedream docs](https://docs.byteplus.com/en/docs/ModelArk/1824121)
@@ -67,6 +67,13 @@ seedream_generate(
 - ⚠️ **The decomposition is intermittent.** The same request sometimes comes back as a single
   flattened image with no `z_index` — HTTP 200, no error. **Check whether any image has a
   `z_index` before reporting success**, and just retry if not; the payload is fine.
+
+## Not implemented: `stream`
+
+The API documents a `stream` boolean (5.0 Lite / 4.5 / 4.0 only; 5.0 Pro errors on it)
+that returns each image as it finishes instead of all at once. This SDK does not expose it —
+`generate()` is synchronous and returns the finished set. Batch generation works without it;
+you just wait for the whole set. Everything else in the request schema is covered.
 
 ## Output format
 

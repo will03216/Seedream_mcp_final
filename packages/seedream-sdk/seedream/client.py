@@ -12,10 +12,12 @@ from .config import (
     BASE_URL,
     DEFAULT_MODEL,
     DOWNLOAD_TIMEOUT,
+    GUIDANCE_SCALE_RANGE,
     INCLUDE_RAW,
     MAX_REFERENCE_IMAGES,
     MAX_SEQUENTIAL_IMAGES,
     MODELS,
+    OPTIMIZE_PROMPT_MODES,
     OUTPUT_FORMATS,
     SIZE_WH_RE,
     SUBMIT_TIMEOUT,
@@ -31,7 +33,7 @@ from .credentials import (
     load_api_key,
     load_asset_credentials,
 )
-from .exceptions import ValidationError
+from .exceptions import APIError, ValidationError
 from .http import extract_images, request_with_retry
 from .tos import TOSClient
 from .types import GenerateResult, ImageResult, TOSUploadResult
@@ -108,9 +110,11 @@ class SeedreamClient:
     def _validate_guidance(guidance_scale: float | None) -> None:
         if guidance_scale is None:
             return
-        if not 1.0 <= guidance_scale <= 20.0:
+        # The API documents the valid range as [1, 10].
+        if not GUIDANCE_SCALE_RANGE[0] <= guidance_scale <= GUIDANCE_SCALE_RANGE[1]:
             raise ValidationError(
-                f"Invalid guidance_scale {guidance_scale}. Must be between 1.0 and 20.0."
+                f"Invalid guidance_scale {guidance_scale}. Must be between "
+                f"{GUIDANCE_SCALE_RANGE[0]} and {GUIDANCE_SCALE_RANGE[1]}."
             )
 
     @staticmethod
@@ -142,6 +146,8 @@ class SeedreamClient:
         output_format: str,
         layer_decomposition: bool,
         image_urls: list[str] | None,
+        optimize_prompt: bool = False,
+        optimize_prompt_mode: str = "standard",
     ) -> None:
         """Reject parameters the chosen model does not accept.
 
@@ -158,6 +164,20 @@ class SeedreamClient:
             )
         if guidance_scale is not None and not caps.get("supports_guidance_scale", False):
             raise ValidationError(f"{label} does not support guidance_scale.")
+
+        if optimize_prompt:
+            if optimize_prompt_mode not in OPTIMIZE_PROMPT_MODES:
+                raise ValidationError(
+                    f"Invalid optimize_prompt_mode {optimize_prompt_mode!r}. "
+                    f"Use one of {', '.join(OPTIMIZE_PROMPT_MODES)}."
+                )
+            if optimize_prompt_mode == "fast" and not caps.get(
+                "supports_optimize_prompt_fast", False
+            ):
+                raise ValidationError(
+                    f"{label} does not support optimize_prompt_mode='fast'. "
+                    f"Use 'standard'."
+                )
 
         if output_format:
             if output_format not in OUTPUT_FORMATS:
@@ -198,6 +218,7 @@ class SeedreamClient:
         response_format: str = "url",
         watermark: bool = False,
         optimize_prompt: bool = False,
+        optimize_prompt_mode: str = "standard",
         output_format: str = "",
         layer_decomposition: bool = False,
     ) -> GenerateResult:
@@ -217,6 +238,8 @@ class SeedreamClient:
             response_format: "url" (default) or "b64_json".
             watermark: Add a watermark to outputs.
             optimize_prompt: Ask the API to expand/optimize the prompt.
+            optimize_prompt_mode: "standard" (default, higher quality) or "fast".
+                    "fast" is Seedream 5.0 Pro only.
             output_format: "png" or "jpeg". 5.0 Pro / 5.0 Lite only. API default jpeg.
             layer_decomposition: Split the input image into separate layers, one
                     generated image per layer. Seedream 5.0 Pro only, and needs
@@ -245,6 +268,8 @@ class SeedreamClient:
             output_format=output_format,
             layer_decomposition=layer_decomposition,
             image_urls=image_urls,
+            optimize_prompt=optimize_prompt,
+            optimize_prompt_mode=optimize_prompt_mode,
         )
 
         n_sequential = num_images if sequential else 1
@@ -262,12 +287,10 @@ class SeedreamClient:
         if guidance_scale is not None:
             payload["guidance_scale"] = guidance_scale
         if optimize_prompt:
-            # 5.0 Pro takes {"mode": ...}; 4.5 and 5.0 Lite take {"enabled": true}.
-            payload["optimize_prompt_options"] = (
-                {"mode": "standard"}
-                if caps.get("optimize_prompt_shape") == "mode"
-                else {"enabled": True}
-            )
+            # The API documents exactly one field here: mode. The {"enabled": true}
+            # this used to send is not part of the schema, and unrecognised keys are
+            # dropped silently, so prompt optimisation was very likely a no-op.
+            payload["optimize_prompt_options"] = {"mode": optimize_prompt_mode}
         if output_format:
             payload["output_format"] = output_format
         if layer_decomposition:
@@ -275,9 +298,13 @@ class SeedreamClient:
         if image_urls:
             payload["image"] = image_urls
         if sequential:
-            payload["sequential_image_generation"] = "enabled"
-            if num_images > 1:
-                payload["sequential_image_generation_options"] = {"n": num_images}
+            # "auto" lets the model decide how many to return, capped by max_images.
+            # "enabled" is not a documented value.
+            payload["sequential_image_generation"] = "auto"
+            # The cap field is max_images. This used to send {"n": ...}, which the
+            # API drops silently — verified live: asking for six images with
+            # {"n": 2} returned and billed six, {"max_images": 2} returned two.
+            payload["sequential_image_generation_options"] = {"max_images": num_images}
         elif image_urls and caps.get("supports_sequential", False):
             # Explicitly disable when references are present but no set is wanted.
             # Omitted on models without batch support — 5.0 Pro rejects the key
@@ -304,6 +331,15 @@ class SeedreamClient:
             correlation_id=cid,
         )
 
+        # A request can come back 200 with a top-level error object, and in a batch
+        # an individual image can fail while its siblings succeed (data[].error).
+        # Both were previously discarded.
+        top_error = resp.get("error") or {}
+        if top_error.get("message"):
+            raise APIError(
+                f"{top_error.get('code', 'Error')}: {top_error['message']}"
+            )
+
         images = [
             ImageResult(
                 url=i.get("url"),
@@ -318,8 +354,14 @@ class SeedreamClient:
             for i in extract_images(resp)
         ]
         if not images:
+            failures = "; ".join(
+                f"{e.get('code', 'error')}: {e.get('message', '')}"
+                for e in (i.get("error") for i in (resp.get("data") or []))
+                if e
+            )
             raise ValidationError(
-                f"No images returned. Response keys: {list(resp.keys())}"
+                f"No images returned. {failures}" if failures
+                else f"No images returned. Response keys: {list(resp.keys())}"
             )
 
         return GenerateResult(

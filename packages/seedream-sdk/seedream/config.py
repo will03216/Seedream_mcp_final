@@ -46,10 +46,13 @@ MODELS: dict[str, dict[str, Any]] = {
     "seedream-5-0-260128": {
         "label": "Seedream 5.0 Lite",
         "alias": "5.0-lite",
-        "sizes": ["1K", "2K", "4K", "adaptive"],
+        # Verified live: the API rejects 1K and adaptive here and names
+        # '2k', '3k', '4k' as the valid presets.
+        "sizes": ["2K", "3K", "4K"],
         "default_size": "2K",
         "supports_seed": True,
-        "supports_guidance_scale": True,
+        # Verified live: guidance_scale returns InvalidParameter on this model.
+        "supports_guidance_scale": False,
         "supports_reference_images": True,
         "supports_sequential": True,
         "supports_optimize_prompt": True,
@@ -60,7 +63,9 @@ MODELS: dict[str, dict[str, Any]] = {
     "dola-seedream-5-0-pro-260628": {
         "label": "Seedream 5.0 Pro",
         "alias": "5.0-pro",
-        "sizes": ["1K", "2K"],           # 4K / adaptive are rejected by Pro
+        # 1.5K is documented and verified live (returns e.g. 1792x1344).
+        # 3K / 4K / adaptive are rejected by Pro.
+        "sizes": ["1K", "1.5K", "2K"],
         "default_size": "2K",
         # seed is accepted by Pro but silently ignored, so it is not advertised.
         "supports_seed": False,
@@ -68,9 +73,9 @@ MODELS: dict[str, dict[str, Any]] = {
         "supports_reference_images": True,
         "supports_sequential": False,
         "supports_optimize_prompt": True,
-        # Pro takes {"mode": "standard"|"fast"}, not the {"enabled": true} the
-        # older models take. Sending the wrong shape is an InvalidParameter.
-        "optimize_prompt_shape": "mode",
+        # Only Pro supports optimize_prompt_options.mode == "fast"; the docs say
+        # 5.0 Lite / 4.5 / 3.0 reject that mode.
+        "supports_optimize_prompt_fast": True,
         "supports_output_format": True,
         "supports_layer_decomposition": True,
         "max_reference_images": 10,
@@ -98,6 +103,12 @@ MODEL_ALIASES: dict[str, str] = {
 
 # Output container formats accepted by models that support `output_format`.
 OUTPUT_FORMATS = ("png", "jpeg")
+
+# The API documents guidance_scale as [1, 10].
+GUIDANCE_SCALE_RANGE = (1.0, 10.0)
+
+# optimize_prompt_options.mode. "fast" is Pro-only; the others reject it.
+OPTIMIZE_PROMPT_MODES = ("standard", "fast")
 
 
 def resolve_model(model: str) -> str:

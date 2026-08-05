@@ -262,7 +262,12 @@ class SeedreamClient:
         if guidance_scale is not None:
             payload["guidance_scale"] = guidance_scale
         if optimize_prompt:
-            payload["optimize_prompt_options"] = {"enabled": True}
+            # 5.0 Pro takes {"mode": ...}; 4.5 and 5.0 Lite take {"enabled": true}.
+            payload["optimize_prompt_options"] = (
+                {"mode": "standard"}
+                if caps.get("optimize_prompt_shape") == "mode"
+                else {"enabled": True}
+            )
         if output_format:
             payload["output_format"] = output_format
         if layer_decomposition:

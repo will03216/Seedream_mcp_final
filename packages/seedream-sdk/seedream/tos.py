@@ -146,7 +146,8 @@ class TOSClient:
         req = urllib_request.Request(url, data=data, headers=headers, method=method)
         try:
             with urllib_request.urlopen(req, timeout=TOS_TIMEOUT) as resp:
-                return resp.read()
+                body_bytes: bytes = resp.read()
+                return body_bytes
         except error.HTTPError as exc:
             detail = exc.read().decode(errors="ignore")
             raise APIError(f"TOS HTTP {exc.code}: {detail}", status_code=exc.code) from exc

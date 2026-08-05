@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import os
 import re
+from typing import Any
 
 __version__ = "1.0.0"
 
@@ -27,7 +28,7 @@ SIZE_WH_RE = re.compile(r"^\d{3,5}x\d{3,5}$")
 # The supports_* flags are enforced by the client, which rejects an unsupported
 # parameter up front rather than letting the API return an opaque
 # InvalidParameter — Seedream 5.0 Pro hard-errors on several of them.
-MODELS: dict[str, dict] = {
+MODELS: dict[str, dict[str, Any]] = {
     "seedream-4-5-251128": {
         "label": "Seedream 4.5",
         "alias": "4.5",
@@ -67,6 +68,9 @@ MODELS: dict[str, dict] = {
         "supports_reference_images": True,
         "supports_sequential": False,
         "supports_optimize_prompt": True,
+        # Pro takes {"mode": "standard"|"fast"}, not the {"enabled": true} the
+        # older models take. Sending the wrong shape is an InvalidParameter.
+        "optimize_prompt_shape": "mode",
         "supports_output_format": True,
         "supports_layer_decomposition": True,
         "max_reference_images": 10,
@@ -103,7 +107,7 @@ def resolve_model(model: str) -> str:
     return MODEL_ALIASES.get(model.strip().lower(), model)
 
 
-def model_caps(model: str) -> dict:
+def model_caps(model: str) -> dict[str, Any]:
     return MODELS.get(model, MODELS[DEFAULT_MODEL])
 
 

@@ -237,6 +237,21 @@ def test_layer_downloads_named_by_z_index(client, monkeypatch, tmp_path):
     assert r.images[1].local_path.endswith("seedream-layer1.png")
 
 
+def test_optimize_prompt_shape_is_per_model(client, monkeypatch):
+    """Pro takes {"mode": ...}; the older models take {"enabled": true}."""
+    capture: dict = {}
+    _fake_response(monkeypatch, capture)
+
+    client.generate("x", model="4.5", optimize_prompt=True)
+    assert capture["payload"]["optimize_prompt_options"] == {"enabled": True}
+
+    client.generate("x", model="5.0-lite", optimize_prompt=True)
+    assert capture["payload"]["optimize_prompt_options"] == {"enabled": True}
+
+    client.generate("x", model="5.0-pro", optimize_prompt=True)
+    assert capture["payload"]["optimize_prompt_options"] == {"mode": "standard"}
+
+
 def test_output_format_validated(client):
     with pytest.raises(ValidationError):
         client.generate("x", model="5.0-pro", output_format="webp")

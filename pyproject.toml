@@ -5,6 +5,17 @@ members = [
     "packages/seedream-cli",
 ]
 
+# CI runs `uv sync --all-packages --dev`, and --dev resolves this PEP 735 group.
+# The per-package [project.optional-dependencies] dev extras are NOT picked up by
+# that flag, so the toolchain has to be declared here or `uv run ruff` finds
+# nothing to spawn.
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "mypy>=1.8.0",
+    "ruff>=0.3.0",
+]
+
 [tool.ruff]
 target-version = "py310"
 line-length = 100

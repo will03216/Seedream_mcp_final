@@ -60,8 +60,8 @@ class GenerateResult:
     model: str
     images: list[ImageResult] = field(default_factory=list)
     mode: str = ""
-    usage: dict | None = None
-    raw: dict = field(default_factory=dict)
+    usage: dict[str, Any] | None = None
+    raw: dict[str, Any] = field(default_factory=dict)
 
     @property
     def urls(self) -> list[str]:

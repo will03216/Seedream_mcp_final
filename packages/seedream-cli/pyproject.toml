@@ -23,6 +23,12 @@ dev = [
     "ruff>=0.3.0",
 ]
 
+# The sibling packages resolve from the workspace rather than PyPI. uv refuses to
+# build a member that depends on another member without this.
+[tool.uv.sources]
+seedream-sdk = { workspace = true }
+seedream-mcp = { workspace = true }
+
 [project.scripts]
 seedream = "seedream_cli.main:app"
 

@@ -42,7 +42,7 @@ logger = logging.getLogger("seedream_mcp")
 mcp = FastMCP(
     name="seedream",
     instructions=(
-        "Tools for generating images with BytePlus Seedream 4.5 and Seedream 5.0 Lite. "
+        "Tools for generating images with BytePlus Seedream 4.5, 5.0 Lite and 5.0 Pro. "
         "PREFERRED: use seedream_generate for most tasks — it is synchronous and returns "
         "the finished image URLs directly (no polling needed). "
         "For text-to-image, pass just a prompt. For editing or reference-based generation, "
@@ -51,8 +51,12 @@ mcp = FastMCP(
         "When the user has a LOCAL image file (a filesystem path) that needs to be used as a "
         "reference, first upload it with seedream_upload_image_to_tos to get a public URL. If "
         "the user has not said which bucket, call seedream_list_tos_buckets and ASK which to use. "
-        "Model IDs: seedream-4-5-251128 (Seedream 4.5), seedream-5-0-260128 (Seedream 5.0 Lite). "
-        "Note: Seedream 4.5 does not support the 1K size — use 2K or 4K."
+        "To split an image into separate layers (text groups, subjects, background), set "
+        "layer_decomposition=true with model='5.0-pro' and the source image in image_urls. "
+        "Model IDs: seedream-4-5-251128 (Seedream 4.5), seedream-5-0-260128 (Seedream 5.0 "
+        "Lite), dola-seedream-5-0-pro-260628 (Seedream 5.0 Pro). "
+        "Note: Seedream 4.5 does not support the 1K size — use 2K or 4K. Seedream 5.0 Pro "
+        "supports only 1K/2K and has no sequential sets or guidance_scale."
     ),
     transport_security=TransportSecuritySettings(enable_dns_rebinding_protection=False),
 )
@@ -84,21 +88,28 @@ def seedream_generate(
     response_format: str = "url",
     watermark: bool = False,
     optimize_prompt: bool = False,
+    output_format: str = "",
+    layer_decomposition: bool = False,
 ) -> dict:
     """Generate image(s) with BytePlus Seedream. Synchronous — returns image URLs directly.
 
-    Handles all three modes in one call:
+    Handles all four modes in one call:
       1. Text-to-image: pass only a prompt.
       2. Edit / reference / composition: pass image_urls (public HTTPS URLs) and
          describe what to change and what to preserve.
       3. Sequential image set: set sequential=true and num_images=N for a
          consistent multi-panel series.
+      4. Layer decomposition: set layer_decomposition=true with model="5.0-pro"
+         to split one input image into separate layers.
 
     Args:
         prompt: Natural-language description. For text-in-image, wrap the exact
                 words in double quotes. For editing, state what to change and keep.
         model: Model ID or alias. "4.5" / seedream-4-5-251128 (default),
-               "5.0-lite" / seedream-5-0-260128. Seedream 4.5 has no 1K size.
+               "5.0-lite" / seedream-5-0-260128,
+               "5.0-pro" / dola-seedream-5-0-pro-260628.
+               Seedream 4.5 has no 1K size; 5.0 Pro has no 4K/adaptive size, no
+               sequential sets and no guidance_scale, and caps refs at 10.
         size: "1K" | "2K" | "4K" | "adaptive" | explicit "WxH" (e.g. 2048x2048).
               Defaults to the model's default (2K).
         image_urls: Reference image URLs (public HTTPS). Local files must be
@@ -110,9 +121,23 @@ def seedream_generate(
         response_format: "url" (default) or "b64_json".
         watermark: Add a watermark to the output.
         optimize_prompt: Ask the API to expand/optimize the prompt.
+        output_format: "png" or "jpeg" (5.0 Pro / 5.0 Lite only; API default jpeg).
+        layer_decomposition: Split the image in image_urls into separate layers,
+                returning one image per layer. Seedream 5.0 Pro only, and requires
+                image_urls. In the prompt, say how many layers and name each with
+                its bounding box, e.g. 'Split the content in the image into three
+                layers, including two text groups: <bbox>179 58 809 197</bbox>,
+                <bbox>65 216 319 280</bbox>; and one parrot: <bbox>330 274 641
+                991</bbox>'. bbox coordinates are left top right bottom on a
+                0–1000 scale. Use output_format="png" to keep transparency.
 
     Returns:
         dict with model, count, and images (each with url or b64_json).
+        With layer_decomposition: n+1 images — a flattened base image at
+        z_index 0 plus one per layer at z_index 1..n, each carrying name,
+        description and bounding_box. Layers are PNG with transparency even
+        when output_format is jpeg. The decomposition is intermittent: if no
+        image has a z_index it silently did not apply, so retry once.
     """
     try:
         result = _client().generate(
@@ -127,12 +152,25 @@ def seedream_generate(
             response_format=response_format,
             watermark=watermark,
             optimize_prompt=optimize_prompt,
+            output_format=output_format,
+            layer_decomposition=layer_decomposition,
         )
     except SeedreamError as exc:
         return _err(exc)
 
     out = result.to_dict()
-    if result.urls:
+    if layer_decomposition and result.urls:
+        if result.layers:
+            out["message"] = (
+                f"{len(result.layers)} layer(s) ready, plus the flattened base image. "
+                "Layers are listed with z_index (1 = bottom) and are transparent PNGs."
+            )
+        else:
+            out["message"] = (
+                "Decomposition did not apply — the API returned a single flattened "
+                "image with no layers. This is intermittent; retry the same request."
+            )
+    elif result.urls:
         out["message"] = "Image(s) ready. Display or download the url(s)."
     else:
         out["message"] = "Image(s) generated as base64 (response_format=b64_json)."

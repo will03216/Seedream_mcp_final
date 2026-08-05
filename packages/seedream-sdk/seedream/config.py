@@ -24,6 +24,9 @@ SIZE_WH_RE = re.compile(r"^\d{3,5}x\d{3,5}$")
 
 # Model capability registry. Sizes list the named presets each model accepts;
 # explicit WxH strings (e.g. "2048x2048") are also accepted for any model.
+# The supports_* flags are enforced by the client, which rejects an unsupported
+# parameter up front rather than letting the API return an opaque
+# InvalidParameter — Seedream 5.0 Pro hard-errors on several of them.
 MODELS: dict[str, dict] = {
     "seedream-4-5-251128": {
         "label": "Seedream 4.5",
@@ -35,6 +38,9 @@ MODELS: dict[str, dict] = {
         "supports_reference_images": True,
         "supports_sequential": True,
         "supports_optimize_prompt": True,
+        "supports_output_format": False,
+        "supports_layer_decomposition": False,
+        "max_reference_images": MAX_REFERENCE_IMAGES,
     },
     "seedream-5-0-260128": {
         "label": "Seedream 5.0 Lite",
@@ -46,6 +52,24 @@ MODELS: dict[str, dict] = {
         "supports_reference_images": True,
         "supports_sequential": True,
         "supports_optimize_prompt": True,
+        "supports_output_format": True,
+        "supports_layer_decomposition": False,
+        "max_reference_images": MAX_REFERENCE_IMAGES,
+    },
+    "dola-seedream-5-0-pro-260628": {
+        "label": "Seedream 5.0 Pro",
+        "alias": "5.0-pro",
+        "sizes": ["1K", "2K"],           # 4K / adaptive are rejected by Pro
+        "default_size": "2K",
+        # seed is accepted by Pro but silently ignored, so it is not advertised.
+        "supports_seed": False,
+        "supports_guidance_scale": False,
+        "supports_reference_images": True,
+        "supports_sequential": False,
+        "supports_optimize_prompt": True,
+        "supports_output_format": True,
+        "supports_layer_decomposition": True,
+        "max_reference_images": 10,
     },
 }
 
@@ -60,7 +84,16 @@ MODEL_ALIASES: dict[str, str] = {
     "5-0-lite": "seedream-5-0-260128",
     "lite": "seedream-5-0-260128",
     "seedream-5.0-lite": "seedream-5-0-260128",
+    "5.0-pro": "dola-seedream-5-0-pro-260628",
+    "5-0-pro": "dola-seedream-5-0-pro-260628",
+    "pro": "dola-seedream-5-0-pro-260628",
+    "seedream-5.0-pro": "dola-seedream-5-0-pro-260628",
+    # BytePlus documents this as the public alias of the dola- prefixed ID.
+    "seedream-5-0-pro-260628": "dola-seedream-5-0-pro-260628",
 }
+
+# Output container formats accepted by models that support `output_format`.
+OUTPUT_FORMATS = ("png", "jpeg")
 
 
 def resolve_model(model: str) -> str:

@@ -71,11 +71,18 @@ def request_with_retry(
     ) from last_exc
 
 
+# Fields a layer_decomposition response carries per entry, on top of the usual
+# url/size. z_index orders the stack (0 is the flattened base image); name and
+# description identify what was cut out; bounding_box locates it in the source.
+_LAYER_FIELDS = ("output_format", "z_index", "name", "description", "bounding_box")
+
+
 def extract_images(resp: dict) -> list[dict[str, Any]]:
     """Normalize the /images/generations response `data` array.
 
-    Each item is returned as {url?, b64_json?, size?} — whichever fields the
-    API included. Order is preserved (matters for sequential image sets).
+    Each item is returned as {url?, b64_json?, size?} plus any layer metadata the
+    API included. Order is preserved (matters for sequential image sets, and for
+    layer stacks where the API returns layers out of z_index order).
     """
     data = resp.get("data") or []
     out: list[dict[str, Any]] = []
@@ -89,6 +96,10 @@ def extract_images(resp: dict) -> list[dict[str, Any]]:
             entry["b64_json"] = item["b64_json"]
         if item.get("size"):
             entry["size"] = item["size"]
+        for field in _LAYER_FIELDS:
+            # z_index 0 is the base image, so test presence rather than truthiness.
+            if item.get(field) is not None:
+                entry[field] = item[field]
         if entry:
             out.append(entry)
     return out

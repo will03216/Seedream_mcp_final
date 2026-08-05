@@ -43,3 +43,11 @@ htmlcov/
 
 # Docker
 .dockerignore
+
+# Generated image sets — outputs, never source
+generated/
+artifacts/
+
+# Composed build artifacts — regenerate with `run_workflow.py render`
+*.rendered.json
+*.rendered.qc.md

@@ -1,0 +1,47 @@
+{
+  "id": "golden-hour-rooftop",
+  "label": "Golden-hour rooftop — lifestyle / lookbook",
+  "status": "smoke-tested",
+  "note": "Second campaign, proving the look is genuinely swappable — one --campaign flag re-shoots a whole set. Two heroes generated and reviewed on the Summer Daze tee: casting, set, wardrobe and grade all swapped cleanly and the chest print survived intact. Fan-outs and macros under this campaign are still unrun. The cream-garment-on-warm-concrete contrast risk did NOT materialise here because the low sun backlights the model and rim-lights the shoulders — but a front-lit variant of this campaign would be a real risk.",
+
+  "model_casting": "young adult man, late-20s, medium-brown skin, short dark cropped hair with a close beard, relaxed easy expression",
+  "pronoun": {
+    "noun": "man",
+    "subject": "he",
+    "object": "him",
+    "possessive": "his"
+  },
+  "model_reference": null,
+
+  "set": "an open city rooftop at golden hour, warm pale concrete underfoot and a soft out-of-focus skyline behind",
+  "set_short": "rooftop at golden hour",
+  "light": "low warm late-afternoon sun raking from behind and to one side, long soft shadows, gentle lens flare, warm highlight rim on the shoulders",
+  "light_short": "warm low golden-hour sun",
+  "camera_full_body": "full-body head-to-toe framing, model centred, eye-level, 50mm lens look, shallow depth so the skyline falls soft, small even margin above the head and below the shoes",
+  "camera_crop": "Eye-level, 85mm, background falling well out of focus",
+  "grade": "Photorealistic editorial lifestyle photography, warm golden grade",
+
+  "flatlay_surface": "a warm pale concrete surface",
+  "flatlay_light": "Soft directional late-afternoon light, gentle shadow in the fabric folds.",
+  "footwear_noun": "boots",
+  "accessories_rule": "No jewellery, no bag, no other accessories.",
+
+  "wardrobe": {
+    "top": "a plain washed-black cotton crew tee",
+    "bottom": "loose stone-grey cotton trousers",
+    "outer": null,
+    "footwear": "worn tan leather boots"
+  },
+  "wardrobe_short": {
+    "top": "washed-black crew tee",
+    "bottom": "stone-grey trousers",
+    "outer": null,
+    "footwear": "tan leather boots"
+  },
+
+  "sizes": {
+    "full_body": "1760x2352",
+    "crop": "1760x2352",
+    "macro": "2048x2048"
+  }
+}

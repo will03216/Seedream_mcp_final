@@ -16,6 +16,7 @@ from .config import (
     MAX_REFERENCE_IMAGES,
     MAX_SEQUENTIAL_IMAGES,
     MODELS,
+    OUTPUT_FORMATS,
     SIZE_WH_RE,
     SUBMIT_TIMEOUT,
     TOS_DEFAULT_BUCKET,
@@ -39,7 +40,7 @@ logger = logging.getLogger("seedream")
 
 
 class SeedreamClient:
-    """Client for BytePlus Seedream 4.5 / 5.0 Lite image generation.
+    """Client for BytePlus Seedream 4.5 / 5.0 Lite / 5.0 Pro image generation.
 
     Credentials are resolved in priority order: explicit args → env vars →
     ~/.seedream/credentials file.
@@ -113,13 +114,17 @@ class SeedreamClient:
             )
 
     @staticmethod
-    def _validate_references(image_urls: list[str] | None, n_sequential: int) -> None:
+    def _validate_references(
+        image_urls: list[str] | None, n_sequential: int, model: str
+    ) -> None:
+        caps = model_caps(model)
+        max_refs = caps.get("max_reference_images", MAX_REFERENCE_IMAGES)
         n_refs = len(image_urls or [])
         if image_urls and not all(image_urls):
             raise ValidationError("image contains an empty entry.")
-        if n_refs > MAX_REFERENCE_IMAGES:
+        if n_refs > max_refs:
             raise ValidationError(
-                f"Too many reference images: {n_refs} (max {MAX_REFERENCE_IMAGES})."
+                f"Too many reference images: {n_refs} (max {max_refs} for {model})."
             )
         # Seedream rule: input references + generated images must total ≤ 15.
         if n_refs + max(1, n_sequential) > MAX_SEQUENTIAL_IMAGES:
@@ -127,6 +132,53 @@ class SeedreamClient:
                 f"reference images ({n_refs}) + generated images ({n_sequential}) "
                 f"exceeds the limit of {MAX_SEQUENTIAL_IMAGES}. Reduce one of them."
             )
+
+    @staticmethod
+    def _validate_features(
+        model: str,
+        *,
+        sequential: bool,
+        guidance_scale: float | None,
+        output_format: str,
+        layer_decomposition: bool,
+        image_urls: list[str] | None,
+    ) -> None:
+        """Reject parameters the chosen model does not accept.
+
+        Seedream 5.0 Pro returns InvalidParameter for sequential generation and
+        guidance_scale; failing here names the parameter and the model instead.
+        """
+        caps = model_caps(model)
+        label = caps["label"]
+
+        if sequential and not caps.get("supports_sequential", False):
+            raise ValidationError(
+                f"{label} does not support sequential image sets. "
+                f"Drop sequential/num_images, or use a model that supports them."
+            )
+        if guidance_scale is not None and not caps.get("supports_guidance_scale", False):
+            raise ValidationError(f"{label} does not support guidance_scale.")
+
+        if output_format:
+            if output_format not in OUTPUT_FORMATS:
+                raise ValidationError(
+                    f"Invalid output_format {output_format!r}. "
+                    f"Use one of {', '.join(OUTPUT_FORMATS)}."
+                )
+            if not caps.get("supports_output_format", False):
+                raise ValidationError(f"{label} does not support output_format.")
+
+        if layer_decomposition:
+            if not caps.get("supports_layer_decomposition", False):
+                raise ValidationError(
+                    f"{label} does not support layer_decomposition. "
+                    f"Use model='5.0-pro'."
+                )
+            if not image_urls:
+                raise ValidationError(
+                    "layer_decomposition needs an input image to decompose — "
+                    "pass it in image_urls."
+                )
 
     # ------------------------------------------------------------------
     # Image generation
@@ -146,13 +198,15 @@ class SeedreamClient:
         response_format: str = "url",
         watermark: bool = False,
         optimize_prompt: bool = False,
+        output_format: str = "",
+        layer_decomposition: bool = False,
     ) -> GenerateResult:
         """Generate one or more images. Returns finished image URLs directly.
 
         Args:
             prompt: Natural-language description. For editing/reference tasks,
                     say exactly what to change and what to preserve.
-            model: Model ID or alias ("4.5", "5.0-lite"). Defaults to Seedream 4.5.
+            model: Model ID or alias ("4.5", "5.0-lite", "5.0-pro"). Defaults to 4.5.
             size: "1K" | "2K" | "4K" | "adaptive" | explicit "WxH". Model default if empty.
             image_urls: Reference image URLs (HTTPS). For editing / style / multi-image
                         composition. Local files must be uploaded first (upload_to_tos).
@@ -163,6 +217,14 @@ class SeedreamClient:
             response_format: "url" (default) or "b64_json".
             watermark: Add a watermark to outputs.
             optimize_prompt: Ask the API to expand/optimize the prompt.
+            output_format: "png" or "jpeg". 5.0 Pro / 5.0 Lite only. API default jpeg.
+            layer_decomposition: Split the input image into separate layers, one
+                    generated image per layer. Seedream 5.0 Pro only, and needs
+                    image_urls. Name each layer in the prompt with its bounding box,
+                    e.g. "Split the content into three layers: two text groups
+                    <bbox>179 58 809 197</bbox>, <bbox>65 216 319 280</bbox>; and one
+                    parrot <bbox>330 274 641 991</bbox>". Pair with
+                    output_format="png" to keep per-layer transparency.
         """
         cid = self._cid()
         model_id = resolve_model(model)
@@ -176,9 +238,17 @@ class SeedreamClient:
 
         self._validate_size(size, model_id)
         self._validate_guidance(guidance_scale)
+        self._validate_features(
+            model_id,
+            sequential=sequential,
+            guidance_scale=guidance_scale,
+            output_format=output_format,
+            layer_decomposition=layer_decomposition,
+            image_urls=image_urls,
+        )
 
         n_sequential = num_images if sequential else 1
-        self._validate_references(image_urls, n_sequential)
+        self._validate_references(image_urls, n_sequential, model_id)
 
         payload: dict[str, Any] = {
             "model": model_id,
@@ -192,20 +262,31 @@ class SeedreamClient:
         if guidance_scale is not None:
             payload["guidance_scale"] = guidance_scale
         if optimize_prompt:
-            payload["optimize_prompt_options"] = {"enabled": True}
+            # 5.0 Pro takes {"mode": ...}; 4.5 and 5.0 Lite take {"enabled": true}.
+            payload["optimize_prompt_options"] = (
+                {"mode": "standard"}
+                if caps.get("optimize_prompt_shape") == "mode"
+                else {"enabled": True}
+            )
+        if output_format:
+            payload["output_format"] = output_format
+        if layer_decomposition:
+            payload["layer_decomposition"] = True
         if image_urls:
             payload["image"] = image_urls
         if sequential:
             payload["sequential_image_generation"] = "enabled"
             if num_images > 1:
                 payload["sequential_image_generation_options"] = {"n": num_images}
-        else:
+        elif image_urls and caps.get("supports_sequential", False):
             # Explicitly disable when references are present but no set is wanted.
-            if image_urls:
-                payload["sequential_image_generation"] = "disabled"
+            # Omitted on models without batch support — 5.0 Pro rejects the key
+            # outright, even set to "disabled".
+            payload["sequential_image_generation"] = "disabled"
 
         mode = (
-            "sequential" if sequential
+            "layer-decomposition" if layer_decomposition
+            else "sequential" if sequential
             else "edit/reference" if image_urls
             else "text-to-image"
         )
@@ -224,7 +305,16 @@ class SeedreamClient:
         )
 
         images = [
-            ImageResult(url=i.get("url"), b64_json=i.get("b64_json"), size=i.get("size"))
+            ImageResult(
+                url=i.get("url"),
+                b64_json=i.get("b64_json"),
+                size=i.get("size"),
+                output_format=i.get("output_format"),
+                z_index=i.get("z_index"),
+                name=i.get("name"),
+                description=i.get("description"),
+                bounding_box=i.get("bounding_box"),
+            )
             for i in extract_images(resp)
         ]
         if not images:
@@ -252,12 +342,26 @@ class SeedreamClient:
 
         Populates ImageResult.local_path for each saved file. b64_json responses
         are decoded and written too.
+
+        Layer-decomposition results are named by z_index — `<prefix>-base.jpg`
+        for the flattened composite and `<prefix>-layer1.png` upward — so the
+        stack reassembles in filename order. Each file takes the extension the
+        API reports for it: layers come back as PNG even when output_format is
+        jpeg, because they carry an alpha channel.
         """
         result = self.generate(prompt, **kwargs)
         out = Path(output_dir).expanduser()
         out.mkdir(parents=True, exist_ok=True)
+        default_ext = "jpg" if kwargs.get("output_format") == "jpeg" else "png"
         for idx, img in enumerate(result.images):
-            dest = out / f"{prefix}-{idx + 1}.png"
+            ext = {"jpeg": "jpg", "png": "png"}.get(img.output_format or "", default_ext)
+            if img.z_index is None:
+                stem = f"{prefix}-{idx + 1}"
+            elif img.is_base_image:
+                stem = f"{prefix}-base"
+            else:
+                stem = f"{prefix}-layer{img.z_index}"
+            dest = out / f"{stem}.{ext}"
             if img.url:
                 self._download(img.url, dest)
                 img.local_path = str(dest)
@@ -334,12 +438,19 @@ class SeedreamClient:
                     "alias": caps["alias"],
                     "sizes": caps["sizes"],
                     "default_size": caps["default_size"],
+                    "max_reference_images": caps.get(
+                        "max_reference_images", MAX_REFERENCE_IMAGES
+                    ),
                     "features": {
                         "reference_images": caps.get("supports_reference_images", False),
                         "sequential": caps.get("supports_sequential", False),
                         "guidance_scale": caps.get("supports_guidance_scale", False),
                         "seed": caps.get("supports_seed", False),
                         "optimize_prompt": caps.get("supports_optimize_prompt", False),
+                        "output_format": caps.get("supports_output_format", False),
+                        "layer_decomposition": caps.get(
+                            "supports_layer_decomposition", False
+                        ),
                     },
                 }
                 for mid, caps in MODELS.items()

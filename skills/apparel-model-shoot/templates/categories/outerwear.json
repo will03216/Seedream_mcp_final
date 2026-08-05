@@ -1,0 +1,199 @@
+{
+  "id": "outerwear",
+  "label": "Outerwear — jackets, coats, blazers",
+  "status": "draft",
+  "note": "Authored, never generated. Outerwear needs two states: the hero is fastened (the intended silhouette), and the open state is a normal fan-out FROM that hero — modelling it as a second step-1 hero would generate a second person. The lining macro is optional and gated on an 'inside' reference: most brands won't supply one, and without gating the model would invent a lining.",
+
+  "hero_kind": "on-model-full-body",
+  "product_slot": "outer",
+  "styling_slots": ["top", "bottom", "footwear"],
+  "garment_noun": "jacket",
+  "garment_noun_short": "jacket",
+
+  "preserve_fields": [
+    "the shell fabric colour, texture and sheen",
+    "the collar or lapel shape and how it rolls",
+    "the closure — its type, count, spacing and hardware finish",
+    "the pocket type, placement and any flaps or welts",
+    "the shoulder line, sleeve head and cuff construction",
+    "the body length, hem finish and any vent or belt"
+  ],
+
+  "required_ref_roles": ["front"],
+  "optional_ref_roles": ["back", "detail", "inside"],
+  "ref_descriptions": {
+    "front": "the front of a jacket photographed flat on a headless mannequin",
+    "back": "the BACK of the same jacket photographed on a mannequin",
+    "detail": "a macro of the same jacket's closure, collar and fabric",
+    "inside": "the INSIDE of the same jacket showing its lining"
+  },
+
+  "blocks": {
+    "keep_onmodel": "Keep the SAME {{campaign.pronoun.noun}} (identical face, hair, skin tone and build), the SAME {{product.short_name}} with its shell fabric, collar, closure and pockets unchanged, the SAME {{wardrobe_short}}, and the SAME {{campaign.set_short}} and {{campaign.light_short}}.",
+    "must_preserve": "MUST PRESERVE EXACTLY from the references, unchanged: {{product.garment}}; and {{preserve_fields}}. Do not redraw, restyle, recolour, resize or reposition the closure, collar, pockets or hardware. Do not add any extra text, logo or graphic anywhere on the garment.",
+    "tail": "{{campaign.grade}}, sharp focus, no motion blur, no extra text or logos.",
+    "no_person": "ABSOLUTELY NO human presence: no skin, no neck, no hands, no shoulders, no body underneath the fabric. Nothing but cloth.",
+    "flatlay_setup": "flat-lay product photography, no person and no mannequin anywhere in the frame. The {{category.garment_noun_short}} is laid flat and face-up on {{campaign.flatlay_surface}} and photographed from directly above"
+  },
+
+  "hero": {
+    "id": "hero",
+    "size_class": "full_body",
+    "ref_roles": ["front", "detail"],
+    "runs": 3,
+    "prompt": [
+      "{{ref_roles_sentence}}",
+      "",
+      "Task: produce a studio e-commerce hero photograph of a real human model wearing this exact {{category.garment_noun}}, FASTENED. Remove the mannequin entirely.",
+      "",
+      "MODEL: {{campaign.model_casting}}, looking straight into the lens. Standing upright and square-on to camera, arms hanging relaxed at {{campaign.pronoun.possessive}} sides, hands out of the pockets, weight even on both feet.",
+      "",
+      "STYLING: the {{category.garment_noun_short}} from Image 1 worn closed and fully fastened over {{wardrobe}}, so the intended silhouette and the closure line read cleanly down the centre front. {{campaign.accessories_rule}}",
+      "",
+      "SET: {{campaign.set}}, {{campaign.light}}.",
+      "",
+      "CAMERA: {{campaign.camera_full_body}}.",
+      "",
+      "{{blocks.must_preserve}}",
+      "",
+      "{{campaign.grade}}, natural skin texture, true-to-life {{product.fabric}}, sharp focus throughout, no motion blur."
+    ]
+  },
+
+  "fanouts": [
+    {
+      "id": "fanout-1-open-front",
+      "size_class": "full_body",
+      "ref_roles": [],
+      "prompt": [
+        "{{ref_roles_sentence}} {{blocks.keep_onmodel}}",
+        "",
+        "Change only how the garment is worn: the {{category.garment_noun_short}} is now fully UNFASTENED and hanging open, the front edges falling naturally to either side so the layers underneath are visible between them and the inside facing shows along the opening. The lapel or collar rolls as it would when open. Same standing pose, arms relaxed at {{campaign.pronoun.possessive}} sides, full-body head-to-toe framing at eye level.",
+        "",
+        "Half of all outerwear is worn open — this state is as important as the fastened hero.",
+        "",
+        "{{blocks.tail}}"
+      ]
+    },
+    {
+      "id": "fanout-2-back-full",
+      "size_class": "full_body",
+      "ref_roles": ["back"],
+      "hero_label": "the approved hero shot of the model",
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce the back view of the same shot: the SAME {{campaign.pronoun.noun}} (identical hair, skin tone and build) seen from directly behind, standing upright, arms relaxed at {{campaign.pronoun.possessive}} sides, the {{category.garment_noun_short}} fastened. SAME {{wardrobe_short}}, SAME {{campaign.set_short}} and {{campaign.light_short}}, SAME full-body head-to-toe framing at eye level.",
+        "",
+        "MUST PRESERVE EXACTLY from Image 2, following the natural drape of the fabric on the body: the yoke and shoulder seams, any centre or side vent and its length, the back length relative to the hip, the hood shape if there is one lying down against the back, and any belt, tab or half-belt. Do not add any extra text, logo or graphic.",
+        "",
+        "{{campaign.grade}}, sharp focus, no motion blur."
+      ]
+    },
+    {
+      "id": "fanout-3-threequarter-pockets",
+      "size_class": "full_body",
+      "ref_roles": [],
+      "prompt": [
+        "{{ref_roles_sentence}} {{blocks.keep_onmodel}}",
+        "",
+        "Change only the pose and camera: full-body three-quarter view, {{campaign.pronoun.possessive}} body turned about 35 degrees with the head back to the lens, both hands pushed into the {{category.garment_noun_short}}'s own pockets so the pocket placement, depth and entry angle read clearly and the garment falls the way it does in use. Weight on the back foot. Eye-level, 85mm, head-to-toe framing.",
+        "",
+        "Pocket placement is a genuine outerwear feature — this is the shot where it belongs.",
+        "",
+        "{{blocks.tail}}"
+      ]
+    },
+    {
+      "id": "fanout-4-collar-crop",
+      "size_class": "crop",
+      "ref_roles": [],
+      "prompt": [
+        "{{ref_roles_sentence}} {{blocks.keep_onmodel}}",
+        "",
+        "Change only the framing: a waist-up crop, front view, so the collar stand, the lapel roll, the top of the closure and the shoulder line fill the upper two thirds of the frame. If the garment has a hood, it is up and framing the face. Gentle expression, looking into the lens.",
+        "",
+        "{{campaign.grade}}, {{campaign.camera_crop}}, natural skin texture, visible {{product.fabric}} texture, sharp focus, no extra text or logos."
+      ]
+    },
+    {
+      "id": "fanout-5-closure-macro",
+      "size_class": "macro",
+      "use_hero": false,
+      "optional": true,
+      "requires_ref_roles": ["detail"],
+      "ref_roles": ["detail", "front"],
+      "ref_descriptions": {
+        "detail": "a macro of a jacket's closure, collar and fabric",
+        "front": "the full front of the same jacket on a mannequin"
+      },
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a square macro detail photograph of the CLOSURE ALONE — {{blocks.flatlay_setup}}, the shell relaxed with soft natural folds.",
+        "",
+        "Framing: the frame is filled by the centre-front closure — the zip pull, snap or buttons running vertically and true through the frame, the storm flap or placket edge beside it, and the topstitching that secures it. Hardware faces square to the lens; any maker's mark on it is fully legible rather than suggested.",
+        "",
+        "{{blocks.no_person}}",
+        "",
+        "MUST PRESERVE EXACTLY from Image 1: the hardware type, finish and wear, the exact spacing and count of the closure elements, the stitch colour and gauge securing them, and the shell fabric's weave and sheen around them. Do not redraw, recolour, resize or reposition any of it. Do not add any extra text, logo or graphic.",
+        "",
+        "{{campaign.flatlay_light}}",
+        "",
+        "Extreme detail macro product photography, 100mm macro look, razor-sharp hardware and thread detail, flat even depth of field."
+      ]
+    },
+    {
+      "id": "fanout-6-cuff-macro",
+      "size_class": "macro",
+      "use_hero": false,
+      "optional": true,
+      "requires_ref_roles": ["detail"],
+      "ref_roles": ["detail"],
+      "ref_descriptions": {
+        "detail": "a macro of a jacket's fabric, stitching and trims"
+      },
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a square macro detail photograph of the CUFF ALONE — {{blocks.flatlay_setup}}. One sleeve end lies across the frame at a slight diagonal, the cuff opening toward the lower right.",
+        "",
+        "Framing: the cuff construction fills the frame — the tab, snap, storm cuff or ribbing, the sleeve hem stitching, and the way the shell gathers or sits flat into it.",
+        "",
+        "{{blocks.no_person}}",
+        "",
+        "MUST PRESERVE EXACTLY from the reference: the cuff construction and any hardware on it, the stitch colour and density, and the shell fabric's weave. Do not add any extra text, logo or graphic.",
+        "",
+        "{{campaign.flatlay_light}}",
+        "",
+        "Extreme detail macro product photography, 100mm macro look, razor-sharp texture, flat even depth of field."
+      ]
+    },
+    {
+      "id": "fanout-7-lining-macro",
+      "size_class": "macro",
+      "use_hero": false,
+      "optional": true,
+      "requires_ref_roles": ["inside"],
+      "ref_roles": ["inside"],
+      "ref_descriptions": {
+        "inside": "the INSIDE of a jacket showing its lining"
+      },
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a square detail photograph of the LINING ALONE — {{blocks.flatlay_setup}}, opened out so the inside face is uppermost and fills the frame.",
+        "",
+        "Framing: the lining fabric fills the frame with an inside pocket and the facing seam visible, showing the lining's colour, pattern and sheen against the shell's inner edge.",
+        "",
+        "{{blocks.no_person}}",
+        "",
+        "MUST PRESERVE EXACTLY from the reference: the lining colour, pattern and weave, the inside pocket construction, the facing seam and any interior label with its exact wording. Invent nothing — reproduce only what the reference shows.",
+        "",
+        "{{campaign.flatlay_light}}",
+        "",
+        "Extreme detail product photography, 100mm macro look, razor-sharp texture, flat even depth of field."
+      ]
+    }
+  ]
+}

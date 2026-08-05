@@ -44,3 +44,22 @@ def test_generate_text_to_image():
         result = runner.invoke(app, ["generate", "-p", "a cat"])
     assert result.exit_code == 0
     assert "https://cdn/out.png" in result.output
+
+
+def test_generate_layer_decomposition_flag():
+    fake = GenerateResult(
+        model="dola-seedream-5-0-pro-260628",
+        images=[ImageResult(url=f"https://cdn/layer{i}.png") for i in range(2)],
+        mode="layer-decomposition",
+    )
+    with patch("seedream_cli.commands.generate.SeedreamClient") as mk:
+        mk.return_value.generate.return_value = fake
+        result = runner.invoke(app, [
+            "generate", "-p", "split into two layers", "-m", "5.0-pro",
+            "-r", "https://cdn/src.png", "--layer-decomposition", "--output-format", "png",
+        ])
+    assert result.exit_code == 0
+    kwargs = mk.return_value.generate.call_args.kwargs
+    assert kwargs["layer_decomposition"] is True
+    assert kwargs["output_format"] == "png"
+    assert "https://cdn/layer0.png" in result.output

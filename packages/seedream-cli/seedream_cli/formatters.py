@@ -29,9 +29,24 @@ def models_table(data: dict) -> None:
 
 
 def images_panel(result) -> None:
-    """Print the generated images from a GenerateResult."""
-    for idx, img in enumerate(result.images, start=1):
-        line = f"  [success]✔[/success]  Image {idx}"
+    """Print the generated images from a GenerateResult.
+
+    Layer-decomposition results are listed in z_index order and labelled with the
+    name the API gave each layer, so you can tell which cutout is which without
+    opening the files.
+    """
+    images = result.images
+    if any(img.z_index is not None for img in images):
+        base = result.base_image
+        images = ([base] if base else []) + result.layers
+
+    for idx, img in enumerate(images, start=1):
+        if img.z_index is None:
+            line = f"  [success]✔[/success]  Image {idx}"
+        elif img.is_base_image:
+            line = "  [success]✔[/success]  Base image"
+        else:
+            line = f"  [success]✔[/success]  Layer {img.z_index}  {img.name or ''}".rstrip()
         if img.size:
             line += f"  [dim]{img.size}[/dim]"
         console.print(line)

@@ -11,7 +11,9 @@ license = { text = "MIT" }
 keywords = ["byteplus", "seedream", "mcp", "image-generation", "ai"]
 dependencies = [
     "seedream-sdk>=1.0.0",
-    "mcp>=1.0.0",
+    # mcp 2.0 removed mcp.server.fastmcp, which server.py is built on. Unpinned,
+    # a fresh resolve picks 2.x and the server fails to import at all.
+    "mcp>=1.0.0,<2.0.0",
     "uvicorn>=0.30.0",
 ]
 
@@ -21,6 +23,11 @@ dev = [
     "mypy>=1.8.0",
     "ruff>=0.3.0",
 ]
+
+# seedream-sdk resolves from the workspace rather than PyPI. uv refuses to build a
+# member that depends on another member without this.
+[tool.uv.sources]
+seedream-sdk = { workspace = true }
 
 [project.urls]
 Repository = "https://github.com/byteplus/byteplus-seedream"

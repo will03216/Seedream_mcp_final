@@ -1,0 +1,206 @@
+{
+  "id": "footwear",
+  "label": "Footwear — shoes, boots, sneakers",
+  "status": "draft",
+  "note": "Authored, never generated. hero_kind is on-body-crop: the hero is a lower-leg crop with NO face anywhere in the set, because a shoe hero that includes a model's face wastes the frame on the wrong subject. That also means the usual identity KEEP block does not apply — there is no face to hold — so the shots lock the shoe and the trouser hem instead. Renders the bottom slot only, for the hem break.",
+
+  "hero_kind": "on-body-crop",
+  "product_slot": "footwear",
+  "styling_slots": ["bottom"],
+  "garment_noun": "pair of shoes",
+  "garment_noun_short": "shoes",
+
+  "preserve_fields": [
+    "the upper material, colour and finish",
+    "the silhouette and toe shape",
+    "the sole unit — its colour, height, tread and any midsole stripe",
+    "the lacing or fastening system and its hardware",
+    "the stitching colour, density and panel seams",
+    "any branding, logo or heel tab exactly as it appears"
+  ],
+
+  "required_ref_roles": ["front"],
+  "optional_ref_roles": ["back", "detail", "sole"],
+  "ref_descriptions": {
+    "front": "a pair of shoes photographed in side profile on a plain surface",
+    "back": "the same shoes photographed from behind",
+    "detail": "a macro of the same shoes' upper material and stitching",
+    "sole": "the outsole of the same shoes"
+  },
+
+  "blocks": {
+    "keep_onbody": "Keep the SAME {{product.short_name}} with its upper, silhouette, sole unit, lacing and branding unchanged, the SAME {{wardrobe_short}}, and the SAME {{campaign.set_short}} and {{campaign.light_short}}.",
+    "must_preserve": "MUST PRESERVE EXACTLY from the references, unchanged: {{product.garment}}; and {{preserve_fields}}. Do not redraw, restyle, recolour, resize or reposition any panel, logo, stitch line or sole element. Do not add any extra text, logo or graphic.",
+    "tail": "{{campaign.grade}}, sharp focus, no motion blur, no extra text or logos.",
+    "no_person": "ABSOLUTELY NO human presence: no skin, no ankles, no legs, no hands, no foot inside the shoe. The shoes are empty and hold their own shape.",
+    "product_setup": "product photography, no person and no mannequin anywhere in the frame, the shoes standing on {{campaign.flatlay_surface}}"
+  },
+
+  "hero": {
+    "id": "hero",
+    "size_class": "full_body",
+    "ref_roles": ["front", "detail"],
+    "runs": 3,
+    "prompt": [
+      "{{ref_roles_sentence}}",
+      "",
+      "Task: produce a studio e-commerce hero photograph of this exact {{category.garment_noun}} WORN on a real person, cropped to the lower legs only.",
+      "",
+      "FRAMING: a tight crop from just below the knee to the floor. NO face, NO torso, NO upper body anywhere in the frame — the shoes are the subject and must fill the lower two thirds. Both feet in frame, the near foot turned very slightly outward to a three-quarter angle so the toe shape, the side profile and the lacing all read at once; the far foot square behind it.",
+      "",
+      "STYLING: worn with {{wardrobe}}, the hem breaking just above the shoe so the full silhouette and the sole unit are unobstructed. {{campaign.accessories_rule}}",
+      "",
+      "SET: {{campaign.set}}, {{campaign.light}}, with a soft contact shadow under each shoe so they sit on the floor rather than float.",
+      "",
+      "{{blocks.must_preserve}}",
+      "",
+      "{{campaign.grade}}, true-to-life material texture, sharp focus throughout, no motion blur."
+    ]
+  },
+
+  "fanouts": [
+    {
+      "id": "fanout-1-side-profile",
+      "size_class": "macro",
+      "use_hero": false,
+      "ref_roles": ["front", "detail"],
+      "ref_descriptions": {
+        "front": "a pair of shoes photographed in side profile",
+        "detail": "a macro of the same shoes' upper material and stitching"
+      },
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a square studio photograph of ONE shoe in dead side profile — {{blocks.product_setup}}, shot square-on at the height of the shoe so the profile is true and undistorted.",
+        "",
+        "Framing: the shoe fills the frame lengthways with even margin at toe and heel, the lateral side facing the lens, the sole line running exactly horizontal and parallel to the bottom edge of the frame.",
+        "",
+        "{{blocks.no_person}}",
+        "",
+        "{{blocks.must_preserve}}",
+        "",
+        "{{campaign.flatlay_light}}",
+        "",
+        "Extreme detail product photography, 100mm look, razor-sharp material texture, flat even depth of field."
+      ]
+    },
+    {
+      "id": "fanout-2-top-down-pair",
+      "size_class": "macro",
+      "use_hero": false,
+      "ref_roles": ["front"],
+      "ref_descriptions": {
+        "front": "a pair of shoes photographed on a plain surface"
+      },
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a square studio photograph of BOTH shoes from directly above — {{blocks.product_setup}}, the camera looking straight down.",
+        "",
+        "Framing: the pair sits side by side, both toes pointing to the top of the frame, evenly spaced and level, so the lacing pattern, the tongue, the collar shape and the toe box are all readable and directly comparable between left and right.",
+        "",
+        "{{blocks.no_person}}",
+        "",
+        "{{blocks.must_preserve}}",
+        "",
+        "{{campaign.flatlay_light}}",
+        "",
+        "Extreme detail product photography, 100mm look, razor-sharp material texture, flat even depth of field."
+      ]
+    },
+    {
+      "id": "fanout-3-heel-back",
+      "size_class": "macro",
+      "use_hero": false,
+      "optional": true,
+      "requires_ref_roles": ["back"],
+      "ref_roles": ["back", "detail"],
+      "ref_descriptions": {
+        "back": "a pair of shoes photographed from behind",
+        "detail": "a macro of the same shoes' material and stitching"
+      },
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a square studio photograph of the HEEL from directly behind — {{blocks.product_setup}}, one shoe centred and square to the lens.",
+        "",
+        "Framing: the heel counter and the back of the collar fill the frame, with any heel tab, pull loop, logo or reflective panel centred and fully legible rather than suggested, and the heel of the sole unit resolved beneath.",
+        "",
+        "{{blocks.no_person}}",
+        "",
+        "{{blocks.must_preserve}}",
+        "",
+        "{{campaign.flatlay_light}}",
+        "",
+        "Extreme detail product photography, 100mm look, razor-sharp detail, flat even depth of field."
+      ]
+    },
+    {
+      "id": "fanout-4-sole-macro",
+      "size_class": "macro",
+      "use_hero": false,
+      "optional": true,
+      "requires_ref_roles": ["sole"],
+      "ref_roles": ["sole"],
+      "ref_descriptions": {
+        "sole": "the outsole of a pair of shoes"
+      },
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a square studio photograph of the OUTSOLE — product photography, no person anywhere in the frame. One shoe rests sole-up on {{campaign.flatlay_surface}}, photographed from directly above so the tread faces the lens square-on and undistorted.",
+        "",
+        "Framing: the outsole fills the frame with even margin, the toe toward the top, so the full tread pattern, the flex grooves and any moulded branding are resolved across the whole sole.",
+        "",
+        "{{blocks.no_person}}",
+        "",
+        "MUST PRESERVE EXACTLY from the reference: the tread pattern and its exact geometry, the rubber colour and any colour blocking, the moulded logos and text with correct spelling, and the wear surface finish. Do not add any extra text, logo or graphic.",
+        "",
+        "{{campaign.flatlay_light}}",
+        "",
+        "Extreme detail product photography, 100mm macro look, razor-sharp rubber texture, flat even depth of field."
+      ]
+    },
+    {
+      "id": "fanout-5-onfoot-stride",
+      "size_class": "crop",
+      "ref_roles": [],
+      "prompt": [
+        "{{ref_roles_sentence}} {{blocks.keep_onbody}}",
+        "",
+        "Change the pose and framing: the same lower-leg crop, now caught mid-stride walking toward the lens — the near shoe planted and flexing at the toe, the far shoe lifted just off the floor so its outsole is partly visible. NO face, NO torso, NO upper body in frame.",
+        "",
+        "This shows how the shoe flexes and how the hem moves over it — neither reads in a static product shot.",
+        "",
+        "{{campaign.grade}}, crisp frozen motion, everything in sharp focus, no motion blur, no extra text or logos."
+      ]
+    },
+    {
+      "id": "fanout-6-material-macro",
+      "size_class": "macro",
+      "use_hero": false,
+      "optional": true,
+      "requires_ref_roles": ["detail"],
+      "ref_roles": ["detail", "front"],
+      "ref_descriptions": {
+        "detail": "a macro of a shoe's upper material and stitching",
+        "front": "the same shoes photographed in side profile"
+      },
+      "prompt": [
+        "{{ref_roles_sentence}}",
+        "",
+        "Produce a square macro detail photograph of the UPPER MATERIAL ALONE — product photography, no person anywhere in the frame, the shoe resting on {{campaign.flatlay_surface}}.",
+        "",
+        "Framing: the frame is filled by one panel of the upper where two materials meet at a stitched seam, so the grain, weave or nap of each and the stitching between them are all resolved.",
+        "",
+        "LIGHT: soft light raking slightly across the surface so grain and nap read as texture rather than flat colour.",
+        "",
+        "{{blocks.no_person}}",
+        "",
+        "MUST PRESERVE EXACTLY from Image 1: the material grain and finish, the exact colour of each panel, the stitch colour, gauge and spacing, and any perforation pattern. Do not add any extra text, logo or graphic.",
+        "",
+        "Extreme detail macro product photography, 100mm macro look, razor-sharp material texture, flat even depth of field."
+      ]
+    }
+  ]
+}

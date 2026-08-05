@@ -11,14 +11,14 @@ from seedream.exceptions import SeedreamError
 from ..console import console, err, ok
 from ..formatters import images_panel
 
-app = typer.Typer(help="Generate images with Seedream 4.5 / 5.0 Lite.")
+app = typer.Typer(help="Generate images with Seedream 4.5 / 5.0 Lite / 5.0 Pro.")
 
 
 @app.callback(invoke_without_command=True)
 def generate(
     ctx: typer.Context,
     prompt: str = typer.Option(..., "--prompt", "-p", help="Image description / edit instruction."),
-    model: str = typer.Option("", "--model", "-m", help="Model or alias: 4.5 | 5.0-lite."),
+    model: str = typer.Option("", "--model", "-m", help="Model or alias: 4.5 | 5.0-lite | 5.0-pro."),
     size: str = typer.Option("", "--size", "-s", help="1K | 2K | 4K | adaptive | WxH (default 2K)."),
     ref: list[str] | None = typer.Option(
         None, "--ref", "-r",
@@ -31,6 +31,11 @@ def generate(
     num_images: int = typer.Option(1, "--num-images", "-n", help="Images in sequential mode."),
     optimize_prompt: bool = typer.Option(False, "--optimize-prompt", help="Let the API optimize the prompt."),
     watermark: bool = typer.Option(False, "--watermark", help="Add a watermark to outputs."),
+    output_format: str = typer.Option("", "--output-format", help="png | jpeg (5.0 Pro / 5.0 Lite only)."),
+    layer_decomposition: bool = typer.Option(
+        False, "--layer-decomposition",
+        help="Split the --ref image into separate layers (5.0 Pro only; needs --ref).",
+    ),
     output: str = typer.Option("", "--output", "-o", help="Directory to download the image(s) into."),
     profile: str = typer.Option("default", "--profile", help="Credentials profile."),
 ) -> None:
@@ -39,6 +44,10 @@ def generate(
     Text-to-image needs only --prompt. For editing / reference / composition,
     pass one or more --ref (local paths are uploaded to TOS automatically).
     Use --output to also download the results locally.
+
+    --layer-decomposition splits one --ref image into its component layers on
+    Seedream 5.0 Pro; the prompt must say how many layers and give each a
+    <bbox>left top right bottom</bbox> on a 0–1000 scale.
     """
     if ctx.invoked_subcommand is not None:
         return
@@ -62,7 +71,8 @@ def generate(
         ok(f"Uploaded reference: [dim]{up.url}[/dim]")
         image_urls.append(up.url)
 
-    with Live(Spinner("dots", text="  Generating…", style="cyan"),
+    spinner_text = "  Decomposing into layers…" if layer_decomposition else "  Generating…"
+    with Live(Spinner("dots", text=spinner_text, style="cyan"),
               console=console, refresh_per_second=8, transient=True):
         try:
             if output:
@@ -72,6 +82,8 @@ def generate(
                     seed=seed, guidance_scale=guidance_scale,
                     sequential=sequential, num_images=num_images,
                     optimize_prompt=optimize_prompt, watermark=watermark,
+                    output_format=output_format,
+                    layer_decomposition=layer_decomposition,
                 )
             else:
                 result = client.generate(
@@ -80,6 +92,8 @@ def generate(
                     seed=seed, guidance_scale=guidance_scale,
                     sequential=sequential, num_images=num_images,
                     optimize_prompt=optimize_prompt, watermark=watermark,
+                    output_format=output_format,
+                    layer_decomposition=layer_decomposition,
                 )
         except SeedreamError as exc:
             err(str(exc))

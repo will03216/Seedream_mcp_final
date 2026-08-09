@@ -1,0 +1,80 @@
+{
+  "model": "dola-seedream-5-0-pro-260628",
+  "note": "Prompts used to generate walmart/output_3 on Seedream 5.0 Pro (image-to-image). Same reference images as prompts.json.",
+  "examples": [
+    {
+      "scenario_id": "studio_many_items_layout_001",
+      "prompt": "HIGHEST PRIORITY: Strictly match the 10 provided reference images. Image 1 through Image 10 each show one unique product and each must appear in the scene exactly once, with no omissions, no duplications, and no blending of features between different reference products. Preserve each product's exact identity from its reference: shape, color palette, material texture, logos, label text and graphics, proportions, and distinctive design features. All logos and text that are legible in the references must remain fully legible in the output. Do not invent, alter, or replace any product detail, and do not add products beyond the 10 references.\n\nPhotorealistic Thanksgiving dinner scene in a warm residential dining room, staged as if the host has just finished setting the table for arriving guests. Arrange all 10 products in natural, functional positions: tableware at place settings, serveware clustered near the centerpiece dishes, decorative items as accents on the table runner and nearby sideboard. Every product fully visible, identifiable, and entirely within frame, at accurate real-world relative scale to one another and to the table.\n\nCamera: slightly elevated three-quarter angle, 35mm full-frame perspective, framed wide enough that no referenced product is cropped. Lighting: warm late-afternoon golden light from a side window with gentle candle glow as fill, soft diffused shadows. Grade: cozy autumn palette of warm oranges, chestnut browns, and muted cranberry reds, with a softly defocused dining room background keeping focus on the tablescape.\n\nStyle: high-end editorial lifestyle product photography, sharp focus across all 10 products, true-to-life material textures, natural saturation, no people in the scene.\n\nOutput: one image, 4:3 landscape, 2K.",
+      "size": "2352x1760",
+      "watermark": false,
+      "input_images": [
+        "2215756438_5.jpg",
+        "2089498411_1.jpg",
+        "11173210440_2.jpg",
+        "5241194861_18.jpg",
+        "5442766362_9.jpg",
+        "5722831188_0.jpg",
+        "18057751632_9.jpg",
+        "191420088_10.jpg",
+        "53753291_7.jpg",
+        "22660282_5.jpg"
+      ]
+    },
+    {
+      "scenario_id": "studio_many_items_layout_002",
+      "prompt": "HIGHEST PRIORITY: Strictly match the 10 provided reference images. Image 1 through Image 10 each show one unique product and each must appear in the scene exactly once, with no omissions, no duplications, and no blending of features between different reference products. Preserve each product's exact identity from its reference: shape, color palette, material texture, logos, label text and graphics, proportions, and distinctive design features. All logos and text that are legible in the references must remain fully legible in the output. Do not invent, alter, or replace any product detail, and do not add products beyond the 10 references.\n\nPhotorealistic Thanksgiving dinner scene in a warm residential dining room, staged as if the host has just finished setting the table for arriving guests. Arrange all 10 products in natural, functional positions: tableware at place settings, serveware clustered near the centerpiece dishes, decorative items as accents on the table runner and nearby sideboard. Every product fully visible, identifiable, and entirely within frame, at accurate real-world relative scale to one another and to the table.\n\nCamera: slightly elevated three-quarter angle, 35mm full-frame perspective, framed wide enough that no referenced product is cropped. Lighting: warm late-afternoon golden light from a side window with gentle candle glow as fill, soft diffused shadows. Grade: cozy autumn palette of warm oranges, chestnut browns, and muted cranberry reds, with a softly defocused dining room background keeping focus on the tablescape.\n\nStyle: high-end editorial lifestyle product photography, sharp focus across all 10 products, true-to-life material textures, natural saturation, no people in the scene.\n\nOutput: one image, 4:3 landscape, 2K.",
+      "size": "2352x1760",
+      "watermark": false,
+      "input_images": [
+        "2215756438_5.jpg",
+        "2089498411_1.jpg",
+        "11173210440_2.jpg",
+        "13890269961_4.jpg",
+        "5241194861_18.jpg",
+        "5442766362_9.jpg",
+        "5722831188_0.jpg",
+        "191420088_10.jpg",
+        "53753291_7.jpg",
+        "22660282_5.jpg"
+      ]
+    },
+    {
+      "scenario_id": "rug_under_table_9x15_001",
+      "prompt": "Reference-based interior edit.\nInput 1 is the base living room scene. Input 2 is the rug asset.\n\nLay the rug from Input 2 flat on the floor of Input 1, centered under the coffee table, its 15 ft side running parallel to the table's 5 ft side. The rug is 9 x 15 ft and the table is 3 x 5 ft, so the rug appears about three times the table's length and width, extending well beyond it on all four sides and covering most of the visible floor.\n\nReproduce the rug's pattern, color palette, weave texture, and edge binding faithfully from Input 2. Keep the coffee table, all furniture, walls, windows, decor, flooring outside the rug, and room layout identical to Input 1.\n\nThe rug follows the room's existing perspective, foreshortening naturally toward the back of the scene. Match Input 1's lighting direction, color temperature, and intensity. Table legs cast soft contact shadows onto the rug, consistent in softness with other shadows in the room, and press slightly into the pile. Rug texture detail matches the sharpness and resolution of the surrounding scene, with edges lying flat under natural fabric weight.\n\nStyle: photorealistic editorial interior photography, true-to-life color.",
+      "size": "2K",
+      "watermark": false,
+      "input_images": [
+        "livingroom.jpg",
+        "5022271271_2.jpg"
+      ]
+    },
+    {
+      "scenario_id": "edge_reflective_001",
+      "prompt": "Strictly match the exact design, proportions, shape, and all details of the electric kettle from the reference image. Do not redesign, add, or remove any part, and do not recolor the body copper. Preserve every detail: brushed stainless steel silver main body, polished copper top handle, copper lid pull ring, \"HADEN\" brand badge on the front rendered crisp and legible, copper base trim, copper power switch knob, angled silver spout, matte grey lower base. Replace the plain white reference background entirely. Place the kettle on a light warm white polished quartz countertop in a bright modern minimalist kitchen: soft out-of-focus matte light grey flat-panel cabinetry, subtle white stacked tile backsplash, a large side window blurred in the far background, no clutter on the counter. Render physically accurate metallic materials: the brushed steel body shows soft, diffused cool-toned highlights with visible subtle brushed texture rather than mirror reflections, while the polished copper accents show warm environmental reflections of the counter and window light with crisp small specular hotspots. A faint soft mirrored reflection of the kettle sits on the quartz beneath it. Eye-level straight-on angle, 50mm focal length, shallow depth of field, entire kettle tack-sharp against a softly blurred background. Soft diffused daylight from the left with gentle fill from the right, no harsh shadows, even illumination on the front so branding reads clearly. Professional commercial product photography, clean neutral color grading, photorealistic.",
+      "size": "2K",
+      "watermark": false,
+      "input_images": [
+        "1027424567_9.jpg"
+      ]
+    },
+    {
+      "scenario_id": "inject_ozark_tumbler_in_camp_chair",
+      "prompt": "Top priority: Replicate both products 100% accurately from the reference images. Image 1 is an Ozark Trail 30oz stainless steel tumbler (matte dark navy body, brushed steel rim, clear lid, silver Ozark Trail mountain logo). Image 2 is an Ozark Trail oversized folding camp chair (green and tan fabric, mesh center panel, tan steel frame, mesh cup holder built into the left armrest). Logos, colors, proportions, materials, and features must remain unchanged.\n\nScene: Place the tumbler upright inside the mesh cup holder on the chair's left armrest, seated about one third deep so the logo and upper body stay fully visible and facing the camera, with no distortion or incorrect fitting. Do not place it in the side cooler pocket.\n\nComposition: Tight close-up at roughly 45 degrees, eye level with the armrest, tumbler as the single sharp focal point. Armrest fabric weave, mesh holder, and stitching crisply detailed; the rest of the chair falls softly out of frame.\n\nEnvironment and lighting: Spring morning campsite beside a calm river. Soft directional golden sunlight from the left, thin mist over the water, dewy grass and leafy green trees in the background.\n\nPhotographic style: Professional outdoor lifestyle product photography, photorealistic, natural color grading, shallow depth of field (85mm look, f/2.0) with the background dissolving into soft bokeh. Lifelike material textures, no added text or graphics.",
+      "size": "2K",
+      "watermark": false,
+      "input_images": [
+        "1977919471_0.jpg",
+        "15013823223_1.jpg"
+      ]
+    },
+    {
+      "scenario_id": "add_props_001_maskfree",
+      "prompt": "Edit the reference image. Task: remove all decor from the top of the black side table and replace it with two new items. Everything else must remain exactly as in the reference.\nRemove: the glass vase with calla lilies, the stacked books, the white bowl, and the white box.\nAdd, placed naturally on the clean tabletop: a small modern succulent with plump fleshy green leaves in a faceted geometric matte ceramic pot, slightly left of center, and a neat flat stack of three glossy interior design magazines beside it, edges aligned. Both sized believably for a small side table.\nPreserve exactly: the black side table's shape, wood grain finish, position, and angle; the beige sofa fabric and all throw pillows; light grey wall, white window trim and baseboard; light wood plank flooring and woven rug; grey sheer and opaque curtains; the exact camera framing, angle, and perspective.\nMatch the soft natural window light from the left and the warm neutral white balance. The new objects cast soft shadows consistent in direction and softness with the rest of the scene. Crisp material detail: matte ceramic, fleshy leaf surfaces, smooth magazine covers with slight sheen. Photorealistic interior photography.",
+      "size": "2K",
+      "watermark": false,
+      "input_images": [
+        "364717223_0.jpg"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "examples": [
+    {
+      "scenario_id": "studio_many_items_layout_001",
+      "prompt": "Arrange all these items in a realistic dining room dinner-table scene on Thanksgiving, as if they are set up for a hosted Thanksgiving meal. Keep each product recognizable and naturally placed.",
+      "input_images": [
+        "2215756438_5.jpg",
+        "2089498411_1.jpg",
+        "11173210440_2.jpg",
+        "5241194861_18.jpg",
+        "5442766362_9.jpg",
+        "5722831188_0.jpg",
+        "18057751632_9.jpg",
+        "191420088_10.jpg",
+        "53753291_7.jpg",
+        "22660282_5.jpg"
+      ]
+    },
+    {
+      "scenario_id": "studio_many_items_layout_002",
+      "prompt": "Arrange all these items in a realistic dining room dinner-table scene on Thanksgiving, as if they are set up for a hosted Thanksgiving meal. Keep each product recognizable and naturally placed.",
+      "input_images": [
+        "2215756438_5.jpg",
+        "2089498411_1.jpg",
+        "11173210440_2.jpg",
+        "13890269961_4.jpg",
+        "5241194861_18.jpg",
+        "5442766362_9.jpg",
+        "5722831188_0.jpg",
+        "191420088_10.jpg",
+        "53753291_7.jpg",
+        "22660282_5.jpg"
+      ]
+    },
+    {
+      "scenario_id": "rug_under_table_9x15_001",
+      "prompt": "Place the 9 feet by 15 feet rug from second image under the coffee table in the first image. the size of coffee table is 3 feet by 5 feet.",
+      "input_images": [
+        "livingroom.jpg",
+        "5022271271_2.jpg"
+      ]
+    },
+    {
+      "scenario_id": "edge_reflective_001",
+      "prompt": "Place this copper and silver electric kettle in a modern kitchen, showing realistic reflections on the metallic surfaces",
+      "input_images": [
+        "1027424567_9.jpg"
+      ]
+    },
+    {
+      "scenario_id": "inject_ozark_tumbler_in_camp_chair",
+      "prompt": "Create a realistic lifestyle image using the uploaded Ozark Trail tumbler and Ozark Trail camping chair. Place the tumbler securely inside the cup holder pocket of the Ozark Trail chair. The image should be a close-up composition focused primarily on the tumbler sitting inside the chair\u2019s cup holder, with the chair fabric and stitching clearly visible around it. The tumbler should look natural and properly scaled, as if it was photographed in real life. Scene setting: camping beside a calm river in the early morning during a beautiful spring day. The lighting should feel soft and fresh with gentle morning sunlight, light mist over the river, and subtle greenery in the background. Include natural elements like grass, trees, and water, but keep the depth of field shallow so the background is slightly blurred and the tumbler remains the focal point. Make the image photorealistic, high resolution, natural color grading, and true-to-life textures. Ensure brand details on both the tumbler and chair are accurate to the uploaded references. Do not alter logos, proportions, colors, or product features.",
+      "input_images": [
+        "1977919471_0.jpg",
+        "15013823223_1.jpg"
+      ]
+    },
+    {
+      "scenario_id": "add_props_001_maskfree",
+      "prompt": "Replace the current decor items on the black side table with a modern succulent plant in a geometric pot and a stack of design magazines",
+      "input_images": [
+        "364717223_0.jpg"
+      ]
+    }
+  ]
+}

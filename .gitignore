@@ -51,3 +51,20 @@ artifacts/
 # Composed build artifacts — regenerate with `run_workflow.py render`
 *.rendered.json
 *.rendered.qc.md
+
+# --- added during backup commit ---
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+venv/
+node_modules/
+.next/
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+*.pem
+*.key
+uploads/

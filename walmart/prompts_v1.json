@@ -1,0 +1,66 @@
+{
+  "examples": [
+    {
+      "scenario_id": "studio_many_items_layout_001",
+      "prompt": "Compose a photorealistic Thanksgiving dinner scene in a warm dining room, arranging all ten referenced products on and around a set dinner table as if a host has just finished preparing for guests. Preserve every product's exact identity from its reference image: shape, colors, materials, logos, labels, proportions, and features — do not invent, duplicate, or alter any product. Place each item where it would naturally belong (tableware on the table, serveware near dishes, decor as accents), all fully visible and recognizable, at correct real-world relative scale. Frame at a slightly elevated three-quarter angle, roughly 35mm perspective, so the whole tablescape reads clearly. Light with warm late-afternoon window light plus soft candle glow, gentle shadows, cozy autumn color grading with oranges and browns, and a softly blurred dining-room background. High-end lifestyle product photography, true-to-life textures.",
+      "input_images": [
+        "2215756438_5.jpg",
+        "2089498411_1.jpg",
+        "11173210440_2.jpg",
+        "5241194861_18.jpg",
+        "5442766362_9.jpg",
+        "5722831188_0.jpg",
+        "18057751632_9.jpg",
+        "191420088_10.jpg",
+        "53753291_7.jpg",
+        "22660282_5.jpg"
+      ]
+    },
+    {
+      "scenario_id": "studio_many_items_layout_002",
+      "prompt": "Create a photorealistic hosted Thanksgiving dinner tablescape in an inviting dining room, integrating all ten referenced products into one coherent scene set for guests about to arrive. Keep each product exactly faithful to its reference: precise shape, color, materials, branding, labels, proportions, and details — no substitutions, omissions, or invented items. Arrange them naturally by function — table items on the linen-dressed table, serving and kitchen pieces staged logically nearby, decorative pieces as seasonal accents — every product clearly visible and correctly scaled relative to the others. Shoot from a slightly high three-quarter viewpoint with moderate depth of field so all items stay sharp. Use warm golden-hour window light mixed with soft candlelight, autumnal color palette, subtle fall garland and pumpkins as background context only. Premium lifestyle catalog photography, natural shadows, lifelike textures.",
+      "input_images": [
+        "2215756438_5.jpg",
+        "2089498411_1.jpg",
+        "11173210440_2.jpg",
+        "13890269961_4.jpg",
+        "5241194861_18.jpg",
+        "5442766362_9.jpg",
+        "5722831188_0.jpg",
+        "191420088_10.jpg",
+        "53753291_7.jpg",
+        "22660282_5.jpg"
+      ]
+    },
+    {
+      "scenario_id": "rug_under_table_9x15_001",
+      "prompt": "Edit the first image: place the rug from the second image flat on the floor under the coffee table, keeping everything else in the living room unchanged. Critical scale: the rug is 9 feet by 15 feet and the coffee table is 3 feet by 5 feet, so the rug must appear roughly three times the table's length and width, extending far beyond the table on all sides and covering most of the floor area, with the table centered on it. Preserve the rug's exact pattern, colors, weave texture, and edge binding from the reference; preserve the coffee table, furniture, walls, and decor exactly as in the first image. Match the room's existing perspective, lighting direction, and shadows — the table legs should cast soft contact shadows and press slightly into the rug pile. Photorealistic interior photography, seamless blend.",
+      "input_images": [
+        "livingroom.jpg",
+        "5022271271_2.jpg"
+      ]
+    },
+    {
+      "scenario_id": "edge_reflective_001",
+      "prompt": "Place the referenced copper and silver electric kettle on the countertop of a modern kitchen, preserving its exact form, two-tone copper and silver finish, handle, spout, base, branding, and proportions from the reference image — do not redesign any part. Set it on a light quartz or polished stone counter with a sleek backdrop of matte cabinetry, a tiled backsplash, and a window softly out of focus. Render physically accurate reflections on the metallic surfaces: the polished copper body should show warm environmental reflections of the counter and window light, while the silver accents pick up cooler highlights, with crisp specular hotspots and a subtle mirrored reflection on the counter beneath. Eye-level angle, 50mm look, shallow depth of field keeping the kettle tack-sharp. Soft daylight from a side window with gentle fill, clean neutral grading, photorealistic product photography.",
+      "input_images": [
+        "1027424567_9.jpg"
+      ]
+    },
+    {
+      "scenario_id": "inject_ozark_tumbler_in_camp_chair",
+      "prompt": "Using both references, place the Ozark Trail tumbler from the first image securely inside the cup holder of the Ozark Trail camping chair from the second image. Preserve both products exactly: logos, colors, proportions, materials, and features must match the references without alteration. Compose a tight close-up centered on the tumbler seated in the cup holder, with the chair's fabric weave and stitching crisply visible around it, the tumbler naturally scaled and slightly recessed as in real life. Setting: a spring-morning campsite beside a calm river — soft fresh sunlight, light mist drifting over the water, grass, trees, and greenery behind. Use shallow depth of field so the background melts into a gentle blur while the tumbler stays the sharp focal point. Photorealistic, natural color grading, true-to-life textures, lifestyle outdoor product photography.",
+      "input_images": [
+        "1977919471_0.jpg",
+        "15013823223_1.jpg"
+      ]
+    },
+    {
+      "scenario_id": "add_props_001_maskfree",
+      "prompt": "Edit the reference image: remove the current decor items from the top of the black side table and replace them with two new objects — a modern succulent plant in a faceted geometric ceramic pot, and a neat stack of three or four glossy design magazines lying flat beside it. Keep everything else in the room exactly as in the reference: the black side table's shape, finish, and position, plus the walls, flooring, surrounding furniture, and framing must remain unchanged. Match the room's existing camera angle, perspective, lighting direction, and white balance so the new objects cast soft, consistent shadows on the tabletop and sit at believable real-world scale for a side table. Render crisp material detail — matte ceramic pot, fleshy green succulent leaves, smooth magazine covers with subtle sheen. Photorealistic interior photography, seamless mask-free edit.",
+      "input_images": [
+        "364717223_0.jpg"
+      ]
+    }
+  ]
+}

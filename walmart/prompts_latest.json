@@ -1,0 +1,92 @@
+{
+  "model": "dola-seedream-5-0-pro-260628",
+  "note": "Latest good-quality prompt executed per scenario (Seedream 5.0 Pro, 2K). All runs live in output_5.",
+  "examples": [
+    {
+      "scenario_id": "studio_many_items_layout_001",
+      "prompt": "Photorealistic Thanksgiving dinner scene in a warm residential dining room, staged as if the host has just finished setting the table for arriving guests.\n\nHIGHEST PRIORITY — strictly reproduce ALL 10 reference products, each appearing exactly once, recognizable, with no omissions, no duplicates, no blending, and NO invented products or extra food/props:\n1. Reactive-glaze stoneware dinner plates (teal-sage center fading to speckled brown-gold rim) at each place setting.\n2. Low black futon sofa against the back wall, with its round dark side table and glass-column lamp.\n3. Smash Kitchen Organic Classic Tomato Ketchup — tall red squeeze bottle, white label; the label must read \"Smash Kitchen\" above \"Classic Tomato Ketchup\" clearly and legibly, bottle upright and front-facing.\n4. Brushed matte-gold flatware (fork, knife, spoon) at each setting.\n5. Natural light-oak dining chairs with woven rope backs and cream seats.\n6. The dining table MUST be the round table with a DARK walnut top on a WHITE turned pedestal base — this exact table only; do not use any light-wood or fluted-pedestal table, and no second table may appear.\n7. Set of cobalt-blue stemmed goblets.\n8. Josh Cellars Cabernet Sauvignon bottle, cream label with cursive \"Josh\" legible.\n9. Black blackout grommet curtains on the back window.\n10. Strawberries in their clear plastic 2 LB clamshell container (not loose in a bowl).\n\nDo NOT add donuts, cake stands, pitchers, French press, bread baskets, mixed-fruit bowls, or any item not listed.\n\nCamera: high three-quarter overhead angle, 35mm, framed so all four place settings and every product are simultaneously visible and unoccluded; no foreground chair-back blocking the table. Lighting: warm late-afternoon window light with soft candle fill, gentle shadows, cozy autumn grade (warm oranges, chestnut browns, muted cranberry). Softly defocused background. High-end editorial lifestyle product photography, sharp focus across all products, true-to-life textures, no people.",
+      "size": "2K",
+      "watermark": false,
+      "output_folder": "output_5",
+      "runs": 2,
+      "input_images": [
+        "2215756438_5.jpg",
+        "2089498411_1.jpg",
+        "11173210440_2.jpg",
+        "5241194861_18.jpg",
+        "5442766362_9.jpg",
+        "5722831188_0.jpg",
+        "18057751632_9.jpg",
+        "191420088_10.jpg",
+        "53753291_7.jpg",
+        "22660282_5.jpg"
+      ]
+    },
+    {
+      "scenario_id": "studio_many_items_layout_002",
+      "prompt": "Photorealistic Thanksgiving dinner scene in a warm residential dining room, staged as a hosted meal with guests about to arrive.\n\nHIGHEST PRIORITY — strictly reproduce ALL 10 reference products, each exactly once, recognizable, no omissions, duplicates, blending, or invented products/extra food:\n1. Reactive-glaze stoneware dinner plates (teal-green speckled center, dark caramel-brown rim) at each setting.\n2. Low black futon sofa against the back wall with its round side table and glass-column lamp.\n3. Smash Kitchen Organic Classic Tomato Ketchup — tall red bottle; label reading \"Smash Kitchen\" above \"Classic Tomato Ketchup\" clearly legible, upright and front-facing.\n4. Wood-and-grey-marble paddle serving board (half acacia wood, half marble, with a handle hole) holding the carved turkey.\n5. Brushed matte-gold flatware (forks, knife, spoons) at each setting.\n6. Natural light-oak dining chairs with woven rope backs and cream seats.\n7. The dining table MUST be the round table with a DARK walnut top on a WHITE turned pedestal base — this exact table only; no light-wood or fluted-pedestal table, no second table.\n8. Josh Cellars Cabernet Sauvignon bottle, cream label with cursive \"Josh\" legible.\n9. Black blackout grommet curtains on the back window.\n10. Strawberries in their clear plastic 2 LB clamshell container — NEVER poured into a bowl or plate.\n\nSet exactly 5 fully dressed place settings (stacked reactive plate + gold flatware + folded napkin) plus a single roast-turkey-on-the-marble-board centerpiece and one autumn floral arrangement. Do NOT add donuts, mugs, coffee, decanters, extra bottles, or mixed-fruit bowls.\n\nCamera: high three-quarter angle, 35mm, all settings and products visible and unoccluded. Lighting: warm golden late-afternoon window light with soft candle fill, autumn grade, softly defocused background. High-end editorial lifestyle product photography, sharp focus, lifelike textures, no people.",
+      "size": "2K",
+      "watermark": false,
+      "output_folder": "output_5",
+      "runs": 2,
+      "input_images": [
+        "2215756438_5.jpg",
+        "2089498411_1.jpg",
+        "11173210440_2.jpg",
+        "13890269961_4.jpg",
+        "5241194861_18.jpg",
+        "5442766362_9.jpg",
+        "5722831188_0.jpg",
+        "191420088_10.jpg",
+        "53753291_7.jpg",
+        "22660282_5.jpg"
+      ]
+    },
+    {
+      "scenario_id": "rug_under_table_9x15_001",
+      "prompt": "Reference-based interior edit. Preserve the same color as in reference images.\n\nInput 1 is the base scene: a living room with a dark charcoal ribbed modular sectional arranged in a U-shape, a white rectangular coffee table with an open lower shelf at its center, and dark wood plank flooring. Input 2 is the rug asset: a seafoam blue rug with a tone-on-tone diamond dot pattern and a solid border.\n\nLay the rug from Input 2 flat on the wood floor, centered under the white coffee table, its 15 ft side running parallel to the table's 5 ft side. The rug is 9 x 15 ft and the table is 3 x 5 ft, so the rug appears about three times the table's length and width. It fills the seating area enclosed by the sectional and extends beneath the front legs of the sofa modules on all three sides, with a band of wood floor still visible between the rug edge and the room's perimeter.\n\nReproduce the rug's seafoam blue color, diamond dot pattern, low pile texture, and solid border faithfully from Input 2, keeping its cool color identity rather than shifting it toward the room's warm tones. Keep the sectional, coffee table, bowl of apples, lamps, curtains, windows, archway, dining area, walls, and flooring outside the rug identical to Input 1.\n\nThe rug follows the room's perspective, foreshortening naturally toward the archway at the back. Match the scene's daylight from the tall windows on the left and warm interior lighting. The coffee table legs and the sectional's front feet cast soft contact shadows onto the rug and press slightly into the pile. Rug texture sharpness matches the surrounding scene, edges lying flat under natural fabric weight.\n\nStyle: photorealistic editorial interior photography, true-to-life color.",
+      "size": "2K",
+      "watermark": false,
+      "output_folder": "output_5",
+      "runs": 5,
+      "input_images": [
+        "livingroom.jpg",
+        "5022271271_2.jpg"
+      ]
+    },
+    {
+      "scenario_id": "edge_reflective_001",
+      "prompt": "Place the referenced HADEN electric kettle on a light warm-white polished quartz countertop in a bright modern minimalist kitchen (soft out-of-focus matte light-grey flat-panel cabinetry, subtle white tile backsplash, a blurred side window), replacing the plain reference background entirely.\n\nStrictly preserve the kettle's exact identity from the reference: the milk-churn silhouette, proportions, and two-tone finish. The BODY is BRUSHED SATIN STAINLESS STEEL with fine vertical grain — matte satin, cool neutral grey; it must NOT be mirror-polished or chrome, and must NOT be recolored or tinted copper/warm. ONLY these accents are polished copper: the arched carrying handle, the lid ring/knob, the spout collar, the base trim ring, and the round control knob. The polished steel spout may show a bright specular highlight. The copper rectangular \"HADEN\" badge low on the front must stay sharp and legible with its circular logo mark.\n\nRender physically accurate materials: the brushed steel body shows only soft diffuse cool-toned gradient shading (subtle brushed texture, NOT a mirrored room reflection); the copper accents show warm environmental reflections with small crisp specular hotspots; a faint soft reflection of the kettle sits on the quartz beneath it. Keep clear warm-copper vs cool-steel material contrast.\n\nEye-level straight-on angle, 50mm, shallow depth of field, entire kettle tack-sharp against a softly blurred background. Soft diffused daylight from the left with gentle right fill, no harsh shadows, even front illumination so the branding reads clearly. Professional commercial product photography, clean neutral color grading, photorealistic.",
+      "size": "2K",
+      "watermark": false,
+      "output_folder": "output_5",
+      "runs": 2,
+      "input_images": [
+        "1027424567_9.jpg"
+      ]
+    },
+    {
+      "scenario_id": "inject_ozark_tumbler_in_camp_chair",
+      "prompt": "Top priority: reproduce BOTH products 100% accurately from the references and do not fabricate any branding.\n\nImage 1 is an Ozark Trail 30oz stainless-steel tumbler: keep it TALL and TAPERED (wide mouth necking to a stepped narrower base) — do NOT make it short, squat, or straight-sided. Matte dark navy body, brushed steel rim band, clear low-profile press-on lid with a black flip tab (do not swap in a rounded flip-top lid). The silver Ozark Trail mountain/river logo appears ONLY on the lower front of the tumbler body.\n\nImage 2 is an Ozark Trail oversized folding camp chair: green and tan fabric, grey mesh back panel, tan steel frame, and a ring-topped mesh cup holder on the left armrest. The chair carries NO logo — NEVER place any logo on the chair's mesh cup holder, fabric, or frame.\n\nScene: seat the tumbler fully DOWN inside the ring cup holder on the left armrest (its base hidden in the mesh sleeve), sized to fit the holder — not perched on the armrest fabric, not oversized, not floating or duplicated. The logo and upper body stay visible and facing the camera.\n\nComposition: tight close-up at roughly 45 degrees, eye level with the armrest, the tumbler the single sharp focal point; armrest fabric weave, mesh holder, and stitching crisply detailed, the rest of the chair softly out of frame. Environment: spring-morning campsite beside a calm river, soft golden sunlight from the left, thin mist over the water, dewy grass and leafy green trees behind. Shallow depth of field (85mm look, f/2.0), background dissolving into soft bokeh. Professional outdoor lifestyle product photography, photorealistic, natural color grading, lifelike textures.",
+      "size": "2K",
+      "watermark": false,
+      "output_folder": "output_5",
+      "runs": 2,
+      "input_images": [
+        "1977919471_0.jpg",
+        "15013823223_1.jpg"
+      ]
+    },
+    {
+      "scenario_id": "add_props_001_maskfree",
+      "prompt": "Edit the reference image. Task: remove all decor from the top of the black side table and replace it with two new items. Everything else must remain exactly as in the reference.\nRemove: the glass vase with calla lilies, the stacked books, the white bowl, and the white box.\nAdd, placed naturally on the clean tabletop: a small modern succulent with plump fleshy green leaves in a faceted geometric matte ceramic pot, slightly left of center, and a neat flat stack of three glossy fashion magazines beside it, edges aligned. The magazines are, from top to bottom, VOGUE, GQ, and ELLE, each cover's masthead title printed clearly and legibly along the top edge and spine so all three brand names are readable. Both sized believably for a small side table.\nPreserve exactly: the black side table's shape, wood grain finish, position, and angle; the beige sofa fabric and all throw pillows; light grey wall, white window trim and baseboard; light wood plank flooring and woven rug; grey sheer and opaque curtains; the exact camera framing, angle, and perspective.\nMatch the soft natural window light from the left and the warm neutral white balance. The new objects cast soft shadows consistent in direction and softness with the rest of the scene. Crisp material detail: matte ceramic, fleshy leaf surfaces, smooth magazine covers with slight sheen and sharp legible cover typography. Photorealistic interior photography.",
+      "size": "2K",
+      "watermark": false,
+      "output_folder": "output_5",
+      "runs": 5,
+      "input_images": [
+        "364717223_0.jpg"
+      ]
+    }
+  ]
+}

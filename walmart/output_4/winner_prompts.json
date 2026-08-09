@@ -1,0 +1,82 @@
+{
+  "model": "dola-seedream-5-0-pro-260628",
+  "note": "Winner prompts (best per category from output/_1/_2/_3 review), 2 samples each, Seedream 5.0 Pro 2K.",
+  "source_map": {
+    "studio_many_items_layout_001": "prompts_v1.json (Fable)",
+    "studio_many_items_layout_002": "prompts.json (original)",
+    "rug_under_table_9x15_001": "output_3/prompts_v2.json (detailed)",
+    "edge_reflective_001": "prompts.json (original)",
+    "inject_ozark_tumbler_in_camp_chair": "prompts.json (original)",
+    "add_props_001_maskfree": "prompts_v1.json (Fable)"
+  },
+  "examples": [
+    {
+      "scenario_id": "studio_many_items_layout_001",
+      "prompt": "Compose a photorealistic Thanksgiving dinner scene in a warm dining room, arranging all ten referenced products on and around a set dinner table as if a host has just finished preparing for guests. Preserve every product's exact identity from its reference image: shape, colors, materials, logos, labels, proportions, and features — do not invent, duplicate, or alter any product. Place each item where it would naturally belong (tableware on the table, serveware near dishes, decor as accents), all fully visible and recognizable, at correct real-world relative scale. Frame at a slightly elevated three-quarter angle, roughly 35mm perspective, so the whole tablescape reads clearly. Light with warm late-afternoon window light plus soft candle glow, gentle shadows, cozy autumn color grading with oranges and browns, and a softly blurred dining-room background. High-end lifestyle product photography, true-to-life textures.",
+      "size": "2K",
+      "input_images": [
+        "2215756438_5.jpg",
+        "2089498411_1.jpg",
+        "11173210440_2.jpg",
+        "5241194861_18.jpg",
+        "5442766362_9.jpg",
+        "5722831188_0.jpg",
+        "18057751632_9.jpg",
+        "191420088_10.jpg",
+        "53753291_7.jpg",
+        "22660282_5.jpg"
+      ]
+    },
+    {
+      "scenario_id": "studio_many_items_layout_002",
+      "prompt": "Arrange all these items in a realistic dining room dinner-table scene on Thanksgiving, as if they are set up for a hosted Thanksgiving meal. Keep each product recognizable and naturally placed.",
+      "size": "2K",
+      "input_images": [
+        "2215756438_5.jpg",
+        "2089498411_1.jpg",
+        "11173210440_2.jpg",
+        "13890269961_4.jpg",
+        "5241194861_18.jpg",
+        "5442766362_9.jpg",
+        "5722831188_0.jpg",
+        "191420088_10.jpg",
+        "53753291_7.jpg",
+        "22660282_5.jpg"
+      ]
+    },
+    {
+      "scenario_id": "rug_under_table_9x15_001",
+      "prompt": "Reference-based interior edit.\nInput 1 is the base living room scene. Input 2 is the rug asset.\n\nLay the rug from Input 2 flat on the floor of Input 1, centered under the coffee table, its 15 ft side running parallel to the table's 5 ft side. The rug is 9 x 15 ft and the table is 3 x 5 ft, so the rug appears about three times the table's length and width, extending well beyond it on all four sides and covering most of the visible floor.\n\nReproduce the rug's pattern, color palette, weave texture, and edge binding faithfully from Input 2. Keep the coffee table, all furniture, walls, windows, decor, flooring outside the rug, and room layout identical to Input 1.\n\nThe rug follows the room's existing perspective, foreshortening naturally toward the back of the scene. Match Input 1's lighting direction, color temperature, and intensity. Table legs cast soft contact shadows onto the rug, consistent in softness with other shadows in the room, and press slightly into the pile. Rug texture detail matches the sharpness and resolution of the surrounding scene, with edges lying flat under natural fabric weight.\n\nStyle: photorealistic editorial interior photography, true-to-life color.",
+      "size": "2K",
+      "input_images": [
+        "livingroom.jpg",
+        "5022271271_2.jpg"
+      ]
+    },
+    {
+      "scenario_id": "edge_reflective_001",
+      "prompt": "Place this copper and silver electric kettle in a modern kitchen, showing realistic reflections on the metallic surfaces",
+      "size": "2K",
+      "input_images": [
+        "1027424567_9.jpg"
+      ]
+    },
+    {
+      "scenario_id": "inject_ozark_tumbler_in_camp_chair",
+      "prompt": "Create a realistic lifestyle image using the uploaded Ozark Trail tumbler and Ozark Trail camping chair. Place the tumbler securely inside the cup holder pocket of the Ozark Trail chair. The image should be a close-up composition focused primarily on the tumbler sitting inside the chair’s cup holder, with the chair fabric and stitching clearly visible around it. The tumbler should look natural and properly scaled, as if it was photographed in real life. Scene setting: camping beside a calm river in the early morning during a beautiful spring day. The lighting should feel soft and fresh with gentle morning sunlight, light mist over the river, and subtle greenery in the background. Include natural elements like grass, trees, and water, but keep the depth of field shallow so the background is slightly blurred and the tumbler remains the focal point. Make the image photorealistic, high resolution, natural color grading, and true-to-life textures. Ensure brand details on both the tumbler and chair are accurate to the uploaded references. Do not alter logos, proportions, colors, or product features.",
+      "size": "2K",
+      "input_images": [
+        "1977919471_0.jpg",
+        "15013823223_1.jpg"
+      ]
+    },
+    {
+      "scenario_id": "add_props_001_maskfree",
+      "prompt": "Edit the reference image: remove the current decor items from the top of the black side table and replace them with two new objects — a modern succulent plant in a faceted geometric ceramic pot, and a neat stack of three or four glossy design magazines lying flat beside it. Keep everything else in the room exactly as in the reference: the black side table's shape, finish, and position, plus the walls, flooring, surrounding furniture, and framing must remain unchanged. Match the room's existing camera angle, perspective, lighting direction, and white balance so the new objects cast soft, consistent shadows on the tabletop and sit at believable real-world scale for a side table. Render crisp material detail — matte ceramic pot, fleshy green succulent leaves, smooth magazine covers with subtle sheen. Photorealistic interior photography, seamless mask-free edit.",
+      "size": "2K",
+      "input_images": [
+        "364717223_0.jpg"
+      ]
+    }
+  ]
+}
